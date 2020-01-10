@@ -8,35 +8,29 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
 
 public class Tab1Recensioni extends Fragment {
 
+    List<Course> courses;
     ListView listview;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1recensioni, container, false);
 
+        courses = new ArrayList<>();
+
+        courses.add(new Course("Analisi Matematica 1", "Annalise Defranceschi", 50));
+        courses.add(new Course("Analisi Matematica 2", "Annalise Defranceschi", 20));
+        courses.add(new Course("Fisica", "Roberto Battiston", 15));
+        courses.add(new Course("Programmazione Android", "Giuseppe Riccardi", 2));
+        courses.add(new Course("Innovazione d'Impresa", "Luca Mezzetti", 6));
+
         listview = (ListView) rootView.findViewById(R.id.listviewRecensioni);
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Prima Recensione");
-        arrayList.add("Seconda Recensione");
-        arrayList.add("Terza Recensione");
-        arrayList.add("Prima Recensione");
-        arrayList.add("Seconda Recensione");
-        arrayList.add("Terza Recensione");
-        arrayList.add("Prima Recensione");
-        arrayList.add("Seconda Recensione");
-        arrayList.add("Terza Recensione");
-        arrayList.add("Prima Recensione");
-        arrayList.add("Seconda Recensione");
-        arrayList.add("Terza Recensione");
-        arrayList.add("Prima Recensione");
-        arrayList.add("Seconda Recensione");
-        arrayList.add("Terza Recensione");
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, arrayList);
-        listview.setAdapter(arrayAdapter);
+        CustomListAdapter adapter = new CustomListAdapter(this.getContext(), R.layout.list_item, courses);
+        listview.setAdapter(adapter);
 
         return rootView;
     }
