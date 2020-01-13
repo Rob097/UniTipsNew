@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/titolo_evento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:text="@string/replaced_text"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/immagine_evento"
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/thumbnail_width"
+        android:layout_marginTop="@dimen/padding_top_recensioni_text"
+        android:contentDescription="@string/immagine_evento"
+        android:paddingLeft="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_top_recensioni_text"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
+
+    <TextView
+        android:id="@+id/luogo_evento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_location_on_black_24dp"
+        android:drawablePadding="@dimen/padding_top_recensioni_text"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:text="@string/replaced_text" />
+
+    <TextView
+        android:id="@+id/data_evento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:drawableStart="@drawable/ic_today_black_24dp"
+        android:drawablePadding="@dimen/padding_top_recensioni_text"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:paddingBottom="@dimen/padding_top_recensioni_text"
+        android:text="@string/replaced_text" />
+
+</LinearLayout>

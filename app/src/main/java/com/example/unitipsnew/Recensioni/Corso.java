@@ -1,13 +1,17 @@
-package com.example.unitipsnew;
+package com.example.unitipsnew.Recensioni;
 
-public class Course {
+public class Corso {
     String nomeCorso, nomeProfessore;
-    int numeroRecensioni;
+    int id, numeroRecensioni;
 
-    public Course(String nomeCorso, String nomeProfessore, int numeroRecensioni) {
+    public Corso() {
+    }
+
+    public Corso(String nomeCorso, String nomeProfessore, int numeroRecensioni, int id) {
         this.nomeCorso = nomeCorso;
         this.nomeProfessore = nomeProfessore;
         this.numeroRecensioni = numeroRecensioni;
+        this.id = id;
     }
 
     public String getNomeCorso() {
@@ -32,5 +36,13 @@ public class Course {
 
     public void setNumeroRecensioni(int numeroRecensioni) {
         this.numeroRecensioni = numeroRecensioni;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.unitipsnew.R;
-import com.example.unitipsnew.Tab1Recensioni;
-import com.example.unitipsnew.Tab2Eventi;
-import com.example.unitipsnew.Tab3Tips;
+import com.example.unitipsnew.Recensioni.Tab1Recensioni;
+import com.example.unitipsnew.Eventi.Tab2Eventi;
+import com.example.unitipsnew.Tips.Tab3Tips;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
