@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.unitipsnew.DatabaseHelper;
+import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 
 import java.io.ByteArrayOutputStream;
@@ -68,7 +68,7 @@ public class ProfiloActivity extends AppCompatActivity{
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.deleteUser(utente.getMatricola());
+                openAreYouSure(utente, view);
             }
         });
 
@@ -85,8 +85,9 @@ public class ProfiloActivity extends AppCompatActivity{
                 u.setEmail(utente.getEmail());
                 u.setPassword(utente.getPassword());
                 db.updateUser(u);
-
                 Toast.makeText(view.getContext(), "Account Aggiornato", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(ProfiloActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
 
@@ -100,6 +101,36 @@ public class ProfiloActivity extends AppCompatActivity{
 
         db.closeDB();
 
+    }
+
+    private void openAreYouSure(final Utente utente, final View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Eliminare Account");
+        builder.setMessage("Sei sicuro di vole eliminare definitivamente il tuo account?");
+
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                db.deleteUser(utente.getMatricola());
+                Toast.makeText(view.getContext(), "Account Eliminato", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(ProfiloActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void selectImage() {

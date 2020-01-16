@@ -4,18 +4,23 @@
     <string name="tab_text_2">Eventi</string>
     <string name="tab_text_3">Tips</string>
 
-    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Accedi</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="immagine_evento">immagine_evento</string>
     <string name="replaced_text">testo_dinamico</string>
     <string name="Brand">Uni Tips</string>
     <string name="password_dimenticata_action">Hai dimenticato la password?</string>
     <string name="registrati_action">Registrati</string>
+    <string name="remember">Ricordami</string>
+    <string name="logo">LOGO</string>
+    <string name="delete_account">Elimina Account</string>
+    <string name="update_account">Aggiorna Account</string>
+    <string name="alter">alter_image</string>
+    <string name="numero_di_matricola">Numero di matricola</string>
+    <string name="il_tuo_nome">Il tuo nome</string>
+    <string name="il_tuo_cognome">Il tuo cognome</string>
+    <string name="la_tua_email">La tua email</string>
+    <string name="scegli_una_password">Scegli una password</string>
+    <string name="conferma_la_password">Conferma la password</string>
 </resources>

@@ -15,9 +15,17 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/account_profile"
         android:orderInCategory="100"
         android:title="Account"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/logout1"
+        android:orderInCategory="100"
+        android:title="Log Out"
+        app:showAsAction="never"
+        app:actionLayout="@layout/toggle"
+        />
 
 </menu>

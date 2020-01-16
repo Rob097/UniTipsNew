@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_left_recensioni_text"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_anchorGravity="center">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarmia"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#6200EE"
+            android:paddingBottom="@dimen/padding_left_recensioni_text"
+            app:logo="@drawable/logo"
+            app:logoDescription="logo"
+            app:title="Nome Utente"
+            app:titleMarginStart="25dp">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@android:dimen/notification_large_icon_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_width="96dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar_utente"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:src="@drawable/user_image"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="#00FFFFFF"
+                    app:srcCompat="@drawable/ic_create_black_24dp"
+                    android:contentDescription="@string/alter" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/matricola_utente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:text="@string/replaced_text" />
+
+            <EditText
+                android:id="@+id/nome_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <EditText
+                android:id="@+id/cognome_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/email_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:paddingLeft="@dimen/padding_top_recensioni_text"
+                android:paddingRight="@dimen/padding_top_recensioni_text"
+                android:text="@string/replaced_text"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/password_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <Button
+                android:id="@+id/update_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:backgroundTint="#0E90B8"
+                android:text="@string/update_account"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/delete_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:backgroundTint="#A81818"
+                android:text="@string/delete_account"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

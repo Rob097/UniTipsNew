@@ -29,7 +29,6 @@ public class CustomListAdapterEventi extends ArrayAdapter<Evento> {
     }
 
     @NonNull
-    @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
         LayoutInflater inflater = LayoutInflater.from(context);
 

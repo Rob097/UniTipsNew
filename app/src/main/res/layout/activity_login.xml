@@ -8,8 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ui.login.LoginActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin">
 
     <TextView
         android:id="@+id/Brand"
@@ -29,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:contentDescription="LOGO"
+        android:contentDescription="@string/logo"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
 
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_email"
@@ -87,20 +86,19 @@
     <TextView
         android:id="@+id/info"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
         android:textColor="#F5B91616"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/remember" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_gravity="start"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="#6200EE"
         android:elevation="10dp"
         android:enabled="true"
@@ -111,6 +109,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info" />
 
@@ -118,22 +117,38 @@
         android:id="@+id/password_dimenticata_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/password_dimenticata_action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
-    <TextView
+    <Button
         android:id="@+id/registrati_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:background="#00FFFFFF"
+        android:enabled="true"
         android:text="@string/registrati_action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_dimenticata_action"
         app:layout_constraintVertical_bias="0.0" />
+
+    <CheckBox
+        android:id="@+id/remember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="5dp"
+        android:text="@string/remember"
+        app:layout_constraintEnd_toStartOf="@+id/login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

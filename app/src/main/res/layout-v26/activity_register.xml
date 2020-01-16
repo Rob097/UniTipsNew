@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Brand_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/Brand"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_width="96dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar_register"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:src="@drawable/logo"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <ImageButton
+                    android:id="@+id/alter_avatar_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="#00FFFFFF"
+                    app:srcCompat="@drawable/ic_create_black_24dp"
+                    android:contentDescription="@string/alter" />
+
+            </RelativeLayout>
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/matricola_register"
+                android:text="@string/numero_di_matricola"/>
+            <EditText
+                android:id="@+id/matricola_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="Numero di matricola"
+                android:inputType="numberDecimal"
+                android:text="@string/replaced_text" />
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/nome_register"
+                android:text="Il tuo nome"/>
+            <EditText
+                android:id="@+id/nome_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:hint="Il tuo nome"
+                android:inputType="textPersonName"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/cognome_register"
+                android:text="Il tuo cognome"/>
+            <EditText
+                android:id="@+id/cognome_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:hint="Il tuo cognome"
+                android:inputType="textPersonName"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/email_register"
+                android:text="La tua email"/>
+            <EditText
+                android:id="@+id/email_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:hint="La tua email"
+                android:inputType="textPersonName"
+                android:text="@string/replaced_text"
+                android:autofillHints=""/>
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/password_utente"
+                android:text="Scegli una password"/>
+            <EditText
+                android:id="@+id/password_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:hint="Scegli una password"
+                android:inputType="textPassword"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+            
+            <TextView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:labelFor="@+id/repeat_password_utente"
+                android:text="Conferma la password"/>
+            <EditText
+                android:id="@+id/repeat_password_utente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+                android:ems="10"
+                android:hint="Conferma la password"
+                android:inputType="textPassword"
+                android:text="@string/replaced_text"
+                android:autofillHints="" />
+
+            <Button
+                android:id="@+id/update_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:backgroundTint="#0E90B8"
+                android:text="@string/registrati_action"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/delete_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:backgroundTint="#726B6B"
+                android:text="@string/action_sign_in_short"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
