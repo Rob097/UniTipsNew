@@ -1,6 +1,7 @@
 package com.example.unitipsnew.Recensioni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
+
+    public static final String EXTRA_TEXT = "com.example.unitipsnew.Recensioni.EXTRA_TEXT";
 
     Context context;
     int resourses;
@@ -46,12 +49,28 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
         TextView nome_professore = view.findViewById(R.id.nome_professore);
         TextView numero_recensioni = view.findViewById(R.id.numero_recensioni);
 
-        Corso course = courses.get(position);
+        final Corso course = courses.get(position);
 
         nome_corso.setText(course.getNomeCorso());
+        nome_corso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nome_corso = course.getNomeCorso();
+
+                Intent intent = new Intent(context, RecensioneCorso.class);
+                intent.putExtra(EXTRA_TEXT, nome_corso);
+                context.startActivity(intent);
+
+            }
+        });
         nome_professore.setText(course.getNomeProfessore());
         numero_recensioni.setText("" + course.getNumeroRecensioni() + " Recensioni");
 
         return view;
+    }
+
+    public void openRecensioneCorso(){
+
+
     }
 }

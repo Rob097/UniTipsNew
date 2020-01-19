@@ -39,11 +39,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         //Controllo se l'utente aveva selezionato il remember me
         sp = getSharedPreferences("checkbox", MODE_PRIVATE);
         long l = sp.getLong("user", 01);
 
+        //Stampa nei log tutti gli utenti registrati
+        db = new DatabaseHelper(getApplicationContext());
+        List<Utente> utenti = db.getAllUsers();
+        for(Utente u : utenti){
+            Log.d("utente: ", u.toString());
+        }
         //Se i dati coincidono lo faccio passare alla main activity altrimenti gli chideo di autenticarsi
         if(sp.getBoolean("remember", true) == true && l != 0){
             sp.edit().putBoolean("logged", true).apply();
@@ -88,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        /*Stampa nei log tutti gli utenti registrati
-        db = new DatabaseHelper(getApplicationContext());
+        //Stampa nei log tutti gli utenti registrati
+        /*db = new DatabaseHelper(getApplicationContext());
         List<Utente> utenti = db.getAllUsers();
         for(Utente u : utenti){
             Log.d("utente: ", u.toString());

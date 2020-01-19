@@ -15,6 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Recensioni.RecensioneCorso"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".Utente.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,18 +27,14 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Utente.ProfiloActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Utente.RegisterActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"></activity>
     </application>
-    
 
 </manifest>

@@ -1,8 +1,12 @@
 package com.example.unitipsnew.Recensioni;
 
+import java.util.ArrayList;
+
 public class Corso {
     String nomeCorso, nomeProfessore;
     int id, numeroRecensioni;
+
+    ArrayList<Recensione> recensioni;
 
     public Corso() {
     }
@@ -12,6 +16,8 @@ public class Corso {
         this.nomeProfessore = nomeProfessore;
         this.numeroRecensioni = numeroRecensioni;
         this.id = id;
+
+        recensioni = new ArrayList<Recensione>();
     }
 
     public String getNomeCorso() {
