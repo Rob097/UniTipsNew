@@ -23,4 +23,5 @@
     <string name="la_tua_email">La tua email</string>
     <string name="scegli_una_password">Scegli una password</string>
     <string name="conferma_la_password">Conferma la password</string>
+    <string name="nome_corso">nome del corso</string>
 </resources>

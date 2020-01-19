@@ -33,6 +33,10 @@ public class Tab1Recensioni extends Fragment{
         courses.add(new Corso("Programmazione Android", "Giuseppe Riccardi", 2, 4));
         courses.add(new Corso("Innovazione d'Impresa", "Luca Mezzetti", 6,5));
 
+        courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+
         listview = (ListView) rootView.findViewById(R.id.listviewRecensioni);
         CustomListAdapterRecensioni adapter = new CustomListAdapterRecensioni(this.getContext(), R.layout.list_item_recensioni, courses);
         listview.setAdapter(adapter);

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
     public static final String EXTRA_TEXT = "com.example.unitipsnew.Recensioni.EXTRA_TEXT";
+    public static final String EXTRA_RECENSIONI = "com.example.unitipsnew.Recensioni.EXTRA_RECENSIONI";
 
     Context context;
     int resourses;
@@ -59,6 +60,16 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
                 Intent intent = new Intent(context, RecensioneCorso.class);
                 intent.putExtra(EXTRA_TEXT, nome_corso);
+
+                String rec = "";
+                for (Recensione x:course.recensioni) {
+                    String t = x.getTitle();
+                    String tx = x.getText();
+
+                    rec = rec+t+":"+tx+";";
+                }
+
+                intent.putExtra(EXTRA_RECENSIONI,rec);
                 context.startActivity(intent);
 
             }

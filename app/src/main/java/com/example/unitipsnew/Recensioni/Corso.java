@@ -17,7 +17,7 @@ public class Corso {
         this.numeroRecensioni = numeroRecensioni;
         this.id = id;
 
-        recensioni = new ArrayList<Recensione>();
+        this.recensioni = new ArrayList<Recensione>();
     }
 
     public String getNomeCorso() {
