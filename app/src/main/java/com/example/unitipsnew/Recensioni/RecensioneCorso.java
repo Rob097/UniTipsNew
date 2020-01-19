@@ -28,7 +28,7 @@ public class RecensioneCorso extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recensione_corso);
-
+        //creo una nuova finestra
         Intent intent = getIntent();
         String nome_corso = intent.getStringExtra(CustomListAdapterRecensioni.EXTRA_TEXT);
 
