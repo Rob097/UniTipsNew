@@ -36,6 +36,22 @@ public class Tab1Recensioni extends Fragment{
         courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
         courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
         courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
+        courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
+
 
         listview = (ListView) rootView.findViewById(R.id.listviewRecensioni);
         CustomListAdapterRecensioni adapter = new CustomListAdapterRecensioni(this.getContext(), R.layout.list_item_recensioni, courses);

@@ -51,8 +51,8 @@ public class RecensioneCorso extends AppCompatActivity {
         }
 
 
-        //TextView nome_corsotw = (TextView) findViewById(R.id.nome_corso);
-        //nome_corsotw.setText(nome_corso);
+        TextView nome_corsotw = (TextView) findViewById(R.id.tv_nome_corso);
+        nome_corsotw.setText(nome_corso);
 
         CustomListAdapterRecensione adapter = new CustomListAdapterRecensione(this,R.layout.adapter_view_recensione, recens);
         mListView.setAdapter(adapter);
