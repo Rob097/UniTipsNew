@@ -36,6 +36,11 @@
         <activity
             android:name=".Utente.RegisterActivity"
             android:label="@string/app_name" />
+
+        <activity android:name=".Recensioni.AddRecensioneForm"
+            android:theme="@style/AppTheme.CustomTheme">
+
+        </activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,14 @@ public class RecensioneCorso extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recensione_corso);
+        FloatingActionButton btn_add_recensione_form = (FloatingActionButton)findViewById(R.id.fab_show_addrecensione_form);
+
+        btn_add_recensione_form.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecensioneCorso.this,AddRecensioneForm.class));
+            }
+        });
 
         ListView mListView = (ListView)findViewById(R.id.recensioni_list);
         //creo una nuova finestra
@@ -49,7 +58,6 @@ public class RecensioneCorso extends AppCompatActivity {
             Log.d("Activity","---------------------------------------"+recens.get(i).toString());
 
         }
-
 
         TextView nome_corsotw = (TextView) findViewById(R.id.tv_nome_corso);
         nome_corsotw.setText(nome_corso);
