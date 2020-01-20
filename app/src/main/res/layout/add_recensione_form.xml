@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titolo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        />
+
+    <EditText
+        android:id="@+id/add_recsensione_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_title"/>
+
+    <TextView
+        android:id="@+id/txt_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Testo"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/add_recsensione_title"/>
 
     <EditText
         android:id="@+id/add_recensione_text"
@@ -12,40 +38,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="211dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_text"/>
 
-    <TextView
-        android:id="@+id/txt_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Testo"
-        app:layout_constraintBottom_toTopOf="@+id/add_recensione_text"
-        tools:layout_editor_absoluteX="187dp" />
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Titolo"
-        app:layout_constraintBottom_toTopOf="@+id/add_recsensione_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/add_recsensione_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toTopOf="@+id/txt_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button"
@@ -53,15 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="332dp"
         android:text="Add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="84dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/add_recensione_text"/>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="332dp"
-        android:text="cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="250dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
