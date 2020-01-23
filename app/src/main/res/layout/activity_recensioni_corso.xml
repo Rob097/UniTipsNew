@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_left_recensioni_text"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_anchorGravity="center">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarmia"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#6200EE"
+            android:paddingBottom="@dimen/padding_left_recensioni_text"
+            app:logo="@drawable/logo"
+            app:logoDescription="logo"
+            app:title="Nome Corso"
+            app:titleMarginStart="25dp">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@android:dimen/notification_large_icon_height"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/info_corso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_left_recensioni_text"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/replaced_text" />
+
+        <ListView
+            android:id="@+id/recensioni_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp">
+
+        </ListView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_show_addrecensione_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_add_black_24dp" />
+
+</RelativeLayout>

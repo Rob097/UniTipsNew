@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -21,19 +22,14 @@ public class Tab1Recensioni extends Fragment{
     List<Corso> courses;
     ListView listview;
     SharedPreferences sp;
+    DatabaseHelper db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1recensioni, container, false);
 
-        courses = new ArrayList<>();
-
-        courses.add(new Corso("Analisi Matematica 1", "Annalise Defranceschi", 50, 1));
-        courses.add(new Corso("Analisi Matematica 2", "Annalise Defranceschi", 20, 2));
-        courses.add(new Corso("Fisica", "Roberto Battiston", 15, 3));
-        courses.add(new Corso("Programmazione Android", "Giuseppe Riccardi", 2, 4));
-        courses.add(new Corso("Innovazione d'Impresa", "Luca Mezzetti", 6,5));
-
-        courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
+        db = new DatabaseHelper(getActivity());
+        /*courses.get(0).recensioni.add(new Recensione(1, 1, 185035, "Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
         courses.get(0).recensioni.add(new Recensione("Troppo facile","a mio avviso il corso e troppo difficile","ottobre"));
         courses.get(0).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
         courses.get(0).recensioni.add(new Recensione("Troppo difficile","a mio avviso il corso e troppo difficile","ottobre"));
@@ -50,8 +46,8 @@ public class Tab1Recensioni extends Fragment{
         courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
         courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
         courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
-        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));
-
+        courses.get(1).recensioni.add(new Recensione("Troppo per bambini","a mio avviso il corso e troppo per bambini","ottobre"));*/
+        courses = db.getAllCorsi();
 
         listview = (ListView) rootView.findViewById(R.id.listviewRecensioni);
         CustomListAdapterRecensioni adapter = new CustomListAdapterRecensioni(this.getContext(), R.layout.list_item_recensioni, courses);

@@ -4,20 +4,16 @@ import java.util.ArrayList;
 
 public class Corso {
     String nomeCorso, nomeProfessore;
-    int id, numeroRecensioni;
-
-    ArrayList<Recensione> recensioni;
+    long id, numeroRecensioni;
 
     public Corso() {
     }
 
-    public Corso(String nomeCorso, String nomeProfessore, int numeroRecensioni, int id) {
+    public Corso(String nomeCorso, String nomeProfessore, long numeroRecensioni, long id) {
         this.nomeCorso = nomeCorso;
         this.nomeProfessore = nomeProfessore;
         this.numeroRecensioni = numeroRecensioni;
         this.id = id;
-
-        this.recensioni = new ArrayList<Recensione>();
     }
 
     public String getNomeCorso() {
@@ -36,19 +32,19 @@ public class Corso {
         this.nomeProfessore = nomeProfessore;
     }
 
-    public int getNumeroRecensioni() {
+    public long getNumeroRecensioni() {
         return numeroRecensioni;
     }
 
-    public void setNumeroRecensioni(int numeroRecensioni) {
+    public void setNumeroRecensioni(long numeroRecensioni) {
         this.numeroRecensioni = numeroRecensioni;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

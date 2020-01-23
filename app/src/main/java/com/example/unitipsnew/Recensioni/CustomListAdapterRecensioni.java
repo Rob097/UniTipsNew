@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.R;
 
 import java.util.List;
@@ -18,14 +20,14 @@ import androidx.annotation.Nullable;
 
 public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
-    public static final String EXTRA_TEXT = "com.example.unitipsnew.Recensioni.EXTRA_TEXT";
-    public static final String EXTRA_RECENSIONI = "com.example.unitipsnew.Recensioni.EXTRA_RECENSIONI";
+    public static final String EXTRA_CORSO = "idCorso";
 
     Context context;
     int resourses;
     List<Corso> courses;
+    DatabaseHelper db;
 
-    public CustomListAdapterRecensioni(Context context, int resource, List<Corso> courses){
+    public CustomListAdapterRecensioni(Context context, int resource, List<Corso> courses) {
         super(context, resource, courses);
 
         this.context = context;
@@ -38,7 +40,9 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = inflater.inflate(resourses, null);
+        final View view = inflater.inflate(resourses, null);
+
+        db = new DatabaseHelper(view.getContext());
 
         if (position % 2 == 0) {
             view.setBackgroundColor(Color.rgb(232, 232, 232));
@@ -47,40 +51,29 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
         }
 
         TextView nome_corso = view.findViewById(R.id.nome_corso);
-        TextView nome_professore = view.findViewById(R.id.nome_professore);
-        TextView numero_recensioni = view.findViewById(R.id.numero_recensioni);
+        final TextView nome_professore = view.findViewById(R.id.nome_professore);
+        final TextView numero_recensioni = view.findViewById(R.id.numero_recensioni);
 
-        final Corso course = courses.get(position);
+        final Corso corso = courses.get(position);
 
-        nome_corso.setText(course.getNomeCorso());
-        nome_corso.setOnClickListener(new View.OnClickListener() {
+        final Intent intent = new Intent(context, RecensioniActivity.class);
+        nome_corso.setText(corso.getNomeCorso());
+        nome_professore.setText(corso.getNomeProfessore());
+        numero_recensioni.setText(corso.getNumeroRecensioni() + " Recensioni");
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nome_corso = course.getNomeCorso();
 
-                Intent intent = new Intent(context, RecensioneCorso.class);
-                intent.putExtra(EXTRA_TEXT, nome_corso);
-
-                String rec = "";
-                for (Recensione x:course.recensioni) {
-                    String t = x.getTitle();
-                    String tx = x.getText();
-
-                    rec = rec+t+":"+tx+";";
-                }
-
-                intent.putExtra(EXTRA_RECENSIONI,rec);
+                long id_corso = corso.getId();
+                intent.putExtra(EXTRA_CORSO, "" + corso.getId());
                 context.startActivity(intent);
-
             }
         });
-        nome_professore.setText(course.getNomeProfessore());
-        numero_recensioni.setText("" + course.getNumeroRecensioni() + " Recensioni");
 
         return view;
     }
 
-    public void openRecensioneCorso(){
+    public void openRecensioneCorso() {
 
 
     }

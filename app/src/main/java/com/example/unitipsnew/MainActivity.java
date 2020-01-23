@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.unitipsnew.Recensioni.Corso;
+import com.example.unitipsnew.Recensioni.Recensione;
 import com.example.unitipsnew.Utente.LoginActivity;
 import com.example.unitipsnew.Utente.ProfiloActivity;
 import com.example.unitipsnew.Utente.Utente;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.unitipsnew.ui.main.SectionsPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
@@ -30,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(getApplicationContext());
         sp = getSharedPreferences("login", MODE_PRIVATE);
+
+        /*List<Recensione> recensioni = new ArrayList<>();
+        recensioni.add(new Recensione(0, 1, 0, "Assurdo", "Consiglio di studiare"));
+        recensioni.add(new Recensione(0, 1, 185035, "Assurdo", "Consiglio di studiare"));
+        recensioni.add(new Recensione(0, 2, 185035, "Assurdo", "Consiglio di studiare"));
+        recensioni.add(new Recensione(0, 2, 185035, "Assurdo", "Consiglio di studiare"));
+
+        for(Recensione r : db.getAllRecensionesByCorso(1)) {
+            db.deleteRecensione(r.getId_recensione());
+        }*/
 
         Utente utente = db.getUser(sp.getLong("user", 0));
 

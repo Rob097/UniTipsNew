@@ -27,6 +27,9 @@
     <string name="tv_nome_corso">text view nome corso</string>
     <string name="add_recsensione_title">il titolo della recensione da aggiungere</string>
     <string name="add_recsensione_text">il testo della recensione da aggiungere</string>
-    <string name="txt_title">titolo</string>
-    <string name="txt_text">testo</string>
+    <string name="txt_title">Titolo</string>
+    <string name="txt_text">Testo</string>
+    <string name="new_recensione">Nuova Recensione</string>
+    <string name="aggiungi">Aggiungi</string>
+    <string name="annulla">Annulla</string>
 </resources>

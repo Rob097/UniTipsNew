@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginRight="@dimen/padding_left_recensioni_text"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/box_tip"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titolo_recensione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:text="@string/replaced_text"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/testo_recensione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:text="@string/replaced_text" />
+
+    <View
+        android:id="@+id/divider_recensione"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="#8F4BF1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text">
+
+        <TextView
+            android:id="@+id/data_recensione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:text="@string/replaced_text"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/utente_recensione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:text="@string/replaced_text"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+</LinearLayout>
