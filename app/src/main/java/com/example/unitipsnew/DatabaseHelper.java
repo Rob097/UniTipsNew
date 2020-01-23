@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.unitipsnew.Eventi.Evento;
 import com.example.unitipsnew.Recensioni.Corso;
 import com.example.unitipsnew.Recensioni.Recensione;
 import com.example.unitipsnew.Utente.Utente;
@@ -36,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USER = "utente";
     private static final String TABLE_CORSO = "corso";
     private static final String TABLE_RECENSIONE = "recensione";
+    private static final String TABLE_EVENTO = "evento";
 
     // USER Table - column names
     private static final String KEY_MATRICOLA = "matricola";
@@ -58,6 +60,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_TITOLO_RECENSIONE = "titolo";
     private static final String KEY_TESTO_RECENSIONE = "testo";
     private static final String KEY_DATA_RECENSIONE = "data";
+
+    // EVENTO Table - column names
+    private static final String KEY_ID_EVENTO = "id";
+    private static final String KEY_IMMAGINE_EVENTO = "immagine";
+    private static final String KEY_INTERESSATI = "interessati";
+    private static final String KEY_TITOLO_EVENTO = "titolo";
+    private static final String KEY_DESCRIZIONE_EVENTO = "descrizione";
+    private static final String KEY_LUOGO_EVENTO = "luogo";
+    private static final String KEY_DATA_EVENTO = "data";
 
     // Table Create Statements
     // USER table create statement
@@ -85,6 +96,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_TESTO_RECENSIONE + " TEXT," +
             KEY_DATA_RECENSIONE + " DATE" + ")";
 
+    // EVENTO table create statement
+    private static final String CREATE_TABLE_EVENTO = "CREATE TABLE " + TABLE_EVENTO + "(" +
+            KEY_ID_EVENTO + " INT PRIMARY KEY," +
+            KEY_IMMAGINE_EVENTO + " INT," +
+            KEY_INTERESSATI + " INT," +
+            KEY_TITOLO_EVENTO + " TEXT," +
+            KEY_DESCRIZIONE_EVENTO + " TEXT," +
+            KEY_LUOGO_EVENTO + " TEXT," +
+            KEY_DATA_EVENTO + " DATE" + ")";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -96,6 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_CORSO);
         db.execSQL(CREATE_TABLE_RECENSIONE);
+        db.execSQL(CREATE_TABLE_EVENTO);
     }
 
     @Override
@@ -104,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CORSO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECENSIONE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTO);
 
         // create new tables
         onCreate(db);
@@ -461,7 +483,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         Collections.sort(recensioni, new Comparator<Recensione>() {
             public int compare(Recensione o1, Recensione o2) {
-                return (""+o2.getId_recensione()).compareTo(""+o1.getId_recensione());
+                return (((int) o2.getId_recensione()) - ((int) o1.getId_recensione()));
             }
         });
         return recensioni;
@@ -498,20 +520,143 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         updateCorso(c);
     }
 
+/*##################################################################################################
+                                            EVENTO
+##################################################################################################*/
+
+    /*
+     * Creating a evento
+     */
+    public long createEvento(Evento evento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long lastId = 0;
+        if (!getAllEventi().isEmpty()) {
+            lastId = getAllEventi().get(0).getId();
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_EVENTO, lastId + 1);
+        values.put(KEY_IMMAGINE_EVENTO, evento.getImmagine());
+        values.put(KEY_INTERESSATI, 0);
+        values.put(KEY_TITOLO_EVENTO, evento.getTitolo());
+        values.put(KEY_DESCRIZIONE_EVENTO, evento.getDescrizione());
+        values.put(KEY_LUOGO_EVENTO, evento.getLuogo());
+        values.put(KEY_DATA_EVENTO, evento.getData());
+
+        // insert row
+        long evento_id = db.insert(TABLE_EVENTO, null, values);
+
+        return evento_id;
+    }
+
+    /*
+     * Updating a evento
+     */
+    public int updateEvento(Evento evento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_EVENTO, evento.getId());
+        values.put(KEY_IMMAGINE_EVENTO, evento.getImmagine());
+        values.put(KEY_INTERESSATI, evento.getInteressati());
+        values.put(KEY_TITOLO_EVENTO, evento.getTitolo());
+        values.put(KEY_DESCRIZIONE_EVENTO, evento.getDescrizione());
+        values.put(KEY_LUOGO_EVENTO, evento.getLuogo());
+        values.put(KEY_DATA_EVENTO, evento.getData());
+
+        // updating row
+        return db.update(TABLE_EVENTO, values, KEY_ID_EVENTO + " = ?",
+                new String[]{String.valueOf(evento.getId())});
+    }
+
+    /*
+     * Deleting a evento
+     */
+    public void deleteEvento(int id_evento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EVENTO, KEY_ID_EVENTO + " = ?",
+                new String[]{String.valueOf(id_evento)});
+    }
+
+    /*
+     * get single evento
+     */
+    public Evento getEvento(int id_evento) {
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String selectQuery = "SELECT  * FROM " + TABLE_EVENTO + " WHERE "
+                    + KEY_ID_EVENTO + " = " + id_evento;
+
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            Evento evento = new Evento();
+            evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+            evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+            evento.setInteressati(c.getInt(c.getColumnIndex(KEY_INTERESSATI)));
+            evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+            evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+            evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+            evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+
+            return evento;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+     * getting all eventi
+     * */
+    public List<Evento> getAllEventi() {
+        List<Evento> eventi = new ArrayList<Evento>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_EVENTO;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Evento evento = new Evento();
+                evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+                evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                evento.setInteressati(c.getInt(c.getColumnIndex(KEY_INTERESSATI)));
+                evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+                evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+                evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+                evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+
+                // adding to users list
+                eventi.add(evento);
+            } while (c.moveToNext());
+        }
+        Collections.sort(eventi, new Comparator<Evento>() {
+            public int compare(Evento o1, Evento o2) {
+                return (o2.getId() - o1.getId());
+            }
+        });
+        return eventi;
+    }
+
+    /*##################################################################################################
+                                        CHIUSURA DATABASE E ALTRO
+    ##################################################################################################*/
 
     /**
      * get datetime
      */
-    private String getDateTime() {
+    public String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd", Locale.getDefault());
+                "dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
-
-    /*##################################################################################################
-                                             CHIUSURA DATABASE
-    ##################################################################################################*/
 
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();

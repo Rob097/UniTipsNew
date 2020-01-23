@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+        android:layout_marginTop="@dimen/padding_top_recensioni_text"
+        android:layout_marginRight="@dimen/padding_left_recensioni_text"
+        android:layout_marginBottom="@dimen/padding_top_recensioni_text"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_evento"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/immagine_nuovo_evento"
+            android:layout_width="wrap_content"
+            android:layout_height="@android:dimen/thumbnail_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:contentDescription="@string/immagine_Evento"
+            app:srcCompat="@drawable/careerfair_unitn"
+            tools:srcCompat="@drawable/careerfair_unitn" />
+
+        <TextView
+            android:id="@+id/titolo_nuovo_evento_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/txt_title" />
+
+        <EditText
+            android:id="@+id/titolo_nuovo_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:autofillHints="" tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/testo_nuovo_evento_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/txt_text" />
+
+        <EditText
+            android:id="@+id/testo_nuovo_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:autofillHints="" tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/data_nuovo_evento_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/data" />
+
+        <EditText
+            android:id="@+id/data_nuovo_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            android:autofillHints="" tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/luogo_nuovo_evento_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/luogo" />
+
+        <EditText
+            android:id="@+id/luogo_nuovo_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:autofillHints="" tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/info_nuovo_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/luogo"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/conferma_crea_evento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="#0066FF"
+            android:text="@string/crea_Evento"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/annulla_crea_evento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:backgroundTint="#FF0000"
+            android:text="@string/annulla"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

@@ -44,8 +44,19 @@
         android:id="@+id/data_evento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:drawableStart="@drawable/ic_today_black_24dp"
+        android:drawablePadding="@dimen/padding_top_recensioni_text"
+        android:paddingLeft="@dimen/padding_left_recensioni_text"
+        android:paddingTop="@dimen/padding_top_recensioni_text"
+        android:paddingRight="@dimen/padding_left_recensioni_text"
+        android:text="@string/replaced_text" />
+
+    <TextView
+        android:id="@+id/interessati_evento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:drawableStart="@drawable/ic_person_black_24dp"
         android:drawablePadding="@dimen/padding_top_recensioni_text"
         android:paddingLeft="@dimen/padding_left_recensioni_text"
         android:paddingTop="@dimen/padding_top_recensioni_text"

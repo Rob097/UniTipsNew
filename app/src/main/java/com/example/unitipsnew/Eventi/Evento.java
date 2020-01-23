@@ -3,18 +3,44 @@ package com.example.unitipsnew.Eventi;
 import java.sql.Timestamp;
 
 public class Evento {
-    String titolo, luogo;
-    Timestamp data;
-    int immagine;
+    int id, immagine, interessati;
+    String titolo, descrizione, luogo, data;
 
     public Evento() {
     }
 
-    public Evento(String titolo, String luogo, Timestamp data, int immagine) {
+    public Evento(int id, int immagine, int interessati, String titolo, String descrizione, String luogo, String data) {
+        this.id = id;
+        this.immagine = immagine;
+        this.interessati = interessati;
         this.titolo = titolo;
+        this.descrizione = descrizione;
         this.luogo = luogo;
         this.data = data;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(int immagine) {
         this.immagine = immagine;
+    }
+
+    public int getInteressati() {
+        return interessati;
+    }
+
+    public void setInteressati(int interessati) {
+        this.interessati = interessati;
     }
 
     public String getTitolo() {
@@ -25,6 +51,14 @@ public class Evento {
         this.titolo = titolo;
     }
 
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
     public String getLuogo() {
         return luogo;
     }
@@ -33,19 +67,11 @@ public class Evento {
         this.luogo = luogo;
     }
 
-    public Timestamp getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Timestamp data) {
+    public void setData(String data) {
         this.data = data;
-    }
-
-    public int getImmagine() {
-        return immagine;
-    }
-
-    public void setImmagine(int immagine) {
-        this.immagine = immagine;
     }
 }

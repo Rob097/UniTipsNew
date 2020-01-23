@@ -7,11 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.unitipsnew.R;
-
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -38,13 +35,15 @@ public class CustomListAdapterEventi extends ArrayAdapter<Evento> {
         ImageView immagine_evento = view.findViewById(R.id.immagine_evento);
         TextView luogo_evento = view.findViewById(R.id.luogo_evento);
         TextView data_evento = view.findViewById(R.id.data_evento);
+        TextView interessati_evento = view.findViewById(R.id.interessati_evento);
 
         Evento evento = eventi.get(position);
 
         titolo_evento.setText(evento.getTitolo());
         immagine_evento.setImageDrawable(context.getResources().getDrawable(evento.getImmagine()));
         luogo_evento.setText(evento.getLuogo());
-        data_evento.setText(evento.getData().toString());
+        data_evento.setText(evento.getData());
+        interessati_evento.setText(evento.getInteressati() + " interessati");
 
         return view;
     }

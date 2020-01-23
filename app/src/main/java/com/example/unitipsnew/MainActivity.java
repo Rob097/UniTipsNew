@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.unitipsnew.Eventi.Evento;
 import com.example.unitipsnew.Recensioni.Corso;
 import com.example.unitipsnew.Recensioni.Recensione;
 import com.example.unitipsnew.Utente.LoginActivity;
@@ -36,14 +37,19 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHelper(getApplicationContext());
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
-        /*List<Recensione> recensioni = new ArrayList<>();
-        recensioni.add(new Recensione(0, 1, 0, "Assurdo", "Consiglio di studiare"));
-        recensioni.add(new Recensione(0, 1, 185035, "Assurdo", "Consiglio di studiare"));
-        recensioni.add(new Recensione(0, 2, 185035, "Assurdo", "Consiglio di studiare"));
-        recensioni.add(new Recensione(0, 2, 185035, "Assurdo", "Consiglio di studiare"));
+        /*
+        Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
-        for(Recensione r : db.getAllRecensionesByCorso(1)) {
-            db.deleteRecensione(r.getId_recensione());
+        db.onCreate(db.getReadableDatabase());
+
+        List<Evento> eventi = new ArrayList<>();
+        eventi.add(new Evento(0, R.drawable.fuc_unitn, 5, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
+        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
+        eventi.add(new Evento(0, R.drawable.fuc_unitn, 0, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
+        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
+
+        for(Evento e : eventi){
+            db.createEvento(e);
         }*/
 
         Utente utente = db.getUser(sp.getLong("user", 0));
