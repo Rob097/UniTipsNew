@@ -29,8 +29,8 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:contentDescription="@string/immagine_Evento"
-            app:srcCompat="@drawable/careerfair_unitn"
-            tools:srcCompat="@drawable/careerfair_unitn" />
+            app:srcCompat="@drawable/ic_create_black_24dp"
+            tools:srcCompat="@drawable/ic_create_black_24dp" />
 
         <TextView
             android:id="@+id/titolo_nuovo_evento_label"

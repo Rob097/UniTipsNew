@@ -99,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // EVENTO table create statement
     private static final String CREATE_TABLE_EVENTO = "CREATE TABLE " + TABLE_EVENTO + "(" +
             KEY_ID_EVENTO + " INT PRIMARY KEY," +
-            KEY_IMMAGINE_EVENTO + " INT," +
+            KEY_IMMAGINE_EVENTO + " TEXT," +
             KEY_INTERESSATI + " TEXT," +
             KEY_TITOLO_EVENTO + " TEXT," +
             KEY_DESCRIZIONE_EVENTO + " TEXT," +
@@ -611,7 +611,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 Evento evento = new Evento();
                 evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
                 evento.setInteressati(i);
                 evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
                 evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
@@ -645,7 +645,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Long> i;
         if (c.moveToFirst()) {
             do {
-                try {
+
                     inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
                     s = inte.split(",");
                     i = new ArrayList<>();
@@ -655,7 +655,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     }
                     Evento evento = new Evento();
                     evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                    evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                    evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
                     evento.setInteressati(i);
                     evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
                     evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
@@ -664,10 +664,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                     // adding to users list
                     eventi.add(evento);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
+
+
+
+
             } while (c.moveToNext());
         }
         Collections.sort(eventi, new Comparator<Evento>() {

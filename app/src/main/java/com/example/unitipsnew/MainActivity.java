@@ -2,6 +2,8 @@ package com.example.unitipsnew;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.unitipsnew.Eventi.Evento;
@@ -16,11 +18,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Base64;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.unitipsnew.ui.main.SectionsPagerAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,23 +38,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //this.deleteDatabase("uniTipsDB");
+
         db = new DatabaseHelper(getApplicationContext());
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
-        /*
-        Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
-        db.onCreate(db.getReadableDatabase());
+        //Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
-        List<Evento> eventi = new ArrayList<>();
-        eventi.add(new Evento(0, R.drawable.fuc_unitn, 5, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.fuc_unitn, 0, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
+        //db.onCreate(db.getReadableDatabase());
 
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.careerfair_unitn);
+        String s = bitmapToString(icon);
+
+        /*List<Evento> eventi = new ArrayList<>();
+        eventi.add(new Evento(10, s, new ArrayList<Long>(), "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
+        eventi.add(new Evento(11, s, new ArrayList<Long>(), "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
+
+         */
+/*
         for(Evento e : eventi){
             db.createEvento(e);
         }*/
+
+
 
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -99,5 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private String bitmapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte[] b = baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 }
