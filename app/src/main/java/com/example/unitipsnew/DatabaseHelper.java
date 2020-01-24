@@ -100,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_EVENTO = "CREATE TABLE " + TABLE_EVENTO + "(" +
             KEY_ID_EVENTO + " INT PRIMARY KEY," +
             KEY_IMMAGINE_EVENTO + " INT," +
-            KEY_INTERESSATI + " INT," +
+            KEY_INTERESSATI + " TEXT," +
             KEY_TITOLO_EVENTO + " TEXT," +
             KEY_DESCRIZIONE_EVENTO + " TEXT," +
             KEY_LUOGO_EVENTO + " TEXT," +
@@ -537,7 +537,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_ID_EVENTO, lastId + 1);
         values.put(KEY_IMMAGINE_EVENTO, evento.getImmagine());
-        values.put(KEY_INTERESSATI, 0);
+        values.put(KEY_INTERESSATI, "");
         values.put(KEY_TITOLO_EVENTO, evento.getTitolo());
         values.put(KEY_DESCRIZIONE_EVENTO, evento.getDescrizione());
         values.put(KEY_LUOGO_EVENTO, evento.getLuogo());
@@ -554,11 +554,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public int updateEvento(Evento evento) {
         SQLiteDatabase db = this.getWritableDatabase();
+        String inte = "";
 
         ContentValues values = new ContentValues();
         values.put(KEY_ID_EVENTO, evento.getId());
         values.put(KEY_IMMAGINE_EVENTO, evento.getImmagine());
-        values.put(KEY_INTERESSATI, evento.getInteressati());
+        for (long i : evento.getInteressati()) {
+            inte += i + ",";
+        }
+        if (inte.length() > 0)
+            inte = inte.substring(0, inte.length() - 1);
+        values.put(KEY_INTERESSATI, inte);
         values.put(KEY_TITOLO_EVENTO, evento.getTitolo());
         values.put(KEY_DESCRIZIONE_EVENTO, evento.getDescrizione());
         values.put(KEY_LUOGO_EVENTO, evento.getLuogo());
@@ -594,16 +600,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c != null)
                 c.moveToFirst();
 
-            Evento evento = new Evento();
-            evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-            evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
-            evento.setInteressati(c.getInt(c.getColumnIndex(KEY_INTERESSATI)));
-            evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
-            evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
-            evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
-            evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+            try {
+                String inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
+                String[] s = inte.split(",");
+                ArrayList<Long> i = new ArrayList<>();
+                for (String g : s) {
+                    if (!g.equals("") && !g.equals(","))
+                        i.add(Long.parseLong(g));
+                }
 
-            return evento;
+                Evento evento = new Evento();
+                evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+                evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                evento.setInteressati(i);
+                evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+                evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+                evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+                evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+
+                return evento;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -621,19 +640,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
+        String inte;
+        String[] s;
+        ArrayList<Long> i;
         if (c.moveToFirst()) {
             do {
-                Evento evento = new Evento();
-                evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
-                evento.setInteressati(c.getInt(c.getColumnIndex(KEY_INTERESSATI)));
-                evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
-                evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
-                evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
-                evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+                try {
+                    inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
+                    s = inte.split(",");
+                    i = new ArrayList<>();
+                    for (String g : s) {
+                        if (!g.equals("") && !g.equals(","))
+                            i.add(Long.parseLong(g));
+                    }
+                    Evento evento = new Evento();
+                    evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+                    evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                    evento.setInteressati(i);
+                    evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+                    evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+                    evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+                    evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
 
-                // adding to users list
-                eventi.add(evento);
+                    // adding to users list
+                    eventi.add(evento);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             } while (c.moveToNext());
         }
         Collections.sort(eventi, new Comparator<Evento>() {

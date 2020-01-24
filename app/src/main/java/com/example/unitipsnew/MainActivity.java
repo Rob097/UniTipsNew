@@ -52,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
             db.createEvento(e);
         }*/
 
-        Utente utente = db.getUser(sp.getLong("user", 0));
-
-        Toast.makeText(this, "Bentornato " + utente.getNome(), Toast.LENGTH_SHORT).show();
-
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -96,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(item.getItemId()==R.id.refresh){
                     //Lo rimando alla pagina del profilo utente
-                    Toast.makeText(MainActivity.this, "Funzione Aggiorna da implementare", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(i);
+                    Toast.makeText(MainActivity.this, "Pagine Aggiornate", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }

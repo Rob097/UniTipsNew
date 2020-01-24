@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -173,7 +174,7 @@ public class Tab2Eventi extends Fragment {
         }
         if(check){
             try {
-                Evento e = new Evento(0, immagine, 0, titoloS, testoS, luogoS, dataS);
+                Evento e = new Evento(0, immagine, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
                 db.createEvento(e);
             }catch(Exception e){
                 e.printStackTrace();

@@ -36,6 +36,9 @@
         <activity
             android:name=".Utente.RegisterActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name=".Eventi.EventiActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

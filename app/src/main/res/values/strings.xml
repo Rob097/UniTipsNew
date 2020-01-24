@@ -37,4 +37,7 @@
     <string name="luogo">Luogo</string>
     <string name="immagine_Evento">Immagine Evento</string>
     <string name="crea_Evento">Crea Evento</string>
+    <string name="interessato">Sono interessato</string>
+    <string name="non_interessato">Non sono più interessato</string>
+    <string name="descrizione_evento">Descrizione dell\'evento:</string>
 </resources>

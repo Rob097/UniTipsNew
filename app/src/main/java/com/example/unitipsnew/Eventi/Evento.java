@@ -1,15 +1,17 @@
 package com.example.unitipsnew.Eventi;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Evento {
-    int id, immagine, interessati;
+    int id, immagine;
     String titolo, descrizione, luogo, data;
+    ArrayList<Long> interessati;
 
     public Evento() {
     }
 
-    public Evento(int id, int immagine, int interessati, String titolo, String descrizione, String luogo, String data) {
+    public Evento(int id, int immagine, ArrayList<Long> interessati, String titolo, String descrizione, String luogo, String data) {
         this.id = id;
         this.immagine = immagine;
         this.interessati = interessati;
@@ -35,11 +37,11 @@ public class Evento {
         this.immagine = immagine;
     }
 
-    public int getInteressati() {
+    public ArrayList<Long> getInteressati() {
         return interessati;
     }
 
-    public void setInteressati(int interessati) {
+    public void setInteressati(ArrayList<Long> interessati) {
         this.interessati = interessati;
     }
 

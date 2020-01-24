@@ -63,8 +63,6 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                long id_corso = corso.getId();
                 intent.putExtra(EXTRA_CORSO, "" + corso.getId());
                 context.startActivity(intent);
             }
