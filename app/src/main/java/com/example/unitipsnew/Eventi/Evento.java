@@ -4,14 +4,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Evento {
-    int id, immagine;
-    String titolo, descrizione, luogo, data;
+    int id;
+    String titolo, descrizione, luogo, data, immagine;
     ArrayList<Long> interessati;
 
     public Evento() {
     }
 
-    public Evento(int id, int immagine, ArrayList<Long> interessati, String titolo, String descrizione, String luogo, String data) {
+    public Evento(int id, String  immagine, ArrayList<Long> interessati, String titolo, String descrizione, String luogo, String data) {
         this.id = id;
         this.immagine = immagine;
         this.interessati = interessati;
@@ -29,11 +29,11 @@ public class Evento {
         this.id = id;
     }
 
-    public int getImmagine() {
+    public String getImmagine() {
         return immagine;
     }
 
-    public void setImmagine(int immagine) {
+    public void setImmagine(String  immagine) {
         this.immagine = immagine;
     }
 

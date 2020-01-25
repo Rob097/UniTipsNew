@@ -55,37 +55,19 @@
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/data_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/utente_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_person_black_24dp"
-                    android:drawablePadding="@dimen/padding_top_recensioni_text"
-                    android:paddingLeft="@dimen/padding_left_recensioni_text"
-                    android:paddingTop="@dimen/padding_top_recensioni_text"
-                    android:paddingRight="@dimen/padding_left_recensioni_text"
-                    android:text="@string/replaced_text"
-                    android:textColor="#A3000000" />
-
-                <TextView
-                    android:id="@+id/data_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_access_time_black_24dp"
-                    android:drawablePadding="@dimen/padding_top_recensioni_text"
-                    android:paddingLeft="@dimen/padding_left_recensioni_text"
-                    android:paddingTop="@dimen/padding_top_recensioni_text"
-                    android:paddingRight="@dimen/padding_left_recensioni_text"
-                    android:text="@string/replaced_text" />
-            </LinearLayout>
+                android:drawableStart="@drawable/ic_access_time_black_24dp"
+                android:drawablePadding="@dimen/padding_top_recensioni_text"
+                android:paddingLeft="@dimen/padding_left_recensioni_text"
+                android:paddingTop="@dimen/padding_top_recensioni_text"
+                android:paddingRight="@dimen/padding_left_recensioni_text"
+                android:text="@string/replaced_text" />
 
             <TextView
                 android:id="@+id/testo_tip"
@@ -150,7 +132,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/add_commento_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

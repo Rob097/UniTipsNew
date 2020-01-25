@@ -16,6 +16,12 @@ public class Commento {
         this.data = data;
     }
 
+    public Commento(int id_tip, long matricola, String testo) {
+        this.id_tip = id_tip;
+        this.matricola = matricola;
+        this.testo = testo;
+    }
+
     public int getId_commento() {
         return id_commento;
     }

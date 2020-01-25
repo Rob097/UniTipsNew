@@ -2,6 +2,9 @@ package com.example.unitipsnew.Eventi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +45,10 @@ public class CustomListAdapterEventi extends ArrayAdapter<Evento> {
         final Evento evento = eventi.get(position);
 
         titolo_evento.setText(evento.getTitolo());
-        immagine_evento.setImageDrawable(context.getResources().getDrawable(evento.getImmagine()));
+
+        Bitmap img = stringToBitmap(evento.getImmagine());
+
+        immagine_evento.setImageBitmap(img);
         luogo_evento.setText(evento.getLuogo());
         data_evento.setText(evento.getData());
         interessati_evento.setText(evento.getInteressati().size() + " interessati");
@@ -58,5 +64,19 @@ public class CustomListAdapterEventi extends ArrayAdapter<Evento> {
         });
 
         return view;
+    }
+
+    private Bitmap stringToBitmap(String string){
+        Bitmap bitmap = null;
+        try{
+            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return bitmap;
     }
 }

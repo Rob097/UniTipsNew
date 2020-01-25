@@ -118,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // EVENTO table create statement
     private static final String CREATE_TABLE_EVENTO = "CREATE TABLE " + TABLE_EVENTO + "(" +
             KEY_ID_EVENTO + " INT PRIMARY KEY," +
-            KEY_IMMAGINE_EVENTO + " INT," +
+            KEY_IMMAGINE_EVENTO + " TEXT," +
             KEY_INTERESSATI + " TEXT," +
             KEY_TITOLO_EVENTO + " TEXT," +
             KEY_DESCRIZIONE_EVENTO + " TEXT," +
@@ -128,11 +128,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // TIP table create statement
     private static final String CREATE_TABLE_TIP = "CREATE TABLE " + TABLE_TIP + "(" +
             KEY_ID_TIP + " INT PRIMARY KEY," +
-            KEY_MATRICOLA_TIP + " LONG," +
             KEY_TITOLO_TIP + " TEXT," +
             KEY_TESTO_TIP + " TEXT," +
-            KEY_LIKE_TIP + " INT," +
-            KEY_DISLIKE_TIP + " INT," +
+            KEY_LIKE_TIP + " TEXT," +
+            KEY_DISLIKE_TIP + " TEXT," +
             KEY_COMMENTI_TIP + " TEXT," +
             KEY_DATA_TIP + " DATE" + ")";
 
@@ -653,7 +652,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 Evento evento = new Evento();
                 evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
                 evento.setInteressati(i);
                 evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
                 evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
@@ -687,7 +686,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Long> i;
         if (c.moveToFirst()) {
             do {
-                try {
                     inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
                     s = inte.split(",");
                     i = new ArrayList<>();
@@ -697,7 +695,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     }
                     Evento evento = new Evento();
                     evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                    evento.setImmagine(c.getInt(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                    evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
                     evento.setInteressati(i);
                     evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
                     evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
@@ -706,10 +704,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                     // adding to users list
                     eventi.add(evento);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
             } while (c.moveToNext());
         }
         Collections.sort(eventi, new Comparator<Evento>() {
@@ -737,11 +731,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_ID_TIP, lastId + 1);
-        values.put(KEY_MATRICOLA_TIP, tip.getMatricola());
         values.put(KEY_TITOLO_TIP, tip.getTitolo());
         values.put(KEY_TESTO_TIP, tip.getTesto());
-        values.put(KEY_LIKE_TIP, 0);
-        values.put(KEY_DISLIKE_TIP, 0);
+        values.put(KEY_LIKE_TIP, "");
+        values.put(KEY_DISLIKE_TIP, "");
         values.put(KEY_COMMENTI_TIP, inte);
         values.put(KEY_DATA_TIP, getDateTime());
 
@@ -756,21 +749,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public int updateTip(Tip tip) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String inte = "";
+        String inte = "", like = "", dis = "";
 
         ContentValues values = new ContentValues();
         values.put(KEY_ID_TIP, tip.getId());
-        values.put(KEY_MATRICOLA_TIP, tip.getMatricola());
         values.put(KEY_TITOLO_TIP, tip.getTitolo());
         values.put(KEY_TESTO_TIP, tip.getTesto());
-        values.put(KEY_LIKE_TIP, tip.getLike());
-        values.put(KEY_DISLIKE_TIP, tip.getDislike());
+
+        for (long i : tip.getLike()) {
+            like += i + ",";
+        }
+        if (like.length() > 0)
+            like = like.substring(0, like.length() - 1);
+        values.put(KEY_LIKE_TIP, like);
+
+        for (long i : tip.getDislike()) {
+            dis += i + ",";
+        }
+        if (dis.length() > 0)
+            dis = dis.substring(0, dis.length() - 1);
+        values.put(KEY_DISLIKE_TIP, dis);
+
         for (Commento i : tip.getCommenti()) {
             inte += i.getId_tip() + ",";
         }
         if (inte.length() > 0)
             inte = inte.substring(0, inte.length() - 1);
         values.put(KEY_COMMENTI_TIP, inte);
+
         values.put(KEY_DATA_TIP, tip.getData());
 
         // updating row
@@ -805,20 +811,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             try {
                 String inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
+                String like = c.getString(c.getColumnIndex(KEY_LIKE_TIP));
+                String dis = c.getString(c.getColumnIndex(KEY_DISLIKE_TIP));
                 String[] s = inte.split(",");
+                String[] l = like.split(",");
+                String[] d = dis.split(",");
                 ArrayList<Commento> i = new ArrayList<>();
+                ArrayList<Long> li = new ArrayList<>();
+                ArrayList<Long> di = new ArrayList<>();
                 for (String g : s) {
                     if (!g.equals("") && !g.equals(","))
                         i.add(getCommento(Integer.parseInt(g)));
                 }
+                for (String g : l) {
+                    if (!g.equals("") && !g.equals(","))
+                        li.add(Long.parseLong(g));
+                }
+                for (String g : d) {
+                    if (!g.equals("") && !g.equals(","))
+                        di.add(Long.parseLong(g));
+                }
 
                 Tip tip = new Tip();
                 tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
-                tip.setMatricola(c.getInt(c.getColumnIndex(KEY_MATRICOLA_TIP)));
                 tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
                 tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
-                tip.setLike(c.getInt(c.getColumnIndex(KEY_LIKE_TIP)));
-                tip.setDislike(c.getInt(c.getColumnIndex(KEY_DISLIKE_TIP)));
+                tip.setLike(li);
+                tip.setDislike(di);
                 tip.setCommenti(i);
                 tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
 
@@ -844,26 +863,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
-        String inte;
-        String[] s;
+        String inte, like, dis;
+        String[] s, l , d;
         ArrayList<Commento> i;
+        ArrayList<Long> li, di;
         if (c.moveToFirst()) {
             do {
                 try {
                     inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
-                    s = inte.split(",");
-                    i = new ArrayList<>();
+                    like = c.getString(c.getColumnIndex(KEY_LIKE_TIP));
+                    dis = c.getString(c.getColumnIndex(KEY_DISLIKE_TIP));
+                    s = inte.split(","); l = like.split(","); d = dis.split(",");
+                    i = new ArrayList<>(); li = new ArrayList<>(); di = new ArrayList<>();
                     for (String g : s) {
                         if (!g.equals("") && !g.equals(","))
                             i.add(getCommento(Integer.parseInt(g)));
                     }
+                    for (String g : l) {
+                        if (!g.equals("") && !g.equals(","))
+                            li.add(Long.parseLong(g));
+                    }
+                    for (String g : d) {
+                        if (!g.equals("") && !g.equals(","))
+                            di.add(Long.parseLong(g));
+                    }
                     Tip tip = new Tip();
                     tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
-                    tip.setMatricola(c.getInt(c.getColumnIndex(KEY_MATRICOLA_TIP)));
                     tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
                     tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
-                    tip.setLike(c.getInt(c.getColumnIndex(KEY_LIKE_TIP)));
-                    tip.setDislike(c.getInt(c.getColumnIndex(KEY_DISLIKE_TIP)));
+                    tip.setLike(li);
+                    tip.setDislike(di);
                     tip.setCommenti(i);
                     tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
 
@@ -988,7 +1017,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
                 commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
                 commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
-
                 // adding to recensione list
                 commenti.add(commento);
             } while (c.moveToNext());

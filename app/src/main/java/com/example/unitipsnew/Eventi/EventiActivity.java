@@ -2,10 +2,13 @@ package com.example.unitipsnew.Eventi;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,7 +53,10 @@ public class EventiActivity extends AppCompatActivity {
         evento = db.getEvento(Integer.parseInt(intent.getStringExtra(CustomListAdapterEventi.EXTRA_EVENTO)));
         try {
             titolo_evento.setText(evento.getTitolo());
-            immagine_evento.setImageDrawable(getResources().getDrawable(evento.getImmagine()));
+
+            Bitmap img = stringToBitmap(evento.getImmagine());
+
+            immagine_evento.setImageBitmap(img);
             luogo_evento.setText(evento.getLuogo());
             data_evento.setText(evento.getData());
             interessati_evento.setText(evento.getInteressati().size() + " interessati");
@@ -103,5 +109,19 @@ public class EventiActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private Bitmap stringToBitmap(String string){
+        Bitmap bitmap = null;
+        try{
+            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return bitmap;
     }
 }

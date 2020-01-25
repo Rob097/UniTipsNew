@@ -3,27 +3,25 @@ package com.example.unitipsnew.Tips;
 import java.util.ArrayList;
 
 public class Tip {
-    int id, like, dislike;
-    long matricola;
+    int id;
+    ArrayList<Long> like, dislike;
     ArrayList<Commento> commenti;
     String titolo, testo, data;
 
     public Tip() {
     }
 
-    public Tip(int id, long matricola, String titolo, String testo, int like, int dislike, ArrayList<Commento> commenti, String data) {
+    public Tip(int id, ArrayList<Long> like, ArrayList<Long> dislike, ArrayList<Commento> commenti, String titolo, String testo, String data) {
         this.id = id;
-        this.matricola = matricola;
         this.like = like;
         this.dislike = dislike;
+        this.commenti = commenti;
         this.titolo = titolo;
         this.testo = testo;
-        this.commenti = commenti;
         this.data = data;
     }
 
-    public Tip(long matricola, String titolo, String testo) {
-        this.matricola = matricola;
+    public Tip(String titolo, String testo) {
         this.titolo = titolo;
         this.testo = testo;
     }
@@ -36,27 +34,19 @@ public class Tip {
         this.id = id;
     }
 
-    public long getMatricola() {
-        return matricola;
-    }
-
-    public void setMatricola(long matricola) {
-        this.matricola = matricola;
-    }
-
-    public int getLike() {
+    public ArrayList<Long> getLike() {
         return like;
     }
 
-    public void setLike(int like) {
+    public void setLike(ArrayList<Long> like) {
         this.like = like;
     }
 
-    public int getDislike() {
+    public ArrayList<Long> getDislike() {
         return dislike;
     }
 
-    public void setDislike(int dislike) {
+    public void setDislike(ArrayList<Long> dislike) {
         this.dislike = dislike;
     }
 

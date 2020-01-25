@@ -46,8 +46,8 @@ public class CustomListAdapterTips extends ArrayAdapter<Tip> {
 
         titolo_tip.setText(tip.getTitolo());
         testo_tip.setText(tip.getTesto());
-        like_tip.setText(""+tip.getLike());
-        dislike_tip.setText(""+tip.getDislike());
+        like_tip.setText(""+tip.getLike().size());
+        dislike_tip.setText(""+tip.getDislike().size());
         commenti_tip.setText(""+tip.getCommenti().size());
 
         final Intent intent = new Intent(context, TipsActivity.class);
