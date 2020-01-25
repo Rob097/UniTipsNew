@@ -10,6 +10,8 @@ import android.util.Log;
 import com.example.unitipsnew.Eventi.Evento;
 import com.example.unitipsnew.Recensioni.Corso;
 import com.example.unitipsnew.Recensioni.Recensione;
+import com.example.unitipsnew.Tips.Commento;
+import com.example.unitipsnew.Tips.Tip;
 import com.example.unitipsnew.Utente.Utente;
 
 import java.text.SimpleDateFormat;
@@ -19,8 +21,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -38,6 +38,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CORSO = "corso";
     private static final String TABLE_RECENSIONE = "recensione";
     private static final String TABLE_EVENTO = "evento";
+    private static final String TABLE_TIP = "tip";
+    private static final String TABLE_COMMENTO = "commento";
 
     // USER Table - column names
     private static final String KEY_MATRICOLA = "matricola";
@@ -69,6 +71,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DESCRIZIONE_EVENTO = "descrizione";
     private static final String KEY_LUOGO_EVENTO = "luogo";
     private static final String KEY_DATA_EVENTO = "data";
+
+    // TIP Table - column names
+    private static final String KEY_ID_TIP = "id";
+    private static final String KEY_MATRICOLA_TIP = "matricola";
+    private static final String KEY_TITOLO_TIP = "titolo";
+    private static final String KEY_TESTO_TIP = "testo";
+    private static final String KEY_LIKE_TIP = "likes";
+    private static final String KEY_DISLIKE_TIP = "dislikes";
+    private static final String KEY_COMMENTI_TIP = "commenti";
+    private static final String KEY_DATA_TIP = "data";
+
+    // COMMENTO Table - column names
+    private static final String KEY_ID_COMMENTO = "id";
+    private static final String KEY_ID_TIP_COMMENTO = "idTip";
+    private static final String KEY_MATRICOLA_COMMENTO = "matricola";
+    private static final String KEY_TESTO_COMMENTO = "testo";
+    private static final String KEY_DATA_COMMENTO = "data";
 
     // Table Create Statements
     // USER table create statement
@@ -106,17 +125,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_LUOGO_EVENTO + " TEXT," +
             KEY_DATA_EVENTO + " DATE" + ")";
 
+    // TIP table create statement
+    private static final String CREATE_TABLE_TIP = "CREATE TABLE " + TABLE_TIP + "(" +
+            KEY_ID_TIP + " INT PRIMARY KEY," +
+            KEY_MATRICOLA_TIP + " LONG," +
+            KEY_TITOLO_TIP + " TEXT," +
+            KEY_TESTO_TIP + " TEXT," +
+            KEY_LIKE_TIP + " INT," +
+            KEY_DISLIKE_TIP + " INT," +
+            KEY_COMMENTI_TIP + " TEXT," +
+            KEY_DATA_TIP + " DATE" + ")";
+
+    // COMMENTO table create statement
+    private static final String CREATE_TABLE_COMMENTO = "CREATE TABLE " + TABLE_COMMENTO + "(" +
+            KEY_ID_COMMENTO + " INT PRIMARY KEY," +
+            KEY_ID_TIP_COMMENTO + " LONG," +
+            KEY_MATRICOLA_COMMENTO + " TEXT," +
+            KEY_TESTO_COMMENTO + " TEXT," +
+            KEY_DATA_COMMENTO + " INT" + ")";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // creating required tables
+        //creating required tables
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_CORSO);
         db.execSQL(CREATE_TABLE_RECENSIONE);
         db.execSQL(CREATE_TABLE_EVENTO);
+        db.execSQL(CREATE_TABLE_TIP);
+        db.execSQL(CREATE_TABLE_COMMENTO);
     }
 
     @Override
@@ -126,6 +166,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CORSO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECENSIONE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIP);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTO);
 
         // create new tables
         onCreate(db);
@@ -676,6 +718,317 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         });
         return eventi;
+    }
+
+/*##################################################################################################
+                                            TIP
+##################################################################################################*/
+
+    /*
+     * Creating a tip
+     */
+    public long createTip(Tip tip) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String inte = "";
+
+        long lastId = 0;
+        if (!getAllTips().isEmpty()) {
+            lastId = getAllTips().get(0).getId();
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_TIP, lastId + 1);
+        values.put(KEY_MATRICOLA_TIP, tip.getMatricola());
+        values.put(KEY_TITOLO_TIP, tip.getTitolo());
+        values.put(KEY_TESTO_TIP, tip.getTesto());
+        values.put(KEY_LIKE_TIP, 0);
+        values.put(KEY_DISLIKE_TIP, 0);
+        values.put(KEY_COMMENTI_TIP, inte);
+        values.put(KEY_DATA_TIP, getDateTime());
+
+        // insert row
+        long evento_id = db.insert(TABLE_TIP, null, values);
+
+        return evento_id;
+    }
+
+    /*
+     * Updating a tip
+     */
+    public int updateTip(Tip tip) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String inte = "";
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_TIP, tip.getId());
+        values.put(KEY_MATRICOLA_TIP, tip.getMatricola());
+        values.put(KEY_TITOLO_TIP, tip.getTitolo());
+        values.put(KEY_TESTO_TIP, tip.getTesto());
+        values.put(KEY_LIKE_TIP, tip.getLike());
+        values.put(KEY_DISLIKE_TIP, tip.getDislike());
+        for (Commento i : tip.getCommenti()) {
+            inte += i.getId_tip() + ",";
+        }
+        if (inte.length() > 0)
+            inte = inte.substring(0, inte.length() - 1);
+        values.put(KEY_COMMENTI_TIP, inte);
+        values.put(KEY_DATA_TIP, tip.getData());
+
+        // updating row
+        return db.update(TABLE_TIP, values, KEY_ID_TIP + " = ?",
+                new String[]{String.valueOf(tip.getId())});
+    }
+
+    /*
+     * Deleting a tip
+     */
+    public void deleteTip(int id_tip) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TIP, KEY_ID_TIP + " = ?",
+                new String[]{String.valueOf(id_tip)});
+    }
+
+    /*
+     * get single tip
+     */
+    public Tip getTip(int id_tip) {
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String selectQuery = "SELECT  * FROM " + TABLE_TIP + " WHERE "
+                    + KEY_ID_TIP + " = " + id_tip;
+
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            try {
+                String inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
+                String[] s = inte.split(",");
+                ArrayList<Commento> i = new ArrayList<>();
+                for (String g : s) {
+                    if (!g.equals("") && !g.equals(","))
+                        i.add(getCommento(Integer.parseInt(g)));
+                }
+
+                Tip tip = new Tip();
+                tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
+                tip.setMatricola(c.getInt(c.getColumnIndex(KEY_MATRICOLA_TIP)));
+                tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
+                tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
+                tip.setLike(c.getInt(c.getColumnIndex(KEY_LIKE_TIP)));
+                tip.setDislike(c.getInt(c.getColumnIndex(KEY_DISLIKE_TIP)));
+                tip.setCommenti(i);
+                tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
+
+                return tip;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+     * getting all tips
+     * */
+    public List<Tip> getAllTips() {
+        List<Tip> tips = new ArrayList<Tip>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TIP;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        String inte;
+        String[] s;
+        ArrayList<Commento> i;
+        if (c.moveToFirst()) {
+            do {
+                try {
+                    inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
+                    s = inte.split(",");
+                    i = new ArrayList<>();
+                    for (String g : s) {
+                        if (!g.equals("") && !g.equals(","))
+                            i.add(getCommento(Integer.parseInt(g)));
+                    }
+                    Tip tip = new Tip();
+                    tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
+                    tip.setMatricola(c.getInt(c.getColumnIndex(KEY_MATRICOLA_TIP)));
+                    tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
+                    tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
+                    tip.setLike(c.getInt(c.getColumnIndex(KEY_LIKE_TIP)));
+                    tip.setDislike(c.getInt(c.getColumnIndex(KEY_DISLIKE_TIP)));
+                    tip.setCommenti(i);
+                    tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
+
+                    // adding to users list
+                    tips.add(tip);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            } while (c.moveToNext());
+        }
+        Collections.sort(tips, new Comparator<Tip>() {
+            public int compare(Tip o1, Tip o2) {
+                return (o2.getId() - o1.getId());
+            }
+        });
+        return tips;
+    }
+
+/*##################################################################################################
+                                            COMMENTO
+##################################################################################################*/
+
+    /*
+     * Creating a commento
+     */
+    public long createCommento(Commento commento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long lastId = 0;
+        if (!getAllCommenti().isEmpty()) {
+            lastId = getAllCommenti().get(getAllCommenti().size() - 1).getId_commento();
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_COMMENTO, lastId + 1);
+        values.put(KEY_ID_TIP_COMMENTO, commento.getId_tip());
+        values.put(KEY_MATRICOLA_COMMENTO, commento.getMatricola());
+        values.put(KEY_TESTO_COMMENTO, commento.getTesto());
+        values.put(KEY_DATA_COMMENTO, getDateTime());
+
+        // insert row
+        long commento_id = db.insert(TABLE_COMMENTO, null, values);
+
+        Tip t = getTip(commento.getId_tip());
+        t.getCommenti().add(commento);
+        updateTip(t);
+
+        return commento_id;
+    }
+
+    /*
+     * get single commento
+     */
+    public Commento getCommento(long commento_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_COMMENTO + " WHERE "
+                + KEY_ID_COMMENTO + " = " + commento_id;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        Commento commento = new Commento();
+        commento.setId_commento(c.getInt(c.getColumnIndex(KEY_ID_COMMENTO)));
+        commento.setId_tip(c.getInt(c.getColumnIndex(KEY_ID_TIP_COMMENTO)));
+        commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
+        commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
+        commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
+
+        return commento;
+    }
+
+    /*
+     * getting all commento
+     * */
+    public List<Commento> getAllCommenti() {
+        List<Commento> commenti = new ArrayList<Commento>();
+        String selectQuery = "SELECT  * FROM " + TABLE_COMMENTO;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Commento commento = new Commento();
+                commento.setId_commento(c.getInt(c.getColumnIndex(KEY_ID_COMMENTO)));
+                commento.setId_tip(c.getInt(c.getColumnIndex(KEY_ID_TIP_COMMENTO)));
+                commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
+                commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
+                commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
+
+                // adding to recensioni list
+                commenti.add(commento);
+            } while (c.moveToNext());
+        }
+
+        return commenti;
+    }
+
+    /*
+     * getting all commenti under single tip
+     * */
+    public ArrayList<Commento> getAllCommentiByTip(long tip_id) {
+        ArrayList<Commento> commenti = new ArrayList<Commento>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_COMMENTO + " WHERE " + KEY_ID_TIP_COMMENTO + " = " + tip_id;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Commento commento = new Commento();
+                commento.setId_commento(c.getInt(c.getColumnIndex(KEY_ID_COMMENTO)));
+                commento.setId_tip(c.getInt(c.getColumnIndex(KEY_ID_TIP_COMMENTO)));
+                commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
+                commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
+                commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
+
+                // adding to recensione list
+                commenti.add(commento);
+            } while (c.moveToNext());
+        }
+        Collections.sort(commenti, new Comparator<Commento>() {
+            public int compare(Commento o1, Commento o2) {
+                return (((int) o2.getId_commento()) - ((int) o1.getId_commento()));
+            }
+        });
+        return commenti;
+    }
+
+    /*
+     * Updating a commento
+     */
+    public int updateCommento(Commento commento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_COMMENTO, commento.getId_commento());
+        values.put(KEY_ID_TIP_COMMENTO, commento.getId_tip());
+        values.put(KEY_MATRICOLA_COMMENTO, commento.getMatricola());
+        values.put(KEY_TESTO_COMMENTO, commento.getTesto());
+        values.put(KEY_DATA_COMMENTO, getDateTime());
+
+        // updating row
+        return db.update(TABLE_COMMENTO, values, KEY_ID_COMMENTO + " = ?",
+                new String[]{String.valueOf(commento.getId_commento())});
+    }
+
+    /*
+     * Deleting a commento
+     */
+    public void deleteCommento(long commento_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COMMENTO, KEY_ID_COMMENTO + " = ?",
+                new String[]{String.valueOf(commento_id)});
+        Tip t = getTip(getCommento(commento_id).getId_tip());
+        t.getCommenti().remove(getCommento(commento_id));
+        updateTip(t);
     }
 
     /*##################################################################################################

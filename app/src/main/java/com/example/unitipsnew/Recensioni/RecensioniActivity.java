@@ -110,12 +110,16 @@ public class RecensioniActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 try {
-                    final Recensione r = new Recensione(0, corso.getId(), utente.getMatricola(), titolo.getText().toString(), testo.getText().toString());
-                    db.createRecensione(r);
-                    alertDialog.dismiss();
-                    final Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    view.getContext().startActivity(intent);
-                    Toast.makeText(view.getContext(), "Recensione aggiunta correttamente", Toast.LENGTH_SHORT).show();
+                    if(!titolo.getText().toString().equals("") && !testo.getText().toString().equals("")) {
+                        final Recensione r = new Recensione(0, corso.getId(), utente.getMatricola(), titolo.getText().toString(), testo.getText().toString());
+                        db.createRecensione(r);
+                        alertDialog.dismiss();
+                        final Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        view.getContext().startActivity(intent);
+                        Toast.makeText(view.getContext(), "Recensione aggiunta correttamente", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(view.getContext(), "Il titolo o il testo non sono corretti", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e) {
                     Log.d("Errore add Recensione", "Errore nell'aggiunta della recensione");
                 }

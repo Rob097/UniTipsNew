@@ -7,6 +7,8 @@ import android.os.Bundle;
 import com.example.unitipsnew.Eventi.Evento;
 import com.example.unitipsnew.Recensioni.Corso;
 import com.example.unitipsnew.Recensioni.Recensione;
+import com.example.unitipsnew.Tips.Commento;
+import com.example.unitipsnew.Tips.Tip;
 import com.example.unitipsnew.Utente.LoginActivity;
 import com.example.unitipsnew.Utente.ProfiloActivity;
 import com.example.unitipsnew.Utente.Utente;
@@ -41,15 +43,15 @@ public class MainActivity extends AppCompatActivity {
         Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
         db.onCreate(db.getReadableDatabase());
+        String testoProva = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
+        List<Tip> tips = new ArrayList<>();
+        tips.add(new Tip(0, "Titolo Tip 1", testoProva));
+        tips.add(new Tip(0, "Titolo Tip 2", testoProva));
+        tips.add(new Tip(0, "Titolo Tip 3", testoProva));
+        tips.add(new Tip(0, "Titolo Tip 4", testoProva));
 
-        List<Evento> eventi = new ArrayList<>();
-        eventi.add(new Evento(0, R.drawable.fuc_unitn, 5, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.fuc_unitn, 0, "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
-        eventi.add(new Evento(0, R.drawable.careerfair_unitn, 0, "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
-
-        for(Evento e : eventi){
-            db.createEvento(e);
+        for(Tip t : tips){
+            db.createTip(t);
         }*/
 
         setContentView(R.layout.activity_main);

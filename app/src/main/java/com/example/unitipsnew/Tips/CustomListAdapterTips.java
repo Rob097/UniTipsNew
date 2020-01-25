@@ -1,6 +1,7 @@
 package com.example.unitipsnew.Tips;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class CustomListAdapterTips extends ArrayAdapter<Tip> {
     Context context;
     int resourses;
     List<Tip> tips;
+    public static final String EXTRA_TIP = "idTip";
 
     public CustomListAdapterTips(Context context, int resourses, List<Tip> tips) {
         super(context, resourses, tips);
@@ -40,13 +42,23 @@ public class CustomListAdapterTips extends ArrayAdapter<Tip> {
         TextView dislike_tip = view.findViewById(R.id.dislike_tip);
         TextView commenti_tip = view.findViewById(R.id.commenti_tip);
 
-        Tip tip = tips.get(position);
+        final Tip tip = tips.get(position);
 
         titolo_tip.setText(tip.getTitolo());
         testo_tip.setText(tip.getTesto());
         like_tip.setText(""+tip.getLike());
         dislike_tip.setText(""+tip.getDislike());
-        commenti_tip.setText(""+tip.getCommenti());
+        commenti_tip.setText(""+tip.getCommenti().size());
+
+        final Intent intent = new Intent(context, TipsActivity.class);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent.putExtra(EXTRA_TIP, "" + tip.getId());
+                context.startActivity(intent);
+            }
+        });
 
         return view;
     }

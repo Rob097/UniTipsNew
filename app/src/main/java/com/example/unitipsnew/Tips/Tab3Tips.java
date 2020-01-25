@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,19 +20,14 @@ public class Tab3Tips extends Fragment {
 
     List<Tip> tips;
     ListView listview;
+    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab3tips, container, false);
 
-        tips = new ArrayList<>();
-        String testoProva = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
-
-        tips.add(new Tip(1, "Titolo Tip 1", testoProva, 1, 5, 1));
-        tips.add(new Tip(2, "Titolo Tip 2", testoProva, 2, 4, 2));
-        tips.add(new Tip(3, "Titolo Tip 3", testoProva, 3, 3, 3));
-        tips.add(new Tip(4, "Titolo Tip 4", testoProva, 4, 2, 4));
-        tips.add(new Tip(5, "Titolo Tip 5", testoProva, 5, 1, 5));
+        db = new DatabaseHelper(getActivity());
+        tips = db.getAllTips();
 
         listview = (ListView) rootView.findViewById(R.id.listviewTips);
         CustomListAdapterTips adapterTips = new CustomListAdapterTips(this.getContext(), R.layout.list_item_tips, tips);

@@ -40,4 +40,6 @@
     <string name="interessato">Sono interessato</string>
     <string name="non_interessato">Non sono più interessato</string>
     <string name="descrizione_evento">Descrizione dell\'evento:</string>
+    <string name="commenti">Commenti</string>
+    <string name="aggiungi_commento">Scrivi un commento</string>
 </resources>
