@@ -30,6 +30,7 @@ import com.example.unitipsnew.Utente.RegisterActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -258,10 +259,27 @@ public class Tab2Eventi extends Fragment {
     }
 
     public void openGallery(){
-        //lanch gallery request
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), GALLERY_REQUEST);
+        final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(Tab2Eventi.this.getContext());
+        builder.setTitle("Aggiungi un'immagine!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Scatta una foto")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, 1);
+                } else if (options[item].equals("Scegli dalla Galleria")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Seleziona immagine"), GALLERY_REQUEST);
+                } else if (options[item].equals("Annulla")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     @Override

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_main"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -29,7 +27,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
-        android:id="@+id/scroll"
+        android:id="@+id/scroll_profilo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@android:dimen/notification_large_icon_height">
@@ -40,20 +38,21 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/relative_alter_avatar"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_width="96dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatar_utente"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:src="@drawable/user_image"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp"
-                />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar_utente"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:src="@drawable/user_image"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp"
+                    />
 
                 <ImageButton
                     android:id="@+id/alter_avatar"
@@ -149,6 +148,7 @@
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>

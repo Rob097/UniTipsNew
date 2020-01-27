@@ -47,8 +47,12 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+
+        sp = getSharedPreferences("login", MODE_PRIVATE);
         db = new DatabaseHelper(getApplicationContext());
+
+        setContentView(R.layout.activity_registrazione);
+
 
         AlterImmagine = findViewById(R.id.alter_avatar_register);
         Immagine = findViewById(R.id.avatar_register);
@@ -60,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         RipetiPassword = findViewById(R.id.repeat_password_register);
         Info = findViewById(R.id.info_register);
         Registrati = findViewById(R.id.register_account);
-        Login = findViewById(R.id.back_to_login);
+        Login = findViewById(R.id.back_to_login1);
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         Registrati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate(db)){
+                if (validate(db)) {
                     sp = getSharedPreferences("login", MODE_PRIVATE);
                     db.createUser(user);
                     sp.edit().putBoolean("logged", true).apply();
@@ -92,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validate(DatabaseHelper db){
+    private boolean validate(DatabaseHelper db) {
 
         List<Utente> utenti = db.getAllUsers();
 
@@ -108,77 +112,77 @@ public class RegisterActivity extends AppCompatActivity {
         int counter = 0;
         long m = 0;
 
-        try{
+        try {
             m = Long.parseLong(matricola);
-            for(Utente u : utenti){
-                if(u.getMatricola() == m){
+            for (Utente u : utenti) {
+                if (u.getMatricola() == m) {
                     check = false;
                     justmat = true;
                     counter++;
                 }
-                if(u.getEmail().equals(email)){
+                if (u.getEmail().equals(email)) {
                     check = false;
                     justemail = true;
                     counter++;
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             check = false;
             counter++;
             info = "Il tuo numero di matricola non sembra essere corretto";
             Matricola.setBackgroundColor(Color.RED);
         }
 
-        if(nome == null || nome.equals("")){
+        if (nome == null || nome.equals("")) {
             check = false;
             counter++;
             info = "Il tuo nome non sembra essere corretto";
             Nome.setBackgroundColor(Color.RED);
         }
 
-        if(cognome == null || cognome.equals("")){
+        if (cognome == null || cognome.equals("")) {
             check = false;
             counter++;
             info = "Il tuo cognome non sembra essere corretto";
             Cognome.setBackgroundColor(Color.RED);
         }
 
-        if(email == null || email.equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (email == null || email.equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             check = false;
             counter++;
             info = "La tua email non sembra essere corretta";
             Email.setBackgroundColor(Color.RED);
         }
 
-        if(password == null || password.equals("")){
+        if (password == null || password.equals("")) {
             check = false;
             counter++;
             info = "La tua password non sembra essere corretta";
             Password.setBackgroundColor(Color.RED);
         }
 
-        if(repeat == null || repeat.equals("") || !repeat.equals(password)){
+        if (repeat == null || repeat.equals("") || !repeat.equals(password)) {
             check = false;
             counter++;
             info = "Le password non coincidono";
             Password.setBackgroundColor(Color.RED);
             RipetiPassword.setBackgroundColor(Color.RED);
         }
-        
-        if(counter > 1){
+
+        if (counter > 1) {
             info = "Più campi non sembrano essere corretti.";
         }
 
-        int immagine= RegisterActivity.this.getResources().getIdentifier("logo", "drawable", RegisterActivity.this.getPackageName());
-        
-        if(check){
+        int immagine = RegisterActivity.this.getResources().getIdentifier("logo", "drawable", RegisterActivity.this.getPackageName());
+
+        if (check) {
             user = new Utente(m, email, nome, cognome, password, immagine);
-        }else{
-            if(justemail && !justmat){
+        } else {
+            if (justemail && !justmat) {
                 info = "Esiste già un account con questa email";
-            }else if(!justemail && justmat){
+            } else if (!justemail && justmat) {
                 info = "Il numero di matricola è gia stato registrato.";
-            }else if(justemail && justmat){
+            } else if (justemail && justmat) {
                 info = "Ti sei già registrato con questo numero di matricola e questa email";
             }
             Info.setText(info);
@@ -188,25 +192,21 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Aggiungi un'immagine!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Scatta una foto")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Scegli dalla Galleria")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Annulla")) {
                     dialog.dismiss();
                 }
             }

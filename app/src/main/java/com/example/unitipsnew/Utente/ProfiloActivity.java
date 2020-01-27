@@ -37,7 +37,7 @@ public class ProfiloActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profilo);
 
         db = new DatabaseHelper(getApplicationContext());
         sp = getSharedPreferences("login", MODE_PRIVATE);
@@ -51,7 +51,7 @@ public class ProfiloActivity extends AppCompatActivity{
         EditText nome = findViewById(R.id.nome_utente);
         EditText cognome = findViewById(R.id.cognome_utente);
         TextView email = findViewById(R.id.email_utente);
-        EditText password = findViewById(R.id.password_utente);
+        final EditText password = findViewById(R.id.password_utente);
         avatar = findViewById(R.id.avatar_utente);
 
         matricola.setText("" + utente.getMatricola());
@@ -63,7 +63,7 @@ public class ProfiloActivity extends AppCompatActivity{
 
         Button delete = findViewById(R.id.delete_account);
         Button update = findViewById(R.id.update_account);
-        ImageButton alter = findViewById(R.id.alter_avatar);
+        //ImageButton alter = findViewById(R.id.alter_avatar);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +83,7 @@ public class ProfiloActivity extends AppCompatActivity{
                 //int rh= ProfiloActivity.this.getResources().getIdentifier("user_image", "drawable", ProfiloActivity.this.getPackageName());
                 u.setImmagine(utente.getImmagine());
                 u.setEmail(utente.getEmail());
-                u.setPassword(utente.getPassword());
+                u.setPassword(password.getText().toString());
                 db.updateUser(u);
                 Toast.makeText(view.getContext(), "Account Aggiornato", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(ProfiloActivity.this, MainActivity.class);
@@ -91,12 +91,12 @@ public class ProfiloActivity extends AppCompatActivity{
             }
         });
 
-        alter.setOnClickListener(new View.OnClickListener() {
+        /*alter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
-        });
+        });*/
 
 
         db.closeDB();

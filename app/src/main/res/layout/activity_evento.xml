@@ -138,6 +138,21 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/map_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="#20A464"
+                android:paddingLeft="@dimen/padding_left_recensioni_text"
+                android:paddingRight="@dimen/padding_left_recensioni_text"
+                android:text="@string/guarda_mappa"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

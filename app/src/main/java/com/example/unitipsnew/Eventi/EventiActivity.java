@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.MainActivity;
+import com.example.unitipsnew.MapsActivity;
 import com.example.unitipsnew.R;
 import com.example.unitipsnew.Utente.Utente;
 
@@ -31,6 +32,9 @@ public class EventiActivity extends AppCompatActivity {
     ArrayList<Long> longs = new ArrayList<>();
     Evento evento = new Evento();
     Utente utente = new Utente();
+    public static final String EXTRA_MAPPA = "coordinate";
+    public static final String EXTRA_NOME_EVENTO = "nome";
+    public static final String EXTRA_ID_EVENTO = "id";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class EventiActivity extends AppCompatActivity {
         final TextView interessati_evento = findViewById(R.id.interessati_evento);
         TextView descrizione_evento = findViewById(R.id.descrizione_evento);
         final Button interessato = findViewById(R.id.interessato);
+        final Button mappa = findViewById(R.id.map_button);
 
         Intent intent = getIntent();
         evento = db.getEvento(Integer.parseInt(intent.getStringExtra(CustomListAdapterEventi.EXTRA_EVENTO)));
@@ -94,6 +99,18 @@ public class EventiActivity extends AppCompatActivity {
                     db.updateEvento(evento);
                     interessati_evento.setText(evento.getInteressati().size() + " interessati");
 
+                }
+            });
+
+            mappa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mappa.setBackgroundColor(Color.GRAY);
+                    final Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                    intent.putExtra(EXTRA_MAPPA, "" + evento.getLuogo());
+                    intent.putExtra(EXTRA_NOME_EVENTO, "" + evento.getTitolo());
+                    intent.putExtra(EXTRA_ID_EVENTO, "" + evento.getId());
+                    view.getContext().startActivity(intent);
                 }
             });
 

@@ -88,7 +88,7 @@ public class RecensioniActivity extends AppCompatActivity {
 
         //Create a custom layout for the dialog box
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.add_recensione_form, null);
+        View layout = inflater.inflate(R.layout.add_recensione, null);
 
         Button cancel = (Button) layout.findViewById(R.id.button_cancel);
         Button create = (Button) layout.findViewById(R.id.button);

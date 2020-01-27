@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
@@ -29,23 +28,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="60dp"
-            android:text="Titolo" />
+            android:text="@string/txt_title" />
 
         <EditText
             android:id="@+id/add_recensione_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="textPersonName"
-            android:autofillHints="" />
+            android:autofillHints="" tools:targetApi="o" />
 
         <TextView
             android:id="@+id/txt_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Testo" />
+            android:text="@string/txt_text" />
 
         <EditText
             android:id="@+id/add_recensione_text"
@@ -54,7 +54,7 @@
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:autofillHints="" />
+            android:autofillHints="" tools:targetApi="o" />
 
 
         <Button
@@ -62,8 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="332dp"
-            android:backgroundTint="#00FFCC"
+            android:backgroundTint="#00FFCF"
             android:text="@string/aggiungi"
             android:textAlignment="center"
             android:textColor="#000000"
@@ -74,10 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="#942626"
-            android:text="annulla"
-            android:textColor="#FFFFFF" />
-
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:backgroundTint="#BD1111"
+            android:text="@string/annulla"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

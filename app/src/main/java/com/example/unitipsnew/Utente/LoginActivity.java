@@ -1,11 +1,15 @@
 package com.example.unitipsnew.Utente;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseHelper db;
     SharedPreferences sp;
 
+
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         for(Utente u : utenti){
             Log.d("utente: ", u.toString());
         }
-        //Se i dati coincidono lo faccio passare alla main activity altrimenti gli chideo di autenticarsi
+
+        //Utente u = new Utente(185035, "", "Roberto", "Dellantonio", "", R.drawable.user_image);
+        //db.createUser(u);
+
+        //Se i dati coincidono lo faccio passare alla main activity altrimenti gli chideo di autenticarsiù
+        //sp.edit().putLong("user", 1).apply();
+        //sp.edit().putBoolean("remember", true).apply();
         if(sp.getBoolean("remember", true) == true && l != 0){
+            Log.d("Stato", "########   oidfgvo0");
             sp.edit().putBoolean("logged", true).apply();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);

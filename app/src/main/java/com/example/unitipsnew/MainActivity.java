@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -50,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         //Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
         //db.onCreate(db.getReadableDatabase());
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.careerfair_unitn);
-        String s = bitmapToString(icon);
+        /*Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.careerfair_unitn);
+        String s = bitmapToString(icon);*/
 
-        List<Evento> eventi = new ArrayList<>();
+       // List<Evento> eventi = new ArrayList<>();
         /*eventi.add(new Evento(10, s, new ArrayList<Long>(), "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
         eventi.add(new Evento(11, s, new ArrayList<Long>(), "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));*/
 
@@ -62,62 +63,66 @@ public class MainActivity extends AppCompatActivity {
         for(Evento e : eventi) {
             db.deleteEvento(e.getId());
         }*/
+        //sp.edit().putBoolean("logged", true).apply();
+        //sp.edit().putLong("user", 1).apply();
+        if(sp.getBoolean("logged", true) != true || sp.getLong("user", 01) == 0){
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+        }else {
 
 
+            setContentView(R.layout.activity_main);
+            SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+            ViewPager viewPager = findViewById(R.id.view_pager);
+            viewPager.setAdapter(sectionsPagerAdapter);
+            TabLayout tabs = findViewById(R.id.tabs);
+            tabs.setupWithViewPager(viewPager);
 
-        setContentView(R.layout.activity_main);
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+            toolbar = (Toolbar) findViewById(R.id.toolbarmia);
+            toolbar.inflateMenu(R.menu.menu);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbarmia);
-        toolbar.inflateMenu(R.menu.menu);
+            //Azioni da eseguire al click del menu
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
-        //Azioni da eseguire al click del menu
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
 
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                    //Logout
+                    if (item.getItemId() == R.id.logout1) {
+                        //Setto le prreferenze in modo da sloggare l'utente
+                        sp = MainActivity.this.getSharedPreferences("login", MODE_PRIVATE);
+                        sp.edit().putBoolean("logged", false).apply();
+                        sp.edit().putLong("user", 0).apply();
 
-                //Logout
-                if(item.getItemId()==R.id.logout1){
-                    //Setto le prreferenze in modo da sloggare l'utente
-                    sp = MainActivity.this.getSharedPreferences("login", MODE_PRIVATE);
-                    sp.edit().putBoolean("logged", false).apply();
-                    sp.edit().putLong("user", 0).apply();
+                        sp = MainActivity.this.getSharedPreferences("checkbox", MODE_PRIVATE);
+                        sp.edit().putBoolean("remember", false).apply();
 
-                    sp = MainActivity.this.getSharedPreferences("checkbox", MODE_PRIVATE);
-                    sp.edit().putBoolean("remember", false).apply();
+                        //Avviso di avvenuto logout
+                        Toast.makeText(MainActivity.this, "Log Out Effettuato", Toast.LENGTH_SHORT).show();
 
-                    //Avviso di avvenuto logout
-                    Toast.makeText(MainActivity.this, "Log Out Effettuato", Toast.LENGTH_SHORT).show();
-
-                    //Lo rimando alla pagina di login
-                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(i);
+                        //Lo rimando alla pagina di login
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    } else if (item.getItemId() == R.id.account_profile) {
+                        //Lo rimando alla pagina del profilo utente
+                        Intent i = new Intent(MainActivity.this, ProfiloActivity.class);
+                        startActivity(i);
+                    } else if (item.getItemId() == R.id.refresh) {
+                        //Lo rimando alla pagina del profilo utente
+                        Intent i = new Intent(MainActivity.this, MainActivity.class);
+                        startActivity(i);
+                        Toast.makeText(MainActivity.this, "Pagine Aggiornate", Toast.LENGTH_SHORT).show();
+                    }
+                    return false;
                 }
-                else if(item.getItemId()==R.id.account_profile){
-                    //Lo rimando alla pagina del profilo utente
-                    Intent i = new Intent(MainActivity.this, ProfiloActivity.class);
-                    startActivity(i);
-                }
-                else if(item.getItemId()==R.id.refresh){
-                    //Lo rimando alla pagina del profilo utente
-                    Intent i = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(i);
-                    Toast.makeText(MainActivity.this, "Pagine Aggiornate", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
+            });
+        }
     }
 
-    private String bitmapToString(Bitmap bitmap){
+    /*private String bitmapToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
-    }
+    }*/
 }
