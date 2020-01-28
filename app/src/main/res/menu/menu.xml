@@ -2,28 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item xmlns:app="http://schemas.android.com/apk/res-auto"
+    <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_refresh"
-        android:title="Aggiorna"
-        app:showAsAction="ifRoom" />
-
-    <item xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        android:title="Cerca"
+        android:title="@string/aggiorna"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/account_profile"
         android:orderInCategory="100"
-        android:title="Account"
+        android:title="@string/account"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/logout1"
         android:orderInCategory="100"
-        android:title="Log Out"
+        android:title="@string/log_out"
         app:showAsAction="never"
         app:actionLayout="@layout/toggle"
         />

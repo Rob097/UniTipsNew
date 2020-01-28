@@ -31,102 +31,125 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_marginTop="@android:dimen/notification_large_icon_height">
+        android:layout_marginTop="@android:dimen/notification_large_icon_height"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_left_recensioni_text"
-            android:layout_marginRight="@dimen/padding_left_recensioni_text"
             android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/titolo_tip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_top_recensioni_text"
-                android:layout_marginEnd="@dimen/padding_left_recensioni_text"
-                android:layout_marginBottom="@dimen/padding_top_recensioni_text"
-                android:text="@string/replaced_text"
-                android:textAlignment="textStart"
-                android:textColor="#000000"
-                android:textSize="24sp"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/data_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:drawableStart="@drawable/ic_access_time_black_24dp"
-                android:drawablePadding="@dimen/padding_top_recensioni_text"
-                android:paddingLeft="@dimen/padding_left_recensioni_text"
-                android:paddingTop="@dimen/padding_top_recensioni_text"
-                android:paddingRight="@dimen/padding_left_recensioni_text"
-                android:text="@string/replaced_text" />
-
-            <TextView
-                android:id="@+id/testo_tip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/replaced_text" />
-
             <LinearLayout
-                android:id="@+id/dati_tip"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/padding_top_recensioni_text"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/padding_top_recensioni_text"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:orientation="horizontal"
+                android:background="@drawable/box_tip"
+                android:orientation="vertical"
                 android:paddingLeft="@dimen/padding_left_recensioni_text"
                 android:paddingRight="@dimen/padding_left_recensioni_text">
 
                 <TextView
-                    android:id="@+id/like_tip"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/titolo_tip"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/ic_thumb_up_black_24dp"
-                    android:drawablePadding="@dimen/padding_left_recensioni_text"
-                    android:paddingLeft="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/padding_top_recensioni_text"
+                    android:layout_marginEnd="@dimen/padding_left_recensioni_text"
+                    android:layout_marginBottom="@dimen/padding_top_recensioni_text"
                     android:text="@string/replaced_text"
-                    android:textAlignment="center" />
+                    android:textAlignment="textStart"
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:textStyle="bold|italic" />
 
                 <TextView
-                    android:id="@+id/dislike_tip"
+                    android:id="@+id/data_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/ic_thumb_down_black_24dp"
-                    android:drawablePadding="@dimen/padding_left_recensioni_text"
-                    android:paddingLeft="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_vertical_margin"
-                    android:text="@string/replaced_text"
-                    android:textAlignment="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:drawablePadding="@dimen/padding_top_recensioni_text"
+                    android:paddingLeft="@dimen/padding_left_recensioni_text"
+                    android:paddingTop="@dimen/padding_top_recensioni_text"
+                    android:paddingRight="@dimen/padding_left_recensioni_text"
+                    android:text="@string/replaced_text" />
 
                 <TextView
-                    android:id="@+id/commenti_tip"
+                    android:id="@+id/testo_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/replaced_text" />
+
+                <View
+                    android:id="@+id/divider_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="#8F4BF1" />
+
+                <LinearLayout
+                    android:id="@+id/dati_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/ic_comment_black_24dp"
-                    android:drawablePadding="@dimen/padding_left_recensioni_text"
-                    android:paddingLeft="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_vertical_margin"
-                    android:text="@string/replaced_text"
-                    android:textAlignment="center" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/padding_left_recensioni_text"
+                    android:paddingRight="@dimen/padding_left_recensioni_text">
+
+                    <TextView
+                        android:id="@+id/like_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_thumb_up_black_24dp"
+                        android:drawablePadding="@dimen/padding_left_recensioni_text"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/replaced_text"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/dislike_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_thumb_down_black_24dp"
+                        android:drawablePadding="@dimen/padding_left_recensioni_text"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/replaced_text"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/commenti_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_comment_black_24dp"
+                        android:drawablePadding="@dimen/padding_left_recensioni_text"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/replaced_text"
+                        android:textAlignment="center" />
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/TextCommenti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
                 android:text="@string/commenti"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -148,9 +171,11 @@
 
             <LinearLayout
                 android:id="@+id/commenti_layout"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+                android:layout_marginRight="@dimen/padding_left_recensioni_text"
+                android:orientation="vertical">
 
             </LinearLayout>
         </LinearLayout>

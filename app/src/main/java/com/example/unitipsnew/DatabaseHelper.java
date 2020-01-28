@@ -14,6 +14,7 @@ import com.example.unitipsnew.Tips.Commento;
 import com.example.unitipsnew.Tips.Tip;
 import com.example.unitipsnew.Utente.Utente;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -304,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_ID_CORSO, lastId + 1);
         values.put(KEY_NOME_CORSO, corso.getNomeCorso());
         values.put(KEY_PROFESSORE, corso.getNomeProfessore());
-        values.put(KEY_RECENSIONI, corso.getNumeroRecensioni());
+        values.put(KEY_RECENSIONI, 0);
 
         // insert row
         long corso_id = db.insert(TABLE_CORSO, null, values);
@@ -686,24 +687,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Long> i;
         if (c.moveToFirst()) {
             do {
-                    inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
-                    s = inte.split(",");
-                    i = new ArrayList<>();
-                    for (String g : s) {
-                        if (!g.equals("") && !g.equals(","))
-                            i.add(Long.parseLong(g));
-                    }
-                    Evento evento = new Evento();
-                    evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                    evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
-                    evento.setInteressati(i);
-                    evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
-                    evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
-                    evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
-                    evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+                inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
+                s = inte.split(",");
+                i = new ArrayList<>();
+                for (String g : s) {
+                    if (!g.equals("") && !g.equals(","))
+                        i.add(Long.parseLong(g));
+                }
+                Evento evento = new Evento();
+                evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+                evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                evento.setInteressati(i);
+                evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+                evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+                evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+                evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
 
-                    // adding to users list
-                    eventi.add(evento);
+                //Elimino gli eventi vecchi e aggiungo quelli nuovi all'output
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date date = format.parse(evento.getData());
+                    if(date.before(new Date())){
+                        deleteEvento(evento.getId());
+                    }else{
+                        // adding to users list
+                        eventi.add(evento);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             } while (c.moveToNext());
         }
         Collections.sort(eventi, new Comparator<Evento>() {
@@ -864,7 +877,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // looping through all rows and adding to list
         String inte, like, dis;
-        String[] s, l , d;
+        String[] s, l, d;
         ArrayList<Commento> i;
         ArrayList<Long> li, di;
         if (c.moveToFirst()) {
@@ -873,8 +886,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
                     like = c.getString(c.getColumnIndex(KEY_LIKE_TIP));
                     dis = c.getString(c.getColumnIndex(KEY_DISLIKE_TIP));
-                    s = inte.split(","); l = like.split(","); d = dis.split(",");
-                    i = new ArrayList<>(); li = new ArrayList<>(); di = new ArrayList<>();
+                    s = inte.split(",");
+                    l = like.split(",");
+                    d = dis.split(",");
+                    i = new ArrayList<>();
+                    li = new ArrayList<>();
+                    di = new ArrayList<>();
                     for (String g : s) {
                         if (!g.equals("") && !g.equals(","))
                             i.add(getCommento(Integer.parseInt(g)));

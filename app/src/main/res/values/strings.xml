@@ -50,4 +50,11 @@
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="option_get_place">Get place</string>
     <string name="pick_place">Choose a place</string>
+    <string name="aggiorna">Aggiorna</string>
+    <string name="account">Account</string>
+    <string name="log_out">Log Out</string>
+    <string name="recupero_della_password">Recupero della password</string>
+    <string name="recupera_password">Recupera la Password</string>
+    <string name="title_activity_all_events_map">Map</string>
+    <string name="vedi_nella_mappa">Vedi nella Mappa</string>
 </resources>

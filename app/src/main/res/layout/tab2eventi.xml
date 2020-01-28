@@ -7,11 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.PlaceholderFragment">
 
+    <LinearLayout
+        android:id="@+id/layout_all_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_top_recensioni_text"
+        android:layout_marginBottom="@dimen/padding_left_recensioni_text"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_all_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/green"
+            android:text="@string/vedi_nella_mappa"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listviewEventi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@drawable/eventi_divider"/>
+        android:layout_below="@id/layout_all_map"
+        android:divider="@drawable/eventi_divider">
+
+    </ListView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

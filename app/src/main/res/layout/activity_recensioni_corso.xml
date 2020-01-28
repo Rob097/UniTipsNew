@@ -46,6 +46,8 @@
             android:id="@+id/recensioni_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_left_recensioni_text"
+            android:layout_marginRight="@dimen/padding_left_recensioni_text"
             android:layout_marginBottom="0dp">
 
         </ListView>

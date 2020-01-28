@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText Name;
     private EditText Password;
     private TextView Info;
+    private TextView Restore;
     private Button Registrati;
     private Button Login;
     private CheckBox Remember;
@@ -56,10 +57,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //Stampa nei log tutti gli utenti registrati
         db = new DatabaseHelper(getApplicationContext());
-        List<Utente> utenti = db.getAllUsers();
-        for(Utente u : utenti){
-            Log.d("utente: ", u.toString());
-        }
 
         //Utente u = new Utente(185035, "", "Roberto", "Dellantonio", "", R.drawable.user_image);
         //db.createUser(u);
@@ -82,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         Login = (Button) findViewById(R.id.login);
         Remember = (CheckBox) findViewById(R.id.remember);
         Registrati = (Button) findViewById(R.id.registrati_action);
+        Restore = (TextView) findViewById(R.id.password_dimenticata_action);
 
         //Valido i dati
         Login.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +109,14 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        //Stampa nei log tutti gli utenti registrati
-        /*db = new DatabaseHelper(getApplicationContext());
-        List<Utente> utenti = db.getAllUsers();
-        for(Utente u : utenti){
-            Log.d("utente: ", u.toString());
-        }*/
+
+        Restore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, RestoreActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void validate(String user, String password) {

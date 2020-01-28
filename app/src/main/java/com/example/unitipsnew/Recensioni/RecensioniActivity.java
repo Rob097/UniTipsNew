@@ -76,6 +76,13 @@ public class RecensioniActivity extends AppCompatActivity {
                     openNewRecensione();
                 }
             });
+
+            for(Recensione r : recens){
+                if(r.getMatricola() == utente.getMatricola()){
+
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Intent i = new Intent(RecensioniActivity.this, MainActivity.class);

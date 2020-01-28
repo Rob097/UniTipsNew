@@ -27,6 +27,7 @@ import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 import com.example.unitipsnew.Recensioni.Recensione;
 import com.example.unitipsnew.Utente.RegisterActivity;
+import com.example.unitipsnew.allEventsMap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
@@ -77,6 +78,17 @@ public class Tab2Eventi extends Fragment {
             @Override
             public void onClick(View view) {
                 openOptionsMenu();
+            }
+        });
+
+        final Button mappa = (Button) rootView.findViewById(R.id.button_all_map);
+
+        mappa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mappa.setBackgroundColor(Color.GRAY);
+                final Intent intent = new Intent(view.getContext(), allEventsMap.class);
+                view.getContext().startActivity(intent);
             }
         });
 

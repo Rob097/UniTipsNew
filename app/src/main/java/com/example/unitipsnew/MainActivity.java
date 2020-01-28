@@ -65,6 +65,22 @@ public class MainActivity extends AppCompatActivity {
         }*/
         //sp.edit().putBoolean("logged", true).apply();
         //sp.edit().putLong("user", 1).apply();
+
+
+        /*  CODICE PER POPOLARE LA TABELLA DEI CORSI
+        ArrayList<Corso> corsi = new ArrayList<>();
+        corsi.add(new Corso("Analisi Matematica 1", "Anneliese Defranceschi"));
+        corsi.add(new Corso("Analisi Matematica 2", "Anneliese Defranceschi"));
+        corsi.add(new Corso("Ingegneria del software 1", "Paolo Giorgini"));
+        corsi.add(new Corso("Ingegneria del software 2", "Adolfo Villafiorita"));
+        corsi.add(new Corso("Fisica", "Roberto Battiston"));
+        corsi.add(new Corso("Economia ed innovazione d'impresa", "Mariasole Bannò"));
+        corsi.add(new Corso("Geometria e Algebra Lineare", "Ochetta"));
+
+        for(Corso c : corsi){
+            db.createCorso(c);
+        }*/
+
         if(sp.getBoolean("logged", true) != true || sp.getLong("user", 01) == 0){
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);

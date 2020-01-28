@@ -18,6 +18,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/* Classe per la lista dei corsi nel tab 1 */
 public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
     public static final String EXTRA_CORSO = "idCorso";
@@ -71,8 +72,4 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
         return view;
     }
 
-    public void openRecensioneCorso() {
-
-
-    }
 }

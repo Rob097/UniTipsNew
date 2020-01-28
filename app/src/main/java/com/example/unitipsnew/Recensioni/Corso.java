@@ -16,6 +16,11 @@ public class Corso {
         this.id = id;
     }
 
+    public Corso(String nomeCorso, String nomeProfessore) {
+        this.nomeCorso = nomeCorso;
+        this.nomeProfessore = nomeProfessore;
+    }
+
     public String getNomeCorso() {
         return nomeCorso;
     }
