@@ -1,8 +1,11 @@
 package com.example.unitipsnew.Utente;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +24,11 @@ import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,10 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
     // Database Helper
     DatabaseHelper db;
     SharedPreferences sp;
+    final static int CAMERA_REQUEST = 101;
+    final static int GALLERY_REQUEST = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
         db = new DatabaseHelper(getApplicationContext());
@@ -191,6 +201,20 @@ public class RegisterActivity extends AppCompatActivity {
         return check;
     }
 
+    public void openCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
+    }
+
+    public void openGallery(){
+        //lanch gallery request
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), GALLERY_REQUEST);
+    }
+
     private void selectImage() {
         final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -199,13 +223,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Scatta una foto")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
+                    openCamera();
                 } else if (options[item].equals("Scegli dalla Galleria")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
+                   openGallery();
                 } else if (options[item].equals("Annulla")) {
                     dialog.dismiss();
                 }
@@ -214,4 +234,31 @@ public class RegisterActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+            try{
+                Uri selectedImage = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+                AlterImmagine.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+
+            }catch (IOException io){
+                io.printStackTrace();
+            }
+        }
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            try{
+                Bundle extras = data.getExtras();
+                Bitmap image = (Bitmap) extras.get("data");
+
+                AlterImmagine.setImageBitmap(image);
+
+            }catch(Exception io){
+
+            }
+        }
+    }
 }

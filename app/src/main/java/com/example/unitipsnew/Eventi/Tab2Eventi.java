@@ -54,6 +54,7 @@ public class Tab2Eventi extends Fragment {
     Bitmap img_bit;
 
     final static int GALLERY_REQUEST = 100;
+    final static int CAMERA_REQUEST = 101;
     private final static int PREFERED_WIDTH = 250;
     private final static int PREFERED_HEIGHT = 250;
 
@@ -270,6 +271,13 @@ public class Tab2Eventi extends Fragment {
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
+    public void openCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getActivity().getPackageManager())!=null){
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
+    }
+
     public void openGallery(){
         final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
         AlertDialog.Builder builder = new AlertDialog.Builder(Tab2Eventi.this.getContext());
@@ -278,10 +286,7 @@ public class Tab2Eventi extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Scatta una foto")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
+                    openCamera();
                 } else if (options[item].equals("Scegli dalla Galleria")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
@@ -309,6 +314,18 @@ public class Tab2Eventi extends Fragment {
 
             }catch (IOException io){
                 io.printStackTrace();
+            }
+        }
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            try{
+                Bundle extras = data.getExtras();
+                Bitmap image = (Bitmap) extras.get("data");
+
+                img_evento.setImageBitmap(image);
+
+            }catch(Exception io){
+
             }
         }
     }
