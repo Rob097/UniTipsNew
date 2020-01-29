@@ -222,10 +222,11 @@ public class Tab2Eventi extends Fragment {
         if(check){
             try {
 
-                Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.fuc_unitn);
+                //Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.fuc_unitn);
+                Bitmap resizedNewImage = getResizedBitmap(img_bit, 250,250);
                 Log.d("Event","added icon");
                 Log.d("Event","resized bitmap");
-                String s = bitmapToString(img_bit);
+                String s = bitmapToString(resizedNewImage);
 
                 Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
                 Log.d("Event","created event");
@@ -321,8 +322,8 @@ public class Tab2Eventi extends Fragment {
             try{
                 Bundle extras = data.getExtras();
                 Bitmap image = (Bitmap) extras.get("data");
-
-                img_evento.setImageBitmap(image);
+                img_bit = image;
+                //img_evento.setImageBitmap(image);
 
             }catch(Exception io){
 
@@ -332,9 +333,10 @@ public class Tab2Eventi extends Fragment {
 
     public Bitmap resizeImage(Bitmap bitmap){
         int width = bitmap.getWidth();
+        Log.d("TABeveti", "dimensione immagine"+ Integer.toString(width));
         int height = bitmap.getHeight();
-        float scaleWidth = PREFERED_WIDTH/width;
-        float scaleHeight = PREFERED_HEIGHT/height;
+        float scaleWidth = 250/width;
+        float scaleHeight = 250/height;
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth,scaleHeight);
@@ -343,5 +345,22 @@ public class Tab2Eventi extends Fragment {
         resize.recycle();
         return resize;
 
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

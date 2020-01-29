@@ -51,24 +51,24 @@ public class MainActivity extends AppCompatActivity {
         //Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
         //db.onCreate(db.getReadableDatabase());
-        /*Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.careerfair_unitn);
-        String s = bitmapToString(icon);*/
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.careerfair_unitn);
+        String s = bitmapToString(icon);
 
-       // List<Evento> eventi = new ArrayList<>();
-        /*eventi.add(new Evento(10, s, new ArrayList<Long>(), "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
-        eventi.add(new Evento(11, s, new ArrayList<Long>(), "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));*/
+       /*List<Evento> eventi = new ArrayList<>();
+        eventi.add(new Evento(10, s, new ArrayList<Long>(), "Festa Universitaria Centrale", "Descrizione Festa Universitaria Centrale", "Trento", db.getDateTime()));
+        eventi.add(new Evento(11, s, new ArrayList<Long>(), "Career Fair", "Descrizione Career Fair", "Trento", db.getDateTime()));
 
 
-        /*eventi = db.getAllEventi();
+        eventi = db.getAllEventi();
         for(Evento e : eventi) {
-            db.deleteEvento(e.getId());
+            db.createEvento(e);
         }*/
         //sp.edit().putBoolean("logged", true).apply();
         //sp.edit().putLong("user", 1).apply();
 
 
-        /*  CODICE PER POPOLARE LA TABELLA DEI CORSI
-        ArrayList<Corso> corsi = new ArrayList<>();
+        //CODICE PER POPOLARE LA TABELLA DEI CORSI
+        /*ArrayList<Corso> corsi = new ArrayList<>();
         corsi.add(new Corso("Analisi Matematica 1", "Anneliese Defranceschi"));
         corsi.add(new Corso("Analisi Matematica 2", "Anneliese Defranceschi"));
         corsi.add(new Corso("Ingegneria del software 1", "Paolo Giorgini"));
@@ -135,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*private String bitmapToString(Bitmap bitmap){
+    private String bitmapToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
-    }*/
+    }
 }
