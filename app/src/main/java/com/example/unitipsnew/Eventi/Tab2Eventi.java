@@ -222,7 +222,11 @@ public class Tab2Eventi extends Fragment {
         if(check){
             try {
 
-                String s = bitmapToString(img_bit);
+                //Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.fuc_unitn);
+                Bitmap resizedNewImage = getResizedBitmap(img_bit, 250,250);
+                Log.d("Event","added icon");
+                Log.d("Event","resized bitmap");
+                String s = bitmapToString(resizedNewImage);
 
                 Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
                 db.createEvento(e);
@@ -327,8 +331,8 @@ public class Tab2Eventi extends Fragment {
     public Bitmap resizeImage(Bitmap bitmap){
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        float scaleWidth = PREFERED_WIDTH/width;
-        float scaleHeight = PREFERED_HEIGHT/height;
+        float scaleWidth = 250/width;
+        float scaleHeight = 250/height;
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth,scaleHeight);
@@ -337,5 +341,22 @@ public class Tab2Eventi extends Fragment {
         resize.recycle();
         return resize;
 
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }
