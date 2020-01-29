@@ -70,13 +70,14 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="@string/data" />
 
-        <EditText
+        <TextView
             android:id="@+id/data_nuovo_evento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="date"
-            android:autofillHints="" tools:targetApi="o" />
+            android:text="@string/scegli_data"
+            android:textAlignment="textStart"
+            android:textColor="#1B1919" />
 
         <TextView
             android:id="@+id/luogo_nuovo_evento_label"

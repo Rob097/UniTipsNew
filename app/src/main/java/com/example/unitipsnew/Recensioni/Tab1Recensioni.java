@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class Tab1Recensioni extends Fragment{
 
@@ -36,9 +44,29 @@ public class Tab1Recensioni extends Fragment{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action of Recensioni", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                openFilterCourses();
             }
         });
         return rootView;
+    }
+
+    private void openFilterCourses() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+
+        //Create a custom layout for the dialog box
+        LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.filter_corsi_choose, null);
+
+        final TextView corso = (TextView) layout.findViewById(R.id.corso_choose);
+        final TextView prof = (TextView) layout.findViewById(R.id.professore_choose);
+        final TextView recens = (TextView) layout.findViewById(R.id.recensioni_choose);
+
+        builder.setView(layout);
+
+        final AlertDialog alertDialog = builder.create();
+
+
+
+        alertDialog.show();
     }
 }

@@ -297,8 +297,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long createCorso(Corso corso) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        long lastId = 0;
-        if (!getAllCorsi().isEmpty()) {
+        long lastId = 7;
+        if(corso.getId() != -1){
+            lastId = corso.getId() - 1;
+        }else if (!getAllCorsi().isEmpty()) {
             lastId = getAllCorsi().get(getAllCorsi().size() - 1).getId();
         }
 

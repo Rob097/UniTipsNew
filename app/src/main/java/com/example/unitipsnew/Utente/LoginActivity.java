@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         //sp.edit().putLong("user", 1).apply();
         //sp.edit().putBoolean("remember", true).apply();
         if(sp.getBoolean("remember", true) == true && l != 0){
-            Log.d("Stato", "########   oidfgvo0");
             sp.edit().putBoolean("logged", true).apply();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
@@ -122,6 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        db.closeDB();
     }
 
     private void validate(String user, String password) {

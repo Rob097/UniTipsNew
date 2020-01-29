@@ -49,7 +49,7 @@ public class CustomListAdapterCommento extends ArrayAdapter<Commento> {
         if (u != null) {
             utente.setText(u.getNome() + " " + u.getCognome());
         } else {
-            utente.setText("Studente sconosciuto");
+            utente.setText("Anonimo");
         }
         testo.setText(c.getTesto());
         data.setText(c.getData());

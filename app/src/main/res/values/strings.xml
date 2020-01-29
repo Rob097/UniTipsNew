@@ -23,7 +23,7 @@
     <string name="la_tua_email">La tua email</string>
     <string name="scegli_una_password">Scegli una password</string>
     <string name="conferma_la_password">Conferma la password</string>
-    <string name="nome_corso">nome del corso</string>
+    <string name="nome_corso">Nome del Corso</string>
     <string name="tv_nome_corso">text view nome corso</string>
     <string name="add_recsensione_title">il titolo della recensione da aggiungere</string>
     <string name="add_recsensione_text">il testo della recensione da aggiungere</string>
@@ -57,4 +57,8 @@
     <string name="recupera_password">Recupera la Password</string>
     <string name="title_activity_all_events_map">Map</string>
     <string name="vedi_nella_mappa">Vedi nella Mappa</string>
+    <string name="scegli_data">Scegli la data dell\'evento</string>
+    <string name="filtra">Filtra</string>
+    <string name="nome_professore">Nome del Professore</string>
+    <string name="numero_recensioni">Numero di Recensioni</string>
 </resources>

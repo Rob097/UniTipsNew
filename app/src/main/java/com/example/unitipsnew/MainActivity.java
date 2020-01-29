@@ -67,20 +67,22 @@ public class MainActivity extends AppCompatActivity {
         //sp.edit().putLong("user", 1).apply();
 
 
-        /*  CODICE PER POPOLARE LA TABELLA DEI CORSI
-        ArrayList<Corso> corsi = new ArrayList<>();
-        corsi.add(new Corso("Analisi Matematica 1", "Anneliese Defranceschi"));
-        corsi.add(new Corso("Analisi Matematica 2", "Anneliese Defranceschi"));
-        corsi.add(new Corso("Ingegneria del software 1", "Paolo Giorgini"));
-        corsi.add(new Corso("Ingegneria del software 2", "Adolfo Villafiorita"));
-        corsi.add(new Corso("Fisica", "Roberto Battiston"));
-        corsi.add(new Corso("Economia ed innovazione d'impresa", "Mariasole Bannò"));
-        corsi.add(new Corso("Geometria e Algebra Lineare", "Ochetta"));
+        /*  CODICE PER POPOLARE LA TABELLA DEI CORSI */
 
-        for(Corso c : corsi){
-            db.createCorso(c);
-        }*/
+        if(db.getAllCorsi() == null || db.getAllCorsi().isEmpty() || db.getAllCorsi().get(0).getId() >= 8) {
+            ArrayList<Corso> corsi = new ArrayList<>();
+            corsi.add(new Corso("Analisi Matematica 1", "Anneliese Defranceschi" ,0 , 1));
+            corsi.add(new Corso("Analisi Matematica 2", "Anneliese Defranceschi" ,0 , 2));
+            corsi.add(new Corso("Ingegneria del software 1", "Paolo Giorgini" ,0 , 3));
+            corsi.add(new Corso("Ingegneria del software 2", "Adolfo Villafiorita" ,0 , 4));
+            corsi.add(new Corso("Fisica", "Roberto Battiston" ,0 , 5));
+            corsi.add(new Corso("Economia ed innovazione d'impresa", "Mariasole Bannò" ,0 , 6));
+            corsi.add(new Corso("Geometria e Algebra Lineare", "Ochetta" ,0 , 7));
 
+            for (Corso c : corsi) {
+                db.createCorso(c);
+            }
+        }
         if(sp.getBoolean("logged", true) != true || sp.getLong("user", 01) == 0){
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);

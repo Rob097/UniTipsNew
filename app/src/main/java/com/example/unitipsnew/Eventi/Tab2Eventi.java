@@ -11,9 +11,11 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -51,7 +53,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class Tab2Eventi extends Fragment{
+public class Tab2Eventi extends Fragment {
 
     List<Evento> eventi;
     ListView listview;
@@ -148,7 +150,7 @@ public class Tab2Eventi extends Fragment{
         progress = (ProgressBar) layout.findViewById(R.id.progressBar);
         final EditText titolo = (EditText) layout.findViewById(R.id.titolo_nuovo_evento);
         final EditText testo = (EditText) layout.findViewById(R.id.testo_nuovo_evento);
-        final EditText data = (EditText) layout.findViewById(R.id.data_nuovo_evento);
+        final TextView data = (TextView) layout.findViewById(R.id.data_nuovo_evento);
         final EditText luogo = (EditText) layout.findViewById(R.id.luogo_nuovo_evento);
         final int immagine = this.getContext().getResources().getIdentifier("careerfair_unitn", "drawable", this.getContext().getPackageName());
         Info = (TextView) layout.findViewById(R.id.info_nuovo_evento);
@@ -171,7 +173,6 @@ public class Tab2Eventi extends Fragment{
             @Override
             public void onClick(final View view) {
                 progress.setVisibility(VISIBLE);
-                create.setEnabled(false);
                 check = false;
                 new Thread(new Runnable() {
                     public void run() {
@@ -182,12 +183,10 @@ public class Tab2Eventi extends Fragment{
                                 final Intent intent = new Intent(view.getContext(), MainActivity.class);
                                 view.getContext().startActivity(intent);
                                 Toast.makeText(view.getContext(), "Evento aggiunto correttamente", Toast.LENGTH_SHORT).show();
-                            }else{
-                                create.setEnabled(true);
+                            } else {
                                 progress.setVisibility(GONE);
                             }
                         } catch (Exception e) {
-                            progress.setVisibility(GONE);
                             e.printStackTrace();
                             Log.d("Errore add Evento", "Errore nell'aggiunta dell'evento");
                         }
@@ -209,206 +208,222 @@ public class Tab2Eventi extends Fragment{
             public void onClick(View v) {
                 Calendar cal = c.getInstance();
                 int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
+                final int month = cal.get(Calendar.MONTH);
                 final int giorno = cal.get(Calendar.DAY_OF_MONTH);
 
                 d = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int myear, int mmonth, int mdayOfMonth) {
-                        //Log.d("eventi",Integer.toString(year));
-                        data.setText(mdayOfMonth+"/"+mmonth+"/"+myear);
+                        //Log.d("eventi",Integer.toString(year));.
+                        int m = mmonth + 1;
+                        int g = mdayOfMonth;
+                        String mS = "", gS = "";
+
+                        if (g >= 1 && g <= 9) {
+                            gS = "0" + g;
+                        } else if (g > 9) {
+                            gS = "" + g;
+                        }
+                        if (m >= 1 && m <= 9) {
+                            mS = "0" + m;
+                        } else if (m >= 10) {
+                            mS = "" + m;
+                        }
+
+                        data.setText(gS + "/" + mS + "/" + myear);
                     }
-                },year,month,giorno);
+                }, year, month, giorno);
                 d.show();
             }
         });
 
         alertDialog.show();
-    }
-
-    private boolean validate(EditText titolo, EditText testo, EditText data, EditText luogo, ImageView immagine, TextView Info, DatabaseHelper db) {
-
-        String titoloS = titolo.getText().toString();
-        String testoS = testo.getText().toString();
-        String dataS = data.getText().toString();
-        String luogoS = luogo.getText().toString();
-
-        boolean check = true;
-        int counter = 0;
-        String info = "";
-
-
-        if (titoloS == null || titoloS.equals("")) {
-            check = false;
-            counter++;
-            info = "Il titolo non sembra essere corretto";
-            titolo.setBackgroundColor(Color.RED);
         }
-        if (testoS == null || testoS.equals("")) {
-            check = false;
-            counter++;
-            info = "Il testo non sembra essere corretto";
-            testo.setBackgroundColor(Color.RED);
-        }
-        if (dataS == null || dataS.equals("") || !checkDateFormat(dataS)) {
-            check = false;
-            counter++;
-            info = "La data non sembra essere corretta. Ricorda che un evento non può essere nel passato";
-            data.setBackgroundColor(Color.RED);
-        }
-        if (luogoS == null || luogoS.equals("")) {
-            check = false;
-            counter++;
-            info = "Il luogo non sembra essere corretto";
-            luogo.setBackgroundColor(Color.RED);
-        }
-        if (img_bit != null && bitmapToString(img_bit).equals("")) {
-            check = false;
-            counter++;
-            info = "L'immagine scelta è troppo pesante, il limite è 1 MB";
-        }
-        if (check) {
-            try {
 
-                int fattore;
-                if (img_bit.getWidth() * img_bit.getHeight() < 2100000) {
-                    fattore = 2;
-                } else if (img_bit.getWidth() * img_bit.getHeight() > 2100000 && img_bit.getWidth() * img_bit.getHeight() < 24500000) {
-                    fattore = 10;
-                } else {
-                    fattore = 20;
+        private boolean validate (EditText titolo, EditText testo, TextView data, EditText
+        luogo, ImageView immagine, TextView Info, DatabaseHelper db){
+
+            String titoloS = titolo.getText().toString();
+            String testoS = testo.getText().toString();
+            String dataS = data.getText().toString();
+            String luogoS = luogo.getText().toString();
+
+            boolean check = true;
+            int counter = 0;
+            String info = "";
+
+
+            if (titoloS == null || titoloS.equals("")) {
+                check = false;
+                counter++;
+                info = "Il titolo non sembra essere corretto";
+                titolo.setBackgroundColor(Color.RED);
+            }
+            if (testoS == null || testoS.equals("")) {
+                check = false;
+                counter++;
+                info = "Il testo non sembra essere corretto";
+                testo.setBackgroundColor(Color.RED);
+            }
+            if (dataS == null || dataS.equals("") || !checkDateFormat(dataS)) {
+                check = false;
+                counter++;
+                info = "La data non sembra essere corretta. Ricorda che un evento non può essere nel passato";
+                data.setBackgroundColor(Color.RED);
+            }
+            if (luogoS == null || luogoS.equals("")) {
+                check = false;
+                counter++;
+                info = "Il luogo non sembra essere corretto";
+                luogo.setBackgroundColor(Color.RED);
+            }
+            if (img_bit != null && bitmapToString(img_bit).equals("")) {
+                check = false;
+                counter++;
+                info = "L'immagine scelta è troppo pesante, il limite è 1 MB";
+            }
+            if (check) {
+                try {
+
+                    int fattore;
+                    if (img_bit.getWidth() * img_bit.getHeight() < 2100000) {
+                        fattore = 2;
+                    } else if (img_bit.getWidth() * img_bit.getHeight() > 2100000 && img_bit.getWidth() * img_bit.getHeight() < 24500000) {
+                        fattore = 10;
+                    } else {
+                        fattore = 20;
+                    }
+                    Bitmap resizedNewImage = getResizedBitmap(img_bit, img_bit.getWidth() / fattore, img_bit.getHeight() / fattore);
+                    String s = bitmapToString(resizedNewImage);
+                    Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
+                    db.createEvento(e);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
                 }
-                Bitmap resizedNewImage = getResizedBitmap(img_bit, img_bit.getWidth() / fattore, img_bit.getHeight() / fattore);
-                String s = bitmapToString(resizedNewImage);
-                Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
-                db.createEvento(e);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        } else {
-            if (counter > 1) {
-                info = "Più parametri non sembrano essere corretti";
-            }
-            Info.setText(info);
-            return false;
-        }
-    }
-
-    public Boolean checkDateFormat(String date) {
-        if (date == null || !date.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$"))
-            return false;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date d = format.parse(date);
-            if (d.after(new Date())) {
                 return true;
             } else {
+                if (counter > 1) {
+                    info = "Più parametri non sembrano essere corretti";
+                }
+                Info.setText(info);
                 return false;
             }
-        } catch (ParseException e) {
-            return false;
         }
-    }
 
-    private String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        long lengthbmp = b.length;
+        public Boolean checkDateFormat (String date){
+            if (date == null || !date.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$"))
+                return false;
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date d = format.parse(date);
+                if (d.after(new Date())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (ParseException e) {
+                return false;
+            }
+        }
+
+        private String bitmapToString (Bitmap bitmap){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            long lengthbmp = b.length;
         /*if(lengthbmp / 1000000 >= 3.8){
             return "";
         }*/
-        return Base64.encodeToString(b, Base64.DEFAULT);
-    }
-
-    public void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(intent, CAMERA_REQUEST);
+            return Base64.encodeToString(b, Base64.DEFAULT);
         }
-    }
 
-    public void openGallery() {
-        final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(Tab2Eventi.this.getContext());
-        builder.setTitle("Aggiungi un'immagine!");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Scatta una foto")) {
-                    openCamera();
-                } else if (options[item].equals("Scegli dalla Galleria")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(Intent.createChooser(intent, "Seleziona immagine"), GALLERY_REQUEST);
-                } else if (options[item].equals("Annulla")) {
-                    dialog.dismiss();
+        public void openCamera () {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(intent, CAMERA_REQUEST);
+            }
+        }
+
+        public void openGallery () {
+            final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(Tab2Eventi.this.getContext());
+            builder.setTitle("Aggiungi un'immagine!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Scatta una foto")) {
+                        openCamera();
+                    } else if (options[item].equals("Scegli dalla Galleria")) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/*");
+                        startActivityForResult(Intent.createChooser(intent, "Seleziona immagine"), GALLERY_REQUEST);
+                    } else if (options[item].equals("Annulla")) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            builder.show();
+        }
+
+        @Override
+        public void onActivityResult ( int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+                try {
+                    Uri selectedImage = data.getData();
+                    InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    img_bit = BitmapFactory.decodeStream(imageStream);
+                    img_evento.setImageBitmap(img_bit);
+
+                } catch (IOException io) {
+                    io.printStackTrace();
                 }
             }
-        });
-        builder.show();
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                try {
+                    Bundle extras = data.getExtras();
+                    Bitmap image = (Bitmap) extras.get("data");
+                    img_bit = image;
+                    img_evento.setImageBitmap(image);
 
-        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
-            try {
-                Uri selectedImage = data.getData();
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                img_bit = BitmapFactory.decodeStream(imageStream);
-                img_evento.setImageBitmap(img_bit);
+                } catch (Exception io) {
 
-            } catch (IOException io) {
-                io.printStackTrace();
+                }
             }
         }
 
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            try {
-                Bundle extras = data.getExtras();
-                Bitmap image = (Bitmap) extras.get("data");
-                img_bit = image;
-                img_evento.setImageBitmap(image);
+        public Bitmap resizeImage (Bitmap bitmap){
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            float scaleWidth = 250 / width;
+            float scaleHeight = 250 / height;
 
-            } catch (Exception io) {
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
 
-            }
+            Bitmap resize = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+            resize.recycle();
+            return resize;
+
+        }
+
+        public Bitmap getResizedBitmap (Bitmap bm,int newWidth, int newHeight){
+            int width = bm.getWidth();
+            int height = bm.getHeight();
+            float scaleWidth = ((float) newWidth) / width;
+            float scaleHeight = ((float) newHeight) / height;
+            // CREATE A MATRIX FOR THE MANIPULATION
+            Matrix matrix = new Matrix();
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight);
+
+            // "RECREATE" THE NEW BITMAP
+            Bitmap resizedBitmap = Bitmap.createBitmap(
+                    bm, 0, 0, width, height, matrix, false);
+            bm.recycle();
+            return resizedBitmap;
         }
     }
-
-    public Bitmap resizeImage(Bitmap bitmap) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float scaleWidth = 250 / width;
-        float scaleHeight = 250 / height;
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        Bitmap resize = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        resize.recycle();
-        return resize;
-
-    }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
-}

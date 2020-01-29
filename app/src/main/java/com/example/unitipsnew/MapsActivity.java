@@ -110,13 +110,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        final Intent intent = new Intent(this, EventiActivity.class);
-        intent.putExtra(CustomListAdapterEventi.EXTRA_EVENTO, "" + Integer.parseInt(intent.getStringExtra(EventiActivity.EXTRA_ID_EVENTO)));
-        startActivity(intent);
-    }
-
     /**
      * Saves the state of the map when the activity is paused.
      */

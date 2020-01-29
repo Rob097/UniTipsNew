@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class EventiActivity extends AppCompatActivity {
         Intent intent = getIntent();
         evento = db.getEvento(Integer.parseInt(intent.getStringExtra(CustomListAdapterEventi.EXTRA_EVENTO)));
         try {
+
             titolo_evento.setText(evento.getTitolo());
 
             Bitmap img = stringToBitmap(evento.getImmagine());
@@ -105,11 +107,9 @@ public class EventiActivity extends AppCompatActivity {
             mappa.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mappa.setBackgroundColor(Color.GRAY);
                     final Intent intent = new Intent(view.getContext(), MapsActivity.class);
                     intent.putExtra(EXTRA_MAPPA, "" + evento.getLuogo());
                     intent.putExtra(EXTRA_NOME_EVENTO, "" + evento.getTitolo());
-                    intent.putExtra(EXTRA_ID_EVENTO, "" + evento.getId());
                     view.getContext().startActivity(intent);
                 }
             });

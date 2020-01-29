@@ -193,6 +193,12 @@
                 android:layout_marginTop="8dp"
                 android:textColor="#F5B91616" />
 
+            <ProgressBar
+                android:id="@+id/progressBarRegister"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/register_account"
                 android:layout_width="wrap_content"

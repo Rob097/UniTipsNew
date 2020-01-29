@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.unitipsnew.DatabaseHelper;
@@ -35,6 +36,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private ImageButton AlterImmagine;
@@ -50,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button Login;
     private Utente user;
     private int immagine;
+    ProgressBar progress;
     Bitmap img_bit;
     // Database Helper
     DatabaseHelper db;
@@ -60,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
@@ -80,6 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
         Info = findViewById(R.id.info_register);
         Registrati = findViewById(R.id.register_account);
         Login = findViewById(R.id.back_to_login1);
+        progress = findViewById(R.id.progressBarRegister);
+        progress.setVisibility(GONE);
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
         Registrati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progress.setVisibility(VISIBLE);
+                Registrati.setEnabled(false);
                 if (validate(db)) {
                     sp = getSharedPreferences("login", MODE_PRIVATE);
                     db.createUser(user);
@@ -99,7 +107,11 @@ public class RegisterActivity extends AppCompatActivity {
                     sp.edit().putLong("user", user.getMatricola()).apply();
                     Intent i = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(i);
+                }else{
+                    Registrati.setEnabled(true);
+                    progress.setVisibility(GONE);
                 }
+
             }
         });
 
@@ -121,6 +133,12 @@ public class RegisterActivity extends AppCompatActivity {
         String email = Email.getText().toString();
         String password = Password.getText().toString();
         String repeat = RipetiPassword.getText().toString();
+        Matricola.setBackgroundColor(Color.TRANSPARENT);
+        Nome.setBackgroundColor(Color.TRANSPARENT);
+        Cognome.setBackgroundColor(Color.TRANSPARENT);
+        Email.setBackgroundColor(Color.TRANSPARENT);
+        Password.setBackgroundColor(Color.TRANSPARENT);
+        RipetiPassword.setBackgroundColor(Color.TRANSPARENT);
 
         String info = "";
         boolean check = true, justmat = false, justemail = false;
@@ -183,24 +201,47 @@ public class RegisterActivity extends AppCompatActivity {
             Password.setBackgroundColor(Color.RED);
             RipetiPassword.setBackgroundColor(Color.RED);
         }
+        if (img_bit == null || bitmapToString(img_bit).equals("")) {
+            check = false;
+            counter++;
+            info = "Seleziona un'immagine valida";
+        }
 
         if (counter > 1) {
             info = "Più campi non sembrano essere corretti.";
         }
 
-        Bitmap resizedImg = getResizedBitmap(img_bit, 250,250);
-        //Immagine.setImageBitmap(img_bit);
-        String s = bitmapToString(resizedImg);
-
 
         if (check) {
-            user = new Utente(m, email, nome, cognome, password, s);
+
+            try {
+
+                int fattore;
+                if (img_bit.getWidth() * img_bit.getHeight() < 2100000) {
+                    fattore = 2;
+                } else if (img_bit.getWidth() * img_bit.getHeight() > 2100000 && img_bit.getWidth() * img_bit.getHeight() < 24500000) {
+                    fattore = 10;
+                } else {
+                    fattore = 20;
+                }
+                Bitmap resizedNewImage = getResizedBitmap(img_bit, img_bit.getWidth() / fattore, img_bit.getHeight() / fattore);
+                String s = bitmapToString(resizedNewImage);
+                user = new Utente(m, email, nome, cognome, password, s);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
         } else {
             if (justemail && !justmat) {
+                Email.setBackgroundColor(Color.RED);
                 info = "Esiste già un account con questa email";
             } else if (!justemail && justmat) {
+                Matricola.setBackgroundColor(Color.RED);
                 info = "Il numero di matricola è gia stato registrato.";
             } else if (justemail && justmat) {
+                Matricola.setBackgroundColor(Color.RED);
+                Email.setBackgroundColor(Color.RED);
                 info = "Ti sei già registrato con questo numero di matricola e questa email";
             }
             Info.setText(info);
@@ -209,25 +250,22 @@ public class RegisterActivity extends AppCompatActivity {
         return check;
     }
 
-    private String bitmapToString(Bitmap bitmap){
+    private String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        long lengthbmp = b.length;
-        if(lengthbmp / 1000000 >= 3.8){
-            return "";
-        }
+
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    public void openCamera(){
+    public void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, CAMERA_REQUEST);
         }
     }
 
-    public void openGallery(){
+    public void openGallery() {
         //lanch gallery request
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
@@ -244,7 +282,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (options[item].equals("Scatta una foto")) {
                     openCamera();
                 } else if (options[item].equals("Scegli dalla Galleria")) {
-                   openGallery();
+                    openGallery();
                 } else if (options[item].equals("Annulla")) {
                     dialog.dismiss();
                 }
@@ -257,26 +295,26 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
-            try{
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+            try {
                 Uri selectedImage = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(selectedImage);
                 img_bit = BitmapFactory.decodeStream(imageStream);
                 Immagine.setImageBitmap(img_bit);
 
-            }catch (IOException io){
+            } catch (IOException io) {
                 io.printStackTrace();
             }
         }
 
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
-            try{
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            try {
                 Bundle extras = data.getExtras();
                 Bitmap image = (Bitmap) extras.get("data");
                 img_bit = image;
                 Immagine.setImageBitmap(image);
 
-            }catch(Exception io){
+            } catch (Exception io) {
 
             }
         }

@@ -17,6 +17,7 @@ public class Corso {
     }
 
     public Corso(String nomeCorso, String nomeProfessore) {
+        this.id = -1;
         this.nomeCorso = nomeCorso;
         this.nomeProfessore = nomeProfessore;
     }
