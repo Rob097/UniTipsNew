@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -187,7 +188,10 @@ public class RegisterActivity extends AppCompatActivity {
             info = "Più campi non sembrano essere corretti.";
         }
 
-        String s = bitmapToString(img_bit);
+        Bitmap resizedImg = getResizedBitmap(img_bit, 250,250);
+        //Immagine.setImageBitmap(img_bit);
+        String s = bitmapToString(resizedImg);
+
 
         if (check) {
             user = new Utente(m, email, nome, cognome, password, s);
@@ -276,5 +280,22 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

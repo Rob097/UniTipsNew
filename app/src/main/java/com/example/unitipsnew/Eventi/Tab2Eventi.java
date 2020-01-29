@@ -1,6 +1,7 @@
 package com.example.unitipsnew.Eventi;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +40,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +51,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class Tab2Eventi extends Fragment {
+public class Tab2Eventi extends Fragment{
 
     List<Evento> eventi;
     ListView listview;
@@ -63,6 +66,10 @@ public class Tab2Eventi extends Fragment {
     final static int CAMERA_REQUEST = 101;
     private final static int PREFERED_WIDTH = 250;
     private final static int PREFERED_HEIGHT = 250;
+
+    Calendar c;
+    DatePickerDialog d;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -193,6 +200,26 @@ public class Tab2Eventi extends Fragment {
             @Override
             public void onClick(View v) {
                 openGallery();
+            }
+        });
+        Calendar cal;
+
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = c.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                final int giorno = cal.get(Calendar.DAY_OF_MONTH);
+
+                d = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int myear, int mmonth, int mdayOfMonth) {
+                        //Log.d("eventi",Integer.toString(year));
+                        data.setText(mdayOfMonth+"/"+mmonth+"/"+myear);
+                    }
+                },year,month,giorno);
+                d.show();
             }
         });
 
