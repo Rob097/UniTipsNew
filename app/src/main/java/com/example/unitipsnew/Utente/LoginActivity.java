@@ -58,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         //Stampa nei log tutti gli utenti registrati
         db = new DatabaseHelper(getApplicationContext());
 
+        /*List<Utente> utenti = db.getAllUsers();
+        for(Utente u : utenti){
+            db.deleteUser(u.getMatricola());
+        }*/
+
         //Utente u = new Utente(185035, "", "Roberto", "Dellantonio", "", R.drawable.user_image);
         //db.createUser(u);
 

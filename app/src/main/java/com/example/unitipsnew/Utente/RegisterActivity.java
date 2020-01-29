@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +24,7 @@ import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button Registrati;
     private Button Login;
     private Utente user;
+    private int immagine;
+    Bitmap img_bit;
     // Database Helper
     DatabaseHelper db;
     SharedPreferences sp;
@@ -183,10 +187,10 @@ public class RegisterActivity extends AppCompatActivity {
             info = "Più campi non sembrano essere corretti.";
         }
 
-        int immagine = RegisterActivity.this.getResources().getIdentifier("logo", "drawable", RegisterActivity.this.getPackageName());
+        String s = bitmapToString(img_bit);
 
         if (check) {
-            user = new Utente(m, email, nome, cognome, password, immagine);
+            user = new Utente(m, email, nome, cognome, password, s);
         } else {
             if (justemail && !justmat) {
                 info = "Esiste già un account con questa email";
@@ -201,6 +205,17 @@ public class RegisterActivity extends AppCompatActivity {
         return check;
     }
 
+    private String bitmapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte[] b = baos.toByteArray();
+        long lengthbmp = b.length;
+        if(lengthbmp / 1000000 >= 3.8){
+            return "";
+        }
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
     public void openCamera(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager())!=null){
@@ -210,9 +225,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void openGallery(){
         //lanch gallery request
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), GALLERY_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Seleziona immagine"), GALLERY_REQUEST);
     }
 
     private void selectImage() {
@@ -242,7 +257,8 @@ public class RegisterActivity extends AppCompatActivity {
             try{
                 Uri selectedImage = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                AlterImmagine.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                img_bit = BitmapFactory.decodeStream(imageStream);
+                Immagine.setImageBitmap(img_bit);
 
             }catch (IOException io){
                 io.printStackTrace();
@@ -253,8 +269,8 @@ public class RegisterActivity extends AppCompatActivity {
             try{
                 Bundle extras = data.getExtras();
                 Bitmap image = (Bitmap) extras.get("data");
-
-                AlterImmagine.setImageBitmap(image);
+                img_bit = image;
+                Immagine.setImageBitmap(image);
 
             }catch(Exception io){
 

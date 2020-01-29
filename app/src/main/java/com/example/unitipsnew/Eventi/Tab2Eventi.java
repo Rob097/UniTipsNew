@@ -222,13 +222,9 @@ public class Tab2Eventi extends Fragment {
         if(check){
             try {
 
-                Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.fuc_unitn);
-                Log.d("Event","added icon");
-                Log.d("Event","resized bitmap");
                 String s = bitmapToString(img_bit);
 
                 Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
-                Log.d("Event","created event");
                 db.createEvento(e);
             }catch(Exception e){
                 e.printStackTrace();
@@ -308,8 +304,6 @@ public class Tab2Eventi extends Fragment {
                 Uri selectedImage = data.getData();
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 img_bit = BitmapFactory.decodeStream(imageStream);
-                //Log.d("Event","im in activity result");
-
                 img_evento.setImageBitmap(img_bit);
 
             }catch (IOException io){
@@ -321,7 +315,7 @@ public class Tab2Eventi extends Fragment {
             try{
                 Bundle extras = data.getExtras();
                 Bitmap image = (Bitmap) extras.get("data");
-
+                img_bit = image;
                 img_evento.setImageBitmap(image);
 
             }catch(Exception io){

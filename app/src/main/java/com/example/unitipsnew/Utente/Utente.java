@@ -2,13 +2,12 @@ package com.example.unitipsnew.Utente;
 
 public class Utente {
     long matricola;
-    String email, nome, cognome, password;
-    int immagine;
+    String email, nome, cognome, password, immagine;
 
     public Utente() {
     }
 
-    public Utente(long matricola, String email, String nome, String cognome, String password, int immagine) {
+    public Utente(long matricola, String email, String nome, String cognome, String password, String immagine) {
         this.matricola = matricola;
         this.email = email;
         this.nome = nome;
@@ -57,11 +56,11 @@ public class Utente {
         this.password = password;
     }
 
-    public int getImmagine() {
+    public String getImmagine() {
         return immagine;
     }
 
-    public void setImmagine(int immagine) {
+    public void setImmagine(String immagine) {
         this.immagine = immagine;
     }
 

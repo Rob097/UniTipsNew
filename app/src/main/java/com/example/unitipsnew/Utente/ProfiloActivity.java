@@ -1,9 +1,11 @@
 package com.example.unitipsnew.Utente;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,16 +23,23 @@ import com.example.unitipsnew.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import static com.example.unitipsnew.Utente.RegisterActivity.CAMERA_REQUEST;
+import static com.example.unitipsnew.Utente.RegisterActivity.GALLERY_REQUEST;
 
 public class ProfiloActivity extends AppCompatActivity{
     // Database Helper
     DatabaseHelper db;
     SharedPreferences sp;
-    ImageView avatar;
+    ImageView Immagine;
+    Bitmap img_bit;
     private String Document_img1="";
     private static String REGISTER_REQUEST_URL="";
 
@@ -52,18 +61,20 @@ public class ProfiloActivity extends AppCompatActivity{
         EditText cognome = findViewById(R.id.cognome_utente);
         TextView email = findViewById(R.id.email_utente);
         final EditText password = findViewById(R.id.password_utente);
-        avatar = findViewById(R.id.avatar_utente);
+        Immagine = findViewById(R.id.avatar_utente);
 
         matricola.setText("" + utente.getMatricola());
         nome.setText(utente.getNome());
         cognome.setText(utente.getCognome());
         email.setText(utente.getEmail());
         password.setText(utente.getPassword());
-        avatar.setImageDrawable(this.getResources().getDrawable(utente.getImmagine()));
+
+        img_bit = stringToBitmap(utente.getImmagine());
+        Immagine.setImageBitmap(img_bit);
 
         Button delete = findViewById(R.id.delete_account);
         Button update = findViewById(R.id.update_account);
-        //ImageButton alter = findViewById(R.id.alter_avatar);
+        ImageButton alter = findViewById(R.id.alter_avatar);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +92,8 @@ public class ProfiloActivity extends AppCompatActivity{
                 u.setNome(((EditText) ProfiloActivity.this.findViewById(R.id.nome_utente)).getText().toString());
                 u.setCognome(((EditText) ProfiloActivity.this.findViewById(R.id.cognome_utente)).getText().toString());
                 //int rh= ProfiloActivity.this.getResources().getIdentifier("user_image", "drawable", ProfiloActivity.this.getPackageName());
-                u.setImmagine(utente.getImmagine());
+                String s = bitmapToString(img_bit);
+                u.setImmagine(s);
                 u.setEmail(utente.getEmail());
                 u.setPassword(password.getText().toString());
                 db.updateUser(u);
@@ -91,12 +103,12 @@ public class ProfiloActivity extends AppCompatActivity{
             }
         });
 
-        /*alter.setOnClickListener(new View.OnClickListener() {
+        alter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
-        });*/
+        });
 
 
         db.closeDB();
@@ -133,26 +145,57 @@ public class ProfiloActivity extends AppCompatActivity{
         alert.show();
     }
 
+    private Bitmap stringToBitmap(String string){
+        Bitmap bitmap = null;
+        try{
+            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    private String bitmapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte[] b = baos.toByteArray();
+        long lengthbmp = b.length;
+        if(lengthbmp / 1000000 >= 3.8){
+            return "";
+        }
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public void openCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
+    }
+
+    public void openGallery(){
+        //lanch gallery request
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Seleziona immagine"), GALLERY_REQUEST);
+    }
+
     private void selectImage() {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfiloActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Aggiungi un'immagine!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
-                }
-                else if (options[item].equals("Cancel")) {
+                if (options[item].equals("Scatta una foto")) {
+                    openCamera();
+                } else if (options[item].equals("Scegli dalla Galleria")) {
+                    openGallery();
+                } else if (options[item].equals("Annulla")) {
                     dialog.dismiss();
                 }
             }
@@ -160,26 +203,32 @@ public class ProfiloActivity extends AppCompatActivity{
         builder.show();
     }
 
-    public String BitMapToString(Bitmap userImage1) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        userImage1.compress(Bitmap.CompressFormat.PNG, 60, baos);
-        byte[] b = baos.toByteArray();
-        Document_img1 = Base64.encodeToString(b, Base64.DEFAULT);
-        return Document_img1;
-    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+            try{
+                Uri selectedImage = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+                img_bit = BitmapFactory.decodeStream(imageStream);
+                Immagine.setImageBitmap(img_bit);
 
-        float bitmapRatio = (float)width / (float) height;
-        if (bitmapRatio > 1) {
-            width = maxSize;
-            height = (int) (width / bitmapRatio);
-        } else {
-            height = maxSize;
-            width = (int) (height * bitmapRatio);
+            }catch (IOException io){
+                io.printStackTrace();
+            }
         }
-        return Bitmap.createScaledBitmap(image, width, height, true);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            try{
+                Bundle extras = data.getExtras();
+                Bitmap image = (Bitmap) extras.get("data");
+                img_bit = image;
+                Immagine.setImageBitmap(image);
+
+            }catch(Exception io){
+
+            }
+        }
     }
 }

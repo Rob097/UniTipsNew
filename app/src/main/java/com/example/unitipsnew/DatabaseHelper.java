@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_NOME + " TEXT," +
             KEY_COGNOME + " TEXT," +
             KEY_PASSWORD + " TEXT," +
-            KEY_AVATAR + " INTEGER" + ")";
+            KEY_AVATAR + " TEXT" + ")";
 
     // CORSO table create statement
     private static final String CREATE_TABLE_CORSO = "CREATE TABLE " + TABLE_CORSO + "(" +
@@ -249,7 +249,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             u.setNome(c.getString(c.getColumnIndex(KEY_NOME)));
             u.setCognome(c.getString(c.getColumnIndex(KEY_COGNOME)));
             u.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
-            u.setImmagine(c.getInt(c.getColumnIndex(KEY_AVATAR)));
+            u.setImmagine(c.getString(c.getColumnIndex(KEY_AVATAR)));
 
             return u;
         } catch (Exception e) {
@@ -277,6 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 u.setNome(c.getString(c.getColumnIndex(KEY_NOME)));
                 u.setCognome(c.getString(c.getColumnIndex(KEY_COGNOME)));
                 u.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
+                u.setImmagine(c.getString(c.getColumnIndex(KEY_AVATAR)));
 
                 // adding to users list
                 users.add(u);
