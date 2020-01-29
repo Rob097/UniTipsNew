@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class Tab2Eventi extends Fragment {
 
@@ -52,6 +55,9 @@ public class Tab2Eventi extends Fragment {
     DatabaseHelper db;
     ImageView img_evento;
     Bitmap img_bit;
+    ProgressBar progress;
+    private TextView Info;
+    boolean check = false;
 
     final static int GALLERY_REQUEST = 100;
     final static int CAMERA_REQUEST = 101;
@@ -131,16 +137,18 @@ public class Tab2Eventi extends Fragment {
         View layout = inflater.inflate(R.layout.new_evento_form, null);
 
         Button cancel = (Button) layout.findViewById(R.id.annulla_crea_evento);
-        Button create = (Button) layout.findViewById(R.id.conferma_crea_evento);
+        final Button create = (Button) layout.findViewById(R.id.conferma_crea_evento);
+        progress = (ProgressBar) layout.findViewById(R.id.progressBar);
         final EditText titolo = (EditText) layout.findViewById(R.id.titolo_nuovo_evento);
         final EditText testo = (EditText) layout.findViewById(R.id.testo_nuovo_evento);
         final EditText data = (EditText) layout.findViewById(R.id.data_nuovo_evento);
         final EditText luogo = (EditText) layout.findViewById(R.id.luogo_nuovo_evento);
         final int immagine = this.getContext().getResources().getIdentifier("careerfair_unitn", "drawable", this.getContext().getPackageName());
-        final TextView Info = (TextView) layout.findViewById(R.id.info_nuovo_evento);
+        Info = (TextView) layout.findViewById(R.id.info_nuovo_evento);
         final ImageView immagine_evento = (ImageView) layout.findViewById(R.id.immagine_nuovo_evento);
         img_evento = (ImageView) layout.findViewById(R.id.immagine_nuovo_evento);
-
+        progress.setIndeterminate(true);
+        progress.setVisibility(GONE);
         builder.setView(layout);
 
         final AlertDialog alertDialog = builder.create();
@@ -154,18 +162,30 @@ public class Tab2Eventi extends Fragment {
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                try {
-                    if(validate(titolo, testo, data, luogo, immagine_evento, Info, db)) {
-                        alertDialog.dismiss();
-                        final Intent intent = new Intent(view.getContext(), MainActivity.class);
-                        view.getContext().startActivity(intent);
-                        Toast.makeText(view.getContext(), "Evento aggiunto correttamente", Toast.LENGTH_SHORT).show();
+            public void onClick(final View view) {
+                progress.setVisibility(VISIBLE);
+                create.setEnabled(false);
+                check = false;
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            if (validate(titolo, testo, data, luogo, immagine_evento, Info, db)) {
+                                check = true;
+                                alertDialog.dismiss();
+                                final Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                view.getContext().startActivity(intent);
+                                Toast.makeText(view.getContext(), "Evento aggiunto correttamente", Toast.LENGTH_SHORT).show();
+                            }else{
+                                create.setEnabled(true);
+                                progress.setVisibility(GONE);
+                            }
+                        } catch (Exception e) {
+                            progress.setVisibility(GONE);
+                            e.printStackTrace();
+                            Log.d("Errore add Evento", "Errore nell'aggiunta dell'evento");
+                        }
                     }
-                } catch (Exception e) {
-                    Log.d("Errore add Evento", "Errore nell'aggiunta dell'evento");
-                }
+                }).start();
             }
         });
 
@@ -179,7 +199,8 @@ public class Tab2Eventi extends Fragment {
         alertDialog.show();
     }
 
-    private boolean validate(EditText titolo, EditText testo, EditText data, EditText luogo, ImageView immagine, TextView Info, DatabaseHelper db){
+    private boolean validate(EditText titolo, EditText testo, EditText data, EditText luogo, ImageView immagine, TextView Info, DatabaseHelper db) {
+
         String titoloS = titolo.getText().toString();
         String testoS = testo.getText().toString();
         String dataS = data.getText().toString();
@@ -190,53 +211,57 @@ public class Tab2Eventi extends Fragment {
         String info = "";
 
 
-        if(titoloS == null || titoloS.equals("")){
+        if (titoloS == null || titoloS.equals("")) {
             check = false;
             counter++;
             info = "Il titolo non sembra essere corretto";
             titolo.setBackgroundColor(Color.RED);
         }
-        if(testoS == null || testoS.equals("")){
+        if (testoS == null || testoS.equals("")) {
             check = false;
             counter++;
             info = "Il testo non sembra essere corretto";
             testo.setBackgroundColor(Color.RED);
         }
-        if(dataS == null || dataS.equals("") || !checkDateFormat(dataS)){
+        if (dataS == null || dataS.equals("") || !checkDateFormat(dataS)) {
             check = false;
             counter++;
             info = "La data non sembra essere corretta. Ricorda che un evento non può essere nel passato";
             data.setBackgroundColor(Color.RED);
         }
-        if(luogoS == null || luogoS.equals("")){
+        if (luogoS == null || luogoS.equals("")) {
             check = false;
             counter++;
             info = "Il luogo non sembra essere corretto";
             luogo.setBackgroundColor(Color.RED);
         }
-        if(bitmapToString(img_bit).equals("")){
+        if (img_bit != null && bitmapToString(img_bit).equals("")) {
             check = false;
             counter++;
             info = "L'immagine scelta è troppo pesante, il limite è 1 MB";
         }
-        if(check){
+        if (check) {
             try {
 
-                //Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.fuc_unitn);
-                Bitmap resizedNewImage = getResizedBitmap(img_bit, 250,250);
-                Log.d("Event","added icon");
-                Log.d("Event","resized bitmap");
+                int fattore;
+                if (img_bit.getWidth() * img_bit.getHeight() < 2100000) {
+                    fattore = 2;
+                } else if (img_bit.getWidth() * img_bit.getHeight() > 2100000 && img_bit.getWidth() * img_bit.getHeight() < 24500000) {
+                    fattore = 10;
+                } else {
+                    fattore = 20;
+                }
+                Bitmap resizedNewImage = getResizedBitmap(img_bit, img_bit.getWidth() / fattore, img_bit.getHeight() / fattore);
                 String s = bitmapToString(resizedNewImage);
-
                 Evento e = new Evento(0, s, new ArrayList<Long>(), titoloS, testoS, luogoS, dataS);
                 db.createEvento(e);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
             return true;
-        }else{
-            if(counter > 1) {
+        } else {
+            if (counter > 1) {
                 info = "Più parametri non sembrano essere corretti";
             }
             Info.setText(info);
@@ -244,41 +269,41 @@ public class Tab2Eventi extends Fragment {
         }
     }
 
-    public Boolean checkDateFormat(String date){
+    public Boolean checkDateFormat(String date) {
         if (date == null || !date.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$"))
             return false;
-        SimpleDateFormat format=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date d = format.parse(date);
-            if(d.after(new Date())) {
+            if (d.after(new Date())) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (ParseException e){
+        } catch (ParseException e) {
             return false;
         }
     }
 
-    private String bitmapToString(Bitmap bitmap){
+    private String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         long lengthbmp = b.length;
-        if(lengthbmp / 1000000 >= 3.8){
+        /*if(lengthbmp / 1000000 >= 3.8){
             return "";
-        }
+        }*/
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    public void openCamera(){
+    public void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getActivity().getPackageManager())!=null){
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(intent, CAMERA_REQUEST);
         }
     }
 
-    public void openGallery(){
+    public void openGallery() {
         final CharSequence[] options = {"Scatta una foto", "Scegli dalla Galleria", "Annulla"};
         AlertDialog.Builder builder = new AlertDialog.Builder(Tab2Eventi.this.getContext());
         builder.setTitle("Aggiungi un'immagine!");
@@ -303,41 +328,41 @@ public class Tab2Eventi extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK){
-            try{
+        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            try {
                 Uri selectedImage = data.getData();
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 img_bit = BitmapFactory.decodeStream(imageStream);
                 img_evento.setImageBitmap(img_bit);
 
-            }catch (IOException io){
+            } catch (IOException io) {
                 io.printStackTrace();
             }
         }
 
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
-            try{
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            try {
                 Bundle extras = data.getExtras();
                 Bitmap image = (Bitmap) extras.get("data");
                 img_bit = image;
                 img_evento.setImageBitmap(image);
 
-            }catch(Exception io){
+            } catch (Exception io) {
 
             }
         }
     }
 
-    public Bitmap resizeImage(Bitmap bitmap){
+    public Bitmap resizeImage(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        float scaleWidth = 250/width;
-        float scaleHeight = 250/height;
+        float scaleWidth = 250 / width;
+        float scaleHeight = 250 / height;
 
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth,scaleHeight);
+        matrix.postScale(scaleWidth, scaleHeight);
 
-        Bitmap resize = Bitmap.createBitmap(bitmap,0,0,width,height,matrix,false);
+        Bitmap resize = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
         resize.recycle();
         return resize;
 

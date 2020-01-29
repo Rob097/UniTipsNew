@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
 
-
+        //db.onUpgrade(db.getReadableDatabase(), 1, 1);
         //Commentare in databaseHelper le righe delle tabelle user, corso e recensione in oncreate, decommentare il seguente codice, eseguire l'app, commentare di nuovo il codice, decommentare le righe in databasehelper
 
         //db.onCreate(db.getReadableDatabase());
