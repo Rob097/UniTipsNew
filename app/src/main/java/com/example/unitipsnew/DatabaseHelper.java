@@ -16,7 +16,10 @@ import com.example.unitipsnew.Utente.Utente;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -235,8 +238,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "
                     + KEY_MATRICOLA + " = " + matricola;
-
-            Log.e(LOG, selectQuery);
 
             Cursor c = db.rawQuery(selectQuery, null);
 
@@ -507,8 +508,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_RECENSIONE + " WHERE "
                 + KEY_ID_RECENSIONE + " = " + recensione_id;
 
-        Log.e(LOG, selectQuery);
-
         Cursor c = db.rawQuery(selectQuery, null);
 
         if (c != null)
@@ -561,8 +560,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Recensione> recensioni = new ArrayList<Recensione>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_RECENSIONE + " WHERE " + KEY_ID_CORSO_RECENSIONE + " = " + corso_id;
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -783,6 +780,102 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 return (o2.getId() - o1.getId());
             }
         });
+        return eventi;
+    }
+
+
+    /*
+     * getting all eventi of day
+     * */
+    public List<Evento> getAllEventiOfDay(Date data) {
+        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> eventi = new ArrayList<>();
+
+        allEventi = getAllEventi();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+
+        for(Evento e : allEventi){
+            try {
+
+                date = formatter.parse(e.getData());
+                if(date.equals(data)){
+                    eventi.add(e);
+                }
+
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return eventi;
+    }
+
+    /*
+     * getting all eventi of week
+     * */
+    public List<Evento> getAllEventiOfweek(Date data) {
+        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> eventi = new ArrayList<>();
+
+        allEventi = getAllEventi();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        LocalDate localDate, localData = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        int year, week, weekData = cal.get(Calendar.WEEK_OF_YEAR), yearData = localData.getYear();
+
+        for(Evento e : allEventi){
+            try {
+
+                date = formatter.parse(e.getData());
+                localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                year = localDate.getYear();
+                cal = Calendar.getInstance(); cal.setTime(date);
+                week = cal.get(Calendar.WEEK_OF_YEAR);
+                if(week == weekData && year == yearData){
+                    eventi.add(e);
+                }
+
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return eventi;
+    }
+
+    /*
+     * getting all eventi of month
+     * */
+    public List<Evento> getAllEventiOfMonth(Date data) {
+        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> eventi = new ArrayList<>();
+
+        allEventi = getAllEventi();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        LocalDate localDate, localData = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int month, monthData = localData.getMonthValue();
+        int year, yearData = localData.getYear();
+
+        for(Evento e : allEventi){
+            try {
+
+                date = formatter.parse(e.getData());
+                localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                month = localDate.getMonthValue();
+                year = localData.getYear();
+                if(month == monthData && year == yearData){
+                    eventi.add(e);
+                }
+
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        }
+
         return eventi;
     }
 
@@ -1078,8 +1171,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Commento> commenti = new ArrayList<Commento>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_COMMENTO + " WHERE " + KEY_ID_TIP_COMMENTO + " = " + tip_id;
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);

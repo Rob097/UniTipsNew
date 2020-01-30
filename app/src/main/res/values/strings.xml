@@ -61,4 +61,7 @@
     <string name="filtra">Filtra</string>
     <string name="nome_professore">Nome del Professore</string>
     <string name="numero_recensioni">Numero di Recensioni</string>
+    <string name="eventi_giorno">Per Giorno</string>
+    <string name="eventi_settimana">Per Settimana</string>
+    <string name="eventi_mese">Per Mese</string>
 </resources>

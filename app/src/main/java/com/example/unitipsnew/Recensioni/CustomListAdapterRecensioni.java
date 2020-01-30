@@ -31,7 +31,6 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
     public CustomListAdapterRecensioni(Context context, int resource, List<Corso> courses) {
         super(context, resource, courses);
-        Log.d("Courses", courses.toString());
         this.context = context;
         this.resourses = resource;
         this.courses = courses;

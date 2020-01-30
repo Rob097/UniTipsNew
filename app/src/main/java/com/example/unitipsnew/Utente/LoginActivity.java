@@ -72,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         check = sp.getBoolean("remember", false);
         sp = getSharedPreferences("login", MODE_PRIVATE);
         long l = sp.getLong("user", 0);
-        Log.d("user", "#######" + l);
-        Log.d("remember", "" + check);
+
         if(check == true && l != 0){
             sp.edit().putBoolean("logged", true).apply();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
