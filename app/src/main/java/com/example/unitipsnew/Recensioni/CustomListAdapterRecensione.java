@@ -71,13 +71,13 @@ public class CustomListAdapterRecensione extends ArrayAdapter<Recensione> {
         titolo.setText(r.getTitle());
         testo.setText(r.getText());
         data.setText(r.getDate());
-        if(u != null) {
+        if (u != null) {
             utente.setText(u.getNome() + " " + u.getCognome());
-        }else{
-            utente.setText("Studente sconosciuto");
+        } else {
+            utente.setText("Anonimo");
         }
 
-        if(r.getMatricola() == u.getMatricola()){
+        if (u != null && r.getMatricola() == u.getMatricola()) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,7 +90,7 @@ public class CustomListAdapterRecensione extends ArrayAdapter<Recensione> {
     }
 
     private void openAlterRecensione(final Recensione r) {
-        if(r.getMatricola() == u.getMatricola()) {
+        if (r.getMatricola() == u.getMatricola()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
 
             //Create a custom layout for the dialog box

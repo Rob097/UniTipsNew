@@ -3,6 +3,7 @@ package com.example.unitipsnew.Recensioni;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class CustomListAdapterRecensioni extends ArrayAdapter<Corso> {
 
     public CustomListAdapterRecensioni(Context context, int resource, List<Corso> courses) {
         super(context, resource, courses);
-
+        Log.d("Courses", courses.toString());
         this.context = context;
         this.resourses = resource;
         this.courses = courses;

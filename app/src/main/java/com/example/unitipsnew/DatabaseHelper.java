@@ -298,9 +298,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         long lastId = 7;
-        if(corso.getId() != -1){
+        if (corso.getId() != -1) {
             lastId = corso.getId() - 1;
-        }else if (!getAllCorsi().isEmpty()) {
+        } else if (!getAllCorsi().isEmpty()) {
             lastId = getAllCorsi().get(getAllCorsi().size() - 1).getId();
         }
 
@@ -325,8 +325,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_CORSO + " WHERE "
                 + KEY_ID_CORSO + " = " + corso_id;
 
-        Log.e(LOG, selectQuery);
-
         Cursor c = db.rawQuery(selectQuery, null);
 
         if (c != null)
@@ -348,8 +346,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Corso> corsi = new ArrayList<Corso>();
         String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
 
-        Log.e(LOG, selectQuery);
-
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -364,6 +360,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 // adding to corso list
                 corsi.add(corso);
+            } while (c.moveToNext());
+        }
+
+        return corsi;
+    }
+
+    /*
+     * getting all corsi with match name
+     * */
+    public List<Corso> getCorsiNome(String nome) {
+        List<Corso> corsi = new ArrayList<Corso>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Corso corso = new Corso();
+                corso.setId(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
+                corso.setNomeCorso(c.getString(c.getColumnIndex(KEY_NOME_CORSO)));
+                corso.setNomeProfessore(c.getString(c.getColumnIndex(KEY_PROFESSORE)));
+                corso.setNumeroRecensioni(c.getLong(c.getColumnIndex(KEY_RECENSIONI)));
+
+                // adding to corso list
+
+                if (corso.getNomeCorso().toLowerCase().contains(nome.toLowerCase())) {
+                    corsi.add(corso);
+                }
+            } while (c.moveToNext());
+        }
+
+        return corsi;
+    }
+
+    /*
+     * getting all corsi with match prof
+     * */
+    public List<Corso> getCorsiProf(String nome) {
+        List<Corso> corsi = new ArrayList<Corso>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Corso corso = new Corso();
+                corso.setId(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
+                corso.setNomeCorso(c.getString(c.getColumnIndex(KEY_NOME_CORSO)));
+                corso.setNomeProfessore(c.getString(c.getColumnIndex(KEY_PROFESSORE)));
+                corso.setNumeroRecensioni(c.getLong(c.getColumnIndex(KEY_RECENSIONI)));
+
+                // adding to corso list
+
+                if (corso.getNomeProfessore().toLowerCase().contains(nome.toLowerCase())) {
+                    corsi.add(corso);
+                }
             } while (c.moveToNext());
         }
 
@@ -710,9 +766,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     Date date = format.parse(evento.getData());
-                    if(date.before(new Date())){
+                    if (date.before(new Date())) {
                         deleteEvento(evento.getId());
-                    }else{
+                    } else {
                         // adding to users list
                         eventi.add(evento);
                     }

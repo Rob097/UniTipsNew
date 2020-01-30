@@ -125,6 +125,14 @@ public class ProfiloActivity extends AppCompatActivity{
 
             public void onClick(DialogInterface dialog, int which) {
                 db.deleteUser(utente.getMatricola());
+                sp = ProfiloActivity.this.getSharedPreferences("login", MODE_PRIVATE);
+                sp.edit().putBoolean("logged", false).apply();
+                sp.edit().putLong("user", 0).apply();
+
+                sp = ProfiloActivity.this.getSharedPreferences("checkbox", MODE_PRIVATE);
+                sp.edit().putBoolean("remember", false).apply();
+
+
                 Toast.makeText(view.getContext(), "Account Eliminato", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(ProfiloActivity.this, LoginActivity.class);
                 startActivity(i);

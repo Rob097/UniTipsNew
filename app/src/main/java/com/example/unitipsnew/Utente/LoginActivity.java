@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //Controllo se l'utente aveva selezionato il remember me
         sp = getSharedPreferences("checkbox", MODE_PRIVATE);
-        long l = sp.getLong("user", 01);
 
         //Stampa nei log tutti gli utenti registrati
         db = new DatabaseHelper(getApplicationContext());
@@ -69,7 +68,13 @@ public class LoginActivity extends AppCompatActivity {
         //Se i dati coincidono lo faccio passare alla main activity altrimenti gli chideo di autenticarsiù
         //sp.edit().putLong("user", 1).apply();
         //sp.edit().putBoolean("remember", true).apply();
-        if(sp.getBoolean("remember", true) == true && l != 0){
+        boolean check;
+        check = sp.getBoolean("remember", false);
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        long l = sp.getLong("user", 0);
+        Log.d("user", "#######" + l);
+        Log.d("remember", "" + check);
+        if(check == true && l != 0){
             sp.edit().putBoolean("logged", true).apply();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);

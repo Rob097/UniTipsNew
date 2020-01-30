@@ -75,7 +75,7 @@ public class TipsActivity extends AppCompatActivity {
                 if (u != null) {
                     utenteC.setText(u.getNome() + " " + u.getCognome());
                 } else {
-                    utenteC.setText("Studente sconosciuto");
+                    utenteC.setText("Anonimo");
                 }
                 testoC.setText(c.getTesto());
                 dataC.setText(c.getData());
