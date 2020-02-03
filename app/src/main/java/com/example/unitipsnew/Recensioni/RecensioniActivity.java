@@ -3,7 +3,6 @@ package com.example.unitipsnew.Recensioni;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,8 +19,6 @@ import android.widget.Toast;
 import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
-import com.example.unitipsnew.Utente.LoginActivity;
-import com.example.unitipsnew.Utente.ProfiloActivity;
 import com.example.unitipsnew.Utente.Utente;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -47,14 +44,14 @@ public class RecensioniActivity extends AppCompatActivity {
 
         utente = db.getUser(sp.getLong("user", 0));
 
-        FloatingActionButton btn_add_recensione_form = (FloatingActionButton) findViewById(R.id.fab_show_addrecensione_form);
+        FloatingActionButton btn_add_recensione_form = findViewById(R.id.fab_show_addrecensione_form);
 
-        ListView mListView = (ListView) findViewById(R.id.recensioni_list);
+        ListView mListView = findViewById(R.id.recensioni_list);
         //creo una nuova finestra
         Intent intent = getIntent();
         try {
             corso = db.getCorso(Long.parseLong(intent.getStringExtra(CustomListAdapterRecensioni.EXTRA_CORSO)));
-            recens = new ArrayList<Recensione>();
+            recens = new ArrayList<>();
             String nome_corso = corso.getNomeCorso();
             String nome_professore = corso.getNomeProfessore();
             long numero_recensioni = corso.getNumeroRecensioni();
@@ -64,7 +61,7 @@ public class RecensioniActivity extends AppCompatActivity {
 
             recens = db.getAllRecensionesByCorso(corso.getId());
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarmia);
+            Toolbar toolbar = findViewById(R.id.toolbarmia);
             toolbar.setTitle(nome_corso);
 
             CustomListAdapterRecensione adapter = new CustomListAdapterRecensione(this, R.layout.list_item_recensione_corso, recens);
@@ -97,10 +94,10 @@ public class RecensioniActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.add_recensione, null);
 
-        Button cancel = (Button) layout.findViewById(R.id.button_cancel);
-        Button create = (Button) layout.findViewById(R.id.button);
-        final EditText titolo = (EditText) layout.findViewById(R.id.add_recensione_title);
-        final EditText testo = (EditText) layout.findViewById(R.id.add_recensione_text);
+        Button cancel = layout.findViewById(R.id.button_cancel);
+        Button create = layout.findViewById(R.id.button);
+        final EditText titolo = layout.findViewById(R.id.add_recensione_title);
+        final EditText testo = layout.findViewById(R.id.add_recensione_text);
         builder.setView(layout);
 
         final AlertDialog alertDialog = builder.create();

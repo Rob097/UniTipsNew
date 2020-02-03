@@ -20,8 +20,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.unitipsnew.Eventi.CustomListAdapterEventi;
-import com.example.unitipsnew.Eventi.EventiActivity;
 import com.example.unitipsnew.Eventi.Evento;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -200,7 +198,6 @@ public class allEventsMap extends FragmentActivity implements OnMapReadyCallback
 
         for(Evento e : eventi) {
 
-            Intent intent = getIntent();
             Geocoder geocoder = new Geocoder(this);
             List<Address> addresses = null;
             double latitude = 0, longitude = 0;
@@ -273,9 +270,7 @@ public class allEventsMap extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
@@ -430,7 +425,6 @@ public class allEventsMap extends FragmentActivity implements OnMapReadyCallback
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
-                getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());

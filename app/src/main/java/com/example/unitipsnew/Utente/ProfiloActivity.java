@@ -22,7 +22,6 @@ import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -40,8 +39,6 @@ public class ProfiloActivity extends AppCompatActivity{
     SharedPreferences sp;
     ImageView Immagine;
     Bitmap img_bit;
-    private String Document_img1="";
-    private static String REGISTER_REQUEST_URL="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +50,7 @@ public class ProfiloActivity extends AppCompatActivity{
 
         final Utente utente = db.getUser(sp.getLong("user", 0));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarmia);
+        Toolbar toolbar = findViewById(R.id.toolbarmia);
         toolbar.setTitle(utente.nome);
 
         TextView matricola = findViewById(R.id.matricola_utente);
@@ -109,10 +106,7 @@ public class ProfiloActivity extends AppCompatActivity{
                 selectImage();
             }
         });
-
-
         db.closeDB();
-
     }
 
     private void openAreYouSure(final Utente utente, final View view){

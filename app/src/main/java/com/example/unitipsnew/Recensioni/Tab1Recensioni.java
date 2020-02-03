@@ -68,9 +68,9 @@ public class Tab1Recensioni extends Fragment {
         LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.filter_corsi_choose, null);
 
-        final TextView corso = (TextView) layout.findViewById(R.id.corso_choose);
-        final TextView prof = (TextView) layout.findViewById(R.id.professore_choose);
-        final Button annulla = (Button) layout.findViewById(R.id.annulla_filter_corsi);
+        final TextView corso = layout.findViewById(R.id.corso_choose);
+        final TextView prof = layout.findViewById(R.id.professore_choose);
+        final Button annulla = layout.findViewById(R.id.annulla_filter_corsi);
 
         builder.setView(layout);
         final AlertDialog alertDialog = builder.create();
@@ -108,9 +108,9 @@ public class Tab1Recensioni extends Fragment {
         final LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.filter_corso, null);
 
-        final EditText corso = (EditText) layout.findViewById(R.id.nome_del_corso);
-        final Button aggiorna = (Button) layout.findViewById(R.id.aggiorna_filter_corso);
-        final Button annulla = (Button) layout.findViewById(R.id.annulla_filter_corso);
+        final EditText corso = layout.findViewById(R.id.nome_del_corso);
+        final Button aggiorna = layout.findViewById(R.id.aggiorna_filter_corso);
+        final Button annulla = layout.findViewById(R.id.annulla_filter_corso);
 
         builder.setView(layout);
         final AlertDialog alertDialog = builder.create();
@@ -143,10 +143,10 @@ public class Tab1Recensioni extends Fragment {
         final LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.filter_corso, null);
 
-        final EditText prof = (EditText) layout.findViewById(R.id.nome_del_corso);
-        final Button aggiorna = (Button) layout.findViewById(R.id.aggiorna_filter_corso);
-        final Button annulla = (Button) layout.findViewById(R.id.annulla_filter_corso);
-        final TextView titolo = (TextView) layout.findViewById(R.id.tiolo_filter_corso);
+        final EditText prof = layout.findViewById(R.id.nome_del_corso);
+        final Button aggiorna = layout.findViewById(R.id.aggiorna_filter_corso);
+        final Button annulla = layout.findViewById(R.id.annulla_filter_corso);
+        final TextView titolo = layout.findViewById(R.id.tiolo_filter_corso);
         titolo.setText("Nome del Professore");
         prof.setHint("Nome del Professore");
 
@@ -182,7 +182,7 @@ public class Tab1Recensioni extends Fragment {
         final LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.tab1recensioni, null);
 
-        ListView listview1 = (ListView) layout.findViewById(R.id.listviewRecensioni);
+        ListView listview1 = layout.findViewById(R.id.listviewRecensioni);
         CustomListAdapterRecensioni adapter = new CustomListAdapterRecensioni(layout.getContext(), R.layout.list_item_recensioni, corsi);
         listview1.setAdapter(adapter);
         FloatingActionButton fab = layout.findViewById(R.id.fab_filter_recensioni);

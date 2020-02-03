@@ -3,7 +3,6 @@ package com.example.unitipsnew.Recensioni;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +18,7 @@ import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
 import com.example.unitipsnew.Utente.Utente;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +53,7 @@ public class CustomListAdapterRecensione extends ArrayAdapter<Recensione> {
         db = new DatabaseHelper(getContext());
         sp = this.getContext().getSharedPreferences("login", MODE_PRIVATE);
 
-        u = (Utente) db.getUser(sp.getLong("user", 0));
+        u = db.getUser(sp.getLong("user", 0));
 
         View view = inflater.inflate(resourses, null);
 
@@ -97,12 +93,12 @@ public class CustomListAdapterRecensione extends ArrayAdapter<Recensione> {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.add_recensione, null);
 
-            Button cancel = (Button) layout.findViewById(R.id.button_cancel);
-            Button create = (Button) layout.findViewById(R.id.button);
-            final EditText titolo = (EditText) layout.findViewById(R.id.add_recensione_title);
-            final EditText testo = (EditText) layout.findViewById(R.id.add_recensione_text);
+            Button cancel = layout.findViewById(R.id.button_cancel);
+            Button create = layout.findViewById(R.id.button);
+            final EditText titolo = layout.findViewById(R.id.add_recensione_title);
+            final EditText testo = layout.findViewById(R.id.add_recensione_text);
             builder.setView(layout);
-            TextView h1 = (TextView) layout.findViewById(R.id.txt_title_window);
+            TextView h1 = layout.findViewById(R.id.txt_title_window);
 
             h1.setText("Aggiorna Recensione");
             create.setText("Aggiorna");

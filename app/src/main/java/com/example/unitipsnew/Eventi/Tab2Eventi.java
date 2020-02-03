@@ -11,11 +11,9 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,15 +29,10 @@ import android.widget.Toast;
 import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
-import com.example.unitipsnew.Recensioni.Recensione;
-import com.example.unitipsnew.Utente.RegisterActivity;
 import com.example.unitipsnew.allEventsMap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -69,14 +62,12 @@ public class Tab2Eventi extends Fragment {
     ImageView img_evento;
     Bitmap img_bit;
     ProgressBar progress;
-    private TextView Info;
+    TextView Info;
     boolean check = false;
     Date data = new Date();
 
     final static int GALLERY_REQUEST = 100;
     final static int CAMERA_REQUEST = 101;
-    private final static int PREFERED_WIDTH = 250;
-    private final static int PREFERED_HEIGHT = 250;
 
     Calendar c;
     DatePickerDialog d;
@@ -89,12 +80,7 @@ public class Tab2Eventi extends Fragment {
         db = new DatabaseHelper(getActivity());
         eventi = db.getAllEventi();
 
-        /*eventi.add(new Evento("Festa Universitaria Centrale", "Trento", new Timestamp(new Date().getTime()), R.drawable.fuc_unitn, 1));
-        eventi.add(new Evento("Career Fair", "Trento", new Timestamp(new Date().getTime()), R.drawable.careerfair_unitn, 15));
-        eventi.add(new Evento("Festa Universitaria Centrale", "Trento", new Timestamp(new Date().getTime()), R.drawable.fuc_unitn, 7));
-        eventi.add(new Evento("Career Fair", "Trento", new Timestamp(new Date().getTime()), R.drawable.careerfair_unitn, 0));*/
-
-        listview = (ListView) rootView.findViewById(R.id.listviewEventi);
+        listview = rootView.findViewById(R.id.listviewEventi);
         CustomListAdapterEventi adapterEventi = new CustomListAdapterEventi(this.getContext(), R.layout.list_item_eventi, eventi);
         listview.setAdapter(adapterEventi);
 
@@ -106,7 +92,7 @@ public class Tab2Eventi extends Fragment {
             }
         });
 
-        final Button mappa = (Button) rootView.findViewById(R.id.button_all_map);
+        final Button mappa = rootView.findViewById(R.id.button_all_map);
 
         mappa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,10 +139,10 @@ public class Tab2Eventi extends Fragment {
         LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.filtra_eventi, null);
 
-        final TextView giorno = (TextView) layout.findViewById(R.id.giorno_choose);
-        final TextView settimana = (TextView) layout.findViewById(R.id.settimana_choose);
-        final TextView mese = (TextView) layout.findViewById(R.id.mese_choose);
-        final Button annulla = (Button) layout.findViewById(R.id.annulla_filter_corsi);
+        final TextView giorno = layout.findViewById(R.id.giorno_choose);
+        final TextView settimana = layout.findViewById(R.id.settimana_choose);
+        final TextView mese = layout.findViewById(R.id.mese_choose);
+        final Button annulla = layout.findViewById(R.id.annulla_filter_corsi);
 
         builder.setView(layout);
         final AlertDialog alertDialog = builder.create();
@@ -200,10 +186,10 @@ public class Tab2Eventi extends Fragment {
         final LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.eventi_giorno, null);
 
-        final CalendarView calendario = (CalendarView) layout.findViewById(R.id.calendarView_eventi);
-        final Button aggiorna = (Button) layout.findViewById(R.id.aggiorna_filter_eventi);
-        final Button annulla = (Button) layout.findViewById(R.id.annulla_filter_eventi);
-        TextView titolo = (TextView) layout.findViewById(R.id.titolo_calendar);
+        final CalendarView calendario = layout.findViewById(R.id.calendarView_eventi);
+        final Button aggiorna = layout.findViewById(R.id.aggiorna_filter_eventi);
+        final Button annulla = layout.findViewById(R.id.annulla_filter_eventi);
+        TextView titolo = layout.findViewById(R.id.titolo_calendar);
         switch (tipo) {
             case ("giorno"):
                 titolo.setText("Scegli un giorno");
@@ -262,18 +248,17 @@ public class Tab2Eventi extends Fragment {
     private void openResults(List<Evento> eventi, String tipo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatterMont1h = new SimpleDateFormat("MMMM yyyy");
         DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("MMMM yyyy").withLocale(Locale.ITALIAN);
         //Create a custom layout for the dialog box
         final LayoutInflater inflater1 = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater1.inflate(R.layout.tab2eventi, null);
 
-        ListView listview1 = (ListView) layout.findViewById(R.id.listviewEventi);
+        ListView listview1 =  layout.findViewById(R.id.listviewEventi);
         CustomListAdapterEventi adapter = new CustomListAdapterEventi(layout.getContext(), R.layout.list_item_eventi, eventi);
         listview1.setAdapter(adapter);
         FloatingActionButton fab = layout.findViewById(R.id.fab_filter_eventi);
         fab.hide();
-        Button mappa = (Button) layout.findViewById(R.id.button_all_map);
+        Button mappa = layout.findViewById(R.id.button_all_map);
         mappa.setVisibility(GONE);
 
         builder.setView(layout);
@@ -307,17 +292,16 @@ public class Tab2Eventi extends Fragment {
         LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.new_evento_form, null);
 
-        Button cancel = (Button) layout.findViewById(R.id.annulla_crea_evento);
-        final Button create = (Button) layout.findViewById(R.id.conferma_crea_evento);
-        progress = (ProgressBar) layout.findViewById(R.id.progressBar);
-        final EditText titolo = (EditText) layout.findViewById(R.id.titolo_nuovo_evento);
-        final EditText testo = (EditText) layout.findViewById(R.id.testo_nuovo_evento);
-        final TextView data = (TextView) layout.findViewById(R.id.data_nuovo_evento);
-        final EditText luogo = (EditText) layout.findViewById(R.id.luogo_nuovo_evento);
-        final int immagine = this.getContext().getResources().getIdentifier("careerfair_unitn", "drawable", this.getContext().getPackageName());
-        Info = (TextView) layout.findViewById(R.id.info_nuovo_evento);
-        final ImageView immagine_evento = (ImageView) layout.findViewById(R.id.immagine_nuovo_evento);
-        img_evento = (ImageView) layout.findViewById(R.id.immagine_nuovo_evento);
+        Button cancel = layout.findViewById(R.id.annulla_crea_evento);
+        final Button create = layout.findViewById(R.id.conferma_crea_evento);
+        progress = layout.findViewById(R.id.progressBar);
+        final EditText titolo = layout.findViewById(R.id.titolo_nuovo_evento);
+        final EditText testo = layout.findViewById(R.id.testo_nuovo_evento);
+        final TextView data = layout.findViewById(R.id.data_nuovo_evento);
+        final EditText luogo = layout.findViewById(R.id.luogo_nuovo_evento);
+        Info = layout.findViewById(R.id.info_nuovo_evento);
+        final ImageView immagine_evento = layout.findViewById(R.id.immagine_nuovo_evento);
+        img_evento = layout.findViewById(R.id.immagine_nuovo_evento);
         progress.setIndeterminate(true);
         progress.setVisibility(GONE);
         builder.setView(layout);
@@ -494,9 +478,6 @@ public class Tab2Eventi extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         long lengthbmp = b.length;
-        /*if(lengthbmp / 1000000 >= 3.8){
-            return "";
-        }*/
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
@@ -555,21 +536,6 @@ public class Tab2Eventi extends Fragment {
 
             }
         }
-    }
-
-    public Bitmap resizeImage(Bitmap bitmap) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float scaleWidth = 250 / width;
-        float scaleHeight = 250 / height;
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        Bitmap resize = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        resize.recycle();
-        return resize;
-
     }
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {

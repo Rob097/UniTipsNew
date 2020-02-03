@@ -14,11 +14,7 @@ import android.widget.Toast;
 import com.example.unitipsnew.DatabaseHelper;
 import com.example.unitipsnew.MainActivity;
 import com.example.unitipsnew.R;
-import com.example.unitipsnew.Utente.Utente;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;

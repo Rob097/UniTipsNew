@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.unitipsnew.Eventi.Evento;
 import com.example.unitipsnew.Recensioni.Corso;
@@ -27,9 +26,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-    // Logcat tag
-    private static final String LOG = "DatabaseHelper";
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -195,9 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_AVATAR, user.getImmagine());
 
         // insert row
-        long user_id = db.insert(TABLE_USER, null, values);
-
-        return user_id;
+        return db.insert(TABLE_USER, null, values);
     }
 
     /*
@@ -240,18 +234,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_MATRICOLA + " = " + matricola;
 
             Cursor c = db.rawQuery(selectQuery, null);
-
-            if (c != null)
-                c.moveToFirst();
-
             Utente u = new Utente();
-            u.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA)));
-            u.setEmail(c.getString(c.getColumnIndex(KEY_EMAIL)));
-            u.setNome(c.getString(c.getColumnIndex(KEY_NOME)));
-            u.setCognome(c.getString(c.getColumnIndex(KEY_COGNOME)));
-            u.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
-            u.setImmagine(c.getString(c.getColumnIndex(KEY_AVATAR)));
-
+            if (c != null) {
+                c.moveToFirst();
+                u.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA)));
+                u.setEmail(c.getString(c.getColumnIndex(KEY_EMAIL)));
+                u.setNome(c.getString(c.getColumnIndex(KEY_NOME)));
+                u.setCognome(c.getString(c.getColumnIndex(KEY_COGNOME)));
+                u.setPassword(c.getString(c.getColumnIndex(KEY_PASSWORD)));
+                u.setImmagine(c.getString(c.getColumnIndex(KEY_AVATAR)));
+                c.close();
+            }
             return u;
         } catch (Exception e) {
             return null;
@@ -262,7 +255,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all users
      * */
     public List<Utente> getAllUsers() {
-        List<Utente> users = new ArrayList<Utente>();
+        List<Utente> users = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_USER;
 
@@ -283,6 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to users list
                 users.add(u);
             } while (c.moveToNext());
+            c.close();
         }
 
         return users;
@@ -312,9 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_RECENSIONI, 0);
 
         // insert row
-        long corso_id = db.insert(TABLE_CORSO, null, values);
-
-        return corso_id;
+        return db.insert(TABLE_CORSO, null, values);
     }
 
     /*
@@ -327,16 +319,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ID_CORSO + " = " + corso_id;
 
         Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c != null)
-            c.moveToFirst();
-
         Corso corso = new Corso();
-        corso.setId(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
-        corso.setNomeCorso(c.getString(c.getColumnIndex(KEY_NOME_CORSO)));
-        corso.setNomeProfessore(c.getString(c.getColumnIndex(KEY_PROFESSORE)));
-        corso.setNumeroRecensioni(c.getLong(c.getColumnIndex(KEY_RECENSIONI)));
-
+        if (c != null) {
+            c.moveToFirst();
+            corso.setId(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
+            corso.setNomeCorso(c.getString(c.getColumnIndex(KEY_NOME_CORSO)));
+            corso.setNomeProfessore(c.getString(c.getColumnIndex(KEY_PROFESSORE)));
+            corso.setNumeroRecensioni(c.getLong(c.getColumnIndex(KEY_RECENSIONI)));
+            c.close();
+        }
         return corso;
     }
 
@@ -344,7 +335,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all corso
      * */
     public List<Corso> getAllCorsi() {
-        List<Corso> corsi = new ArrayList<Corso>();
+        List<Corso> corsi = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -362,6 +353,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to corso list
                 corsi.add(corso);
             } while (c.moveToNext());
+            c.close();
         }
 
         return corsi;
@@ -371,7 +363,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all corsi with match name
      * */
     public List<Corso> getCorsiNome(String nome) {
-        List<Corso> corsi = new ArrayList<Corso>();
+        List<Corso> corsi = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -392,6 +384,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     corsi.add(corso);
                 }
             } while (c.moveToNext());
+            c.close();
         }
 
         return corsi;
@@ -401,7 +394,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all corsi with match prof
      * */
     public List<Corso> getCorsiProf(String nome) {
-        List<Corso> corsi = new ArrayList<Corso>();
+        List<Corso> corsi = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CORSO;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -422,6 +415,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     corsi.add(corso);
                 }
             } while (c.moveToNext());
+            c.close();
         }
 
         return corsi;
@@ -509,17 +503,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ID_RECENSIONE + " = " + recensione_id;
 
         Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c != null)
-            c.moveToFirst();
-
         Recensione recensione = new Recensione();
-        recensione.setId_recensione(c.getLong(c.getColumnIndex(KEY_ID_RECENSIONE)));
-        recensione.setId_corso(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
-        recensione.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_RECENSIONE)));
-        recensione.setTitle((c.getString(c.getColumnIndex(KEY_TITOLO_RECENSIONE))));
-        recensione.setText((c.getString(c.getColumnIndex(KEY_TESTO_RECENSIONE))));
-        recensione.setDate((c.getString(c.getColumnIndex(KEY_DATA_RECENSIONE))));
+
+        if (c != null) {
+            c.moveToFirst();
+            recensione.setId_recensione(c.getLong(c.getColumnIndex(KEY_ID_RECENSIONE)));
+            recensione.setId_corso(c.getLong(c.getColumnIndex(KEY_ID_CORSO)));
+            recensione.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_RECENSIONE)));
+            recensione.setTitle((c.getString(c.getColumnIndex(KEY_TITOLO_RECENSIONE))));
+            recensione.setText((c.getString(c.getColumnIndex(KEY_TESTO_RECENSIONE))));
+            recensione.setDate((c.getString(c.getColumnIndex(KEY_DATA_RECENSIONE))));
+            c.close();
+        }
 
         return recensione;
     }
@@ -548,6 +543,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to recensioni list
                 recensioni.add(recensione);
             } while (c.moveToNext());
+            c.close();
         }
 
         return recensioni;
@@ -557,7 +553,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all recensione under single corso
      * */
     public ArrayList<Recensione> getAllRecensionesByCorso(long corso_id) {
-        ArrayList<Recensione> recensioni = new ArrayList<Recensione>();
+        ArrayList<Recensione> recensioni = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_RECENSIONE + " WHERE " + KEY_ID_CORSO_RECENSIONE + " = " + corso_id;
 
@@ -578,6 +574,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to recensione list
                 recensioni.add(recensione);
             } while (c.moveToNext());
+            c.close();
         }
         Collections.sort(recensioni, new Comparator<Recensione>() {
             public int compare(Recensione o1, Recensione o2) {
@@ -642,9 +639,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DATA_EVENTO, evento.getData());
 
         // insert row
-        long evento_id = db.insert(TABLE_EVENTO, null, values);
-
-        return evento_id;
+        return db.insert(TABLE_EVENTO, null, values);
     }
 
     /*
@@ -695,49 +690,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             Cursor c = db.rawQuery(selectQuery, null);
 
-            if (c != null)
+            if (c != null) {
                 c.moveToFirst();
 
-            try {
-                String inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
-                String[] s = inte.split(",");
-                ArrayList<Long> i = new ArrayList<>();
-                for (String g : s) {
-                    if (!g.equals("") && !g.equals(","))
-                        i.add(Long.parseLong(g));
+                try {
+                    String inte = c.getString(c.getColumnIndex(KEY_INTERESSATI));
+                    String[] s = inte.split(",");
+                    ArrayList<Long> i = new ArrayList<>();
+                    for (String g : s) {
+                        if (!g.equals("") && !g.equals(","))
+                            i.add(Long.parseLong(g));
+                    }
+
+                    Evento evento = new Evento();
+                    evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
+                    evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
+                    evento.setInteressati(i);
+                    evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
+                    evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
+                    evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
+                    evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
+
+                    return evento;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-                Evento evento = new Evento();
-                evento.setId(c.getInt(c.getColumnIndex(KEY_ID_EVENTO)));
-                evento.setImmagine(c.getString(c.getColumnIndex(KEY_IMMAGINE_EVENTO)));
-                evento.setInteressati(i);
-                evento.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_EVENTO)));
-                evento.setDescrizione(c.getString(c.getColumnIndex(KEY_DESCRIZIONE_EVENTO)));
-                evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
-                evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
-
-                return evento;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                c.close();
             }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
     /*
      * getting all eventi
      * */
     public List<Evento> getAllEventi() {
-        List<Evento> eventi = new ArrayList<Evento>();
+        List<Evento> eventi = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_EVENTO;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         String inte;
         String[] s;
         ArrayList<Long> i;
@@ -759,14 +755,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 evento.setLuogo(c.getString(c.getColumnIndex(KEY_LUOGO_EVENTO)));
                 evento.setData(c.getString(c.getColumnIndex(KEY_DATA_EVENTO)));
 
-                //Elimino gli eventi vecchi e aggiungo quelli nuovi all'output
+                //Elimino gli eventi vecchi e aggiungo quelli futuri all'output
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     Date date = format.parse(evento.getData());
-                    if (date.before(new Date())) {
+                    if (date != null && date.before(new Date())) {
                         deleteEvento(evento.getId());
                     } else {
-                        // adding to users list
                         eventi.add(evento);
                     }
                 } catch (ParseException e) {
@@ -774,6 +769,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
             } while (c.moveToNext());
+            c.close();
         }
         Collections.sort(eventi, new Comparator<Evento>() {
             public int compare(Evento o1, Evento o2) {
@@ -788,18 +784,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all eventi of day
      * */
     public List<Evento> getAllEventiOfDay(Date data) {
-        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> allEventi;
         List<Evento> eventi = new ArrayList<>();
 
         allEventi = getAllEventi();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date;
 
-        for(Evento e : allEventi){
+        for (Evento e : allEventi) {
             try {
 
                 date = formatter.parse(e.getData());
-                if(date.equals(data)){
+                if (date != null && date.equals(data)) {
                     eventi.add(e);
                 }
 
@@ -815,7 +811,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all eventi of week
      * */
     public List<Evento> getAllEventiOfweek(Date data) {
-        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> allEventi;
         List<Evento> eventi = new ArrayList<>();
 
         allEventi = getAllEventi();
@@ -826,18 +822,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cal.setTime(data);
         int year, week, weekData = cal.get(Calendar.WEEK_OF_YEAR), yearData = localData.getYear();
 
-        for(Evento e : allEventi){
+        for (Evento e : allEventi) {
             try {
-
-                date = formatter.parse(e.getData());
-                localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                year = localDate.getYear();
-                cal = Calendar.getInstance(); cal.setTime(date);
-                week = cal.get(Calendar.WEEK_OF_YEAR);
-                if(week == weekData && year == yearData){
-                    eventi.add(e);
+                if(formatter.parse(e.getData()) != null) {
+                    date = formatter.parse(e.getData());
+                    localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    year = localDate.getYear();
+                    cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    week = cal.get(Calendar.WEEK_OF_YEAR);
+                    if (week == weekData && year == yearData) {
+                        eventi.add(e);
+                    }
                 }
-
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
@@ -850,7 +847,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all eventi of month
      * */
     public List<Evento> getAllEventiOfMonth(Date data) {
-        List<Evento> allEventi = new ArrayList<>();
+        List<Evento> allEventi;
         List<Evento> eventi = new ArrayList<>();
 
         allEventi = getAllEventi();
@@ -860,17 +857,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int month, monthData = localData.getMonthValue();
         int year, yearData = localData.getYear();
 
-        for(Evento e : allEventi){
+        for (Evento e : allEventi) {
             try {
-
-                date = formatter.parse(e.getData());
-                localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                month = localDate.getMonthValue();
-                year = localData.getYear();
-                if(month == monthData && year == yearData){
-                    eventi.add(e);
+                if(formatter.parse(e.getData()) != null) {
+                    date = formatter.parse(e.getData());
+                    localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    month = localDate.getMonthValue();
+                    year = localData.getYear();
+                    if (month == monthData && year == yearData) {
+                        eventi.add(e);
+                    }
                 }
-
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
@@ -904,9 +901,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DATA_TIP, getDateTime());
 
         // insert row
-        long evento_id = db.insert(TABLE_TIP, null, values);
-
-        return evento_id;
+        return db.insert(TABLE_TIP, null, values);
     }
 
     /*
@@ -971,49 +966,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             Cursor c = db.rawQuery(selectQuery, null);
 
-            if (c != null)
+            if (c != null) {
                 c.moveToFirst();
 
-            try {
-                String inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
-                String like = c.getString(c.getColumnIndex(KEY_LIKE_TIP));
-                String dis = c.getString(c.getColumnIndex(KEY_DISLIKE_TIP));
-                String[] s = inte.split(",");
-                String[] l = like.split(",");
-                String[] d = dis.split(",");
-                ArrayList<Commento> i = new ArrayList<>();
-                ArrayList<Long> li = new ArrayList<>();
-                ArrayList<Long> di = new ArrayList<>();
-                for (String g : s) {
-                    if (!g.equals("") && !g.equals(","))
-                        i.add(getCommento(Integer.parseInt(g)));
-                }
-                for (String g : l) {
-                    if (!g.equals("") && !g.equals(","))
-                        li.add(Long.parseLong(g));
-                }
-                for (String g : d) {
-                    if (!g.equals("") && !g.equals(","))
-                        di.add(Long.parseLong(g));
-                }
+                try {
+                    String inte = c.getString(c.getColumnIndex(KEY_COMMENTI_TIP));
+                    String like = c.getString(c.getColumnIndex(KEY_LIKE_TIP));
+                    String dis = c.getString(c.getColumnIndex(KEY_DISLIKE_TIP));
+                    String[] s = inte.split(",");
+                    String[] l = like.split(",");
+                    String[] d = dis.split(",");
+                    ArrayList<Commento> i = new ArrayList<>();
+                    ArrayList<Long> li = new ArrayList<>();
+                    ArrayList<Long> di = new ArrayList<>();
+                    for (String g : s) {
+                        if (!g.equals("") && !g.equals(","))
+                            i.add(getCommento(Integer.parseInt(g)));
+                    }
+                    for (String g : l) {
+                        if (!g.equals("") && !g.equals(","))
+                            li.add(Long.parseLong(g));
+                    }
+                    for (String g : d) {
+                        if (!g.equals("") && !g.equals(","))
+                            di.add(Long.parseLong(g));
+                    }
 
-                Tip tip = new Tip();
-                tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
-                tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
-                tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
-                tip.setLike(li);
-                tip.setDislike(di);
-                tip.setCommenti(i);
-                tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
+                    Tip tip = new Tip();
+                    tip.setId(c.getInt(c.getColumnIndex(KEY_ID_TIP)));
+                    tip.setTitolo(c.getString(c.getColumnIndex(KEY_TITOLO_TIP)));
+                    tip.setTesto(c.getString(c.getColumnIndex(KEY_TESTO_TIP)));
+                    tip.setLike(li);
+                    tip.setDislike(di);
+                    tip.setCommenti(i);
+                    tip.setData(c.getString(c.getColumnIndex(KEY_DATA_TIP)));
 
-                return tip;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                    return tip;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                c.close();
             }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
     /*
@@ -1072,6 +1069,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     return null;
                 }
             } while (c.moveToNext());
+            c.close();
         }
         Collections.sort(tips, new Comparator<Tip>() {
             public int compare(Tip o1, Tip o2) {
@@ -1122,16 +1120,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ID_COMMENTO + " = " + commento_id;
 
         Cursor c = db.rawQuery(selectQuery, null);
+        Commento commento = new Commento();
 
-        if (c != null)
+        if (c != null) {
             c.moveToFirst();
 
-        Commento commento = new Commento();
-        commento.setId_commento(c.getInt(c.getColumnIndex(KEY_ID_COMMENTO)));
-        commento.setId_tip(c.getInt(c.getColumnIndex(KEY_ID_TIP_COMMENTO)));
-        commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
-        commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
-        commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
+            commento.setId_commento(c.getInt(c.getColumnIndex(KEY_ID_COMMENTO)));
+            commento.setId_tip(c.getInt(c.getColumnIndex(KEY_ID_TIP_COMMENTO)));
+            commento.setMatricola(c.getLong(c.getColumnIndex(KEY_MATRICOLA_COMMENTO)));
+            commento.setTesto((c.getString(c.getColumnIndex(KEY_TESTO_COMMENTO))));
+            commento.setData((c.getString(c.getColumnIndex(KEY_DATA_COMMENTO))));
+            c.close();
+        }
 
         return commento;
     }
@@ -1159,6 +1159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to recensioni list
                 commenti.add(commento);
             } while (c.moveToNext());
+            c.close();
         }
 
         return commenti;
@@ -1168,7 +1169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * getting all commenti under single tip
      * */
     public ArrayList<Commento> getAllCommentiByTip(long tip_id) {
-        ArrayList<Commento> commenti = new ArrayList<Commento>();
+        ArrayList<Commento> commenti = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_COMMENTO + " WHERE " + KEY_ID_TIP_COMMENTO + " = " + tip_id;
 
@@ -1187,10 +1188,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // adding to recensione list
                 commenti.add(commento);
             } while (c.moveToNext());
+            c.close();
         }
         Collections.sort(commenti, new Comparator<Commento>() {
             public int compare(Commento o1, Commento o2) {
-                return (((int) o2.getId_commento()) - ((int) o1.getId_commento()));
+                return (( o2.getId_commento()) - (o1.getId_commento()));
             }
         });
         return commenti;

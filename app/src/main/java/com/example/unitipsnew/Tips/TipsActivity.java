@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TipsActivity extends AppCompatActivity {
 
-    ListView listview;
     SharedPreferences sp;
     ArrayList<Commento> commenti;
     DatabaseHelper db;
@@ -61,16 +60,16 @@ public class TipsActivity extends AppCompatActivity {
             commento.setText(tip.getCommenti().size() + "");
             commenti = db.getAllCommentiByTip(tip.getId());
 
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.commenti_layout);
+            LinearLayout linearLayout = findViewById(R.id.commenti_layout);
             LayoutInflater inflater = LayoutInflater.from(this);
-            Utente u = new Utente();
+            Utente u;
             for (Commento c : commenti) {
                 View view  = inflater.inflate(R.layout.list_item_commento, linearLayout, false);
 
                 u = db.getUser(c.getMatricola());
-                TextView utenteC = (TextView) view.findViewById(R.id.nome_utente_commento);
-                TextView testoC = (TextView) view.findViewById(R.id.testo_commento);
-                TextView dataC = (TextView) view.findViewById(R.id.data_commento);
+                TextView utenteC = view.findViewById(R.id.nome_utente_commento);
+                TextView testoC = view.findViewById(R.id.testo_commento);
+                TextView dataC = view.findViewById(R.id.data_commento);
 
                 if (u != null) {
                     utenteC.setText(u.getNome() + " " + u.getCognome());
@@ -156,9 +155,9 @@ public class TipsActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.add_commento, null);
 
-        Button cancel = (Button) layout.findViewById(R.id.button_cancel_commento);
-        Button create = (Button) layout.findViewById(R.id.button_add_commento);
-        final EditText testo = (EditText) layout.findViewById(R.id.add_commento_text);
+        Button cancel = layout.findViewById(R.id.button_cancel_commento);
+        Button create = layout.findViewById(R.id.button_add_commento);
+        final EditText testo = layout.findViewById(R.id.add_commento_text);
         builder.setView(layout);
 
         final AlertDialog alertDialog = builder.create();

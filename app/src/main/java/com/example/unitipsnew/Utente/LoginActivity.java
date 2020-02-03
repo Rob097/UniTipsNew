@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,23 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Controllo se l'utente aveva selezionato il remember me
         sp = getSharedPreferences("checkbox", MODE_PRIVATE);
-
-        //Stampa nei log tutti gli utenti registrati
         db = new DatabaseHelper(getApplicationContext());
 
-        /*List<Utente> utenti = db.getAllUsers();
-        for(Utente u : utenti){
-            db.deleteUser(u.getMatricola());
-        }*/
-
-        //Utente u = new Utente(185035, "", "Roberto", "Dellantonio", "", R.drawable.user_image);
-        //db.createUser(u);
-
-        //Se i dati coincidono lo faccio passare alla main activity altrimenti gli chideo di autenticarsiù
-        //sp.edit().putLong("user", 1).apply();
-        //sp.edit().putBoolean("remember", true).apply();
         boolean check;
         check = sp.getBoolean("remember", false);
         sp = getSharedPreferences("login", MODE_PRIVATE);
